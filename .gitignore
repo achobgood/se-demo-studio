@@ -1,7 +1,6 @@
 .env
 toolkit/node_modules/
-jobs/*
-!jobs/.gitkeep
+/jobs/
 .DS_Store
 .claude/settings.local.json
 __pycache__/
