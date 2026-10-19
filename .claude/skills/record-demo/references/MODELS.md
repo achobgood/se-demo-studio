@@ -11,7 +11,7 @@ job folder with `python3 lib/models.py speech|transcription|audio|image|text [fi
 |---|---|---|
 | Demo voice | `google/gemini-3.8-flash-tts`, voice `Iapetus` | Won for "calm, assured, technical demo voice". Also `Charon` (better for ads). One call holds a 5-minute script, about $0.08. No working style field. |
 | Alternative voices | `minimax/speech-2.8-hd` (`English_magnetic_voiced_man`), `microsoft/mai-voice-2` | MAI has a working style field; MAI Harper said "won" for WAN. |
-| Free voice for testing | `deepgram/flux-tts:free` (e.g. `flux-miles-en`) | Good for pipeline tests, not for final narration. |
+| Voice for test runs | The demo voice above | The test run used it on 2026-10-19: about 1 cent per 50-second take. The free `deepgram/flux-tts:free` was gone from the catalog that day; the only free voice listed was `fish-audio/s2.1-pro-free:free`, not tested here. |
 | Word timestamps | `openai/whisper-large-v3` | Mishears some words; confirm by ear before rewording. |
 | Listening judge | `openai/gpt-audio` | Scores takes, checks joins and pronunciation. |
 | Music | `google/lyria-3-pro-preview` | Make 2 or 3 beds; one had garbled vocals. |
