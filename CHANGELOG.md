@@ -3,6 +3,16 @@
 What changed in each studio version, newest first. Your version is in the `VERSION` file and on the first line
 that `scripts/setup.sh` prints.
 
+## 0.3.0 (2026-10-19)
+
+- The builder's instructions now state what earlier jobs learned at the step where it applies, instead of
+  leaving 27 of those lessons in a file the builder had to read and remember.
+- Typing on camera now waits 80 to 150 ms per key, as intended; it could go as fast as 52 ms, which rich text
+  boxes can drop.
+- Stills and renders now warn when a camera push-in aims too close to the frame edge to center there.
+- Voice assembly prints the loudness step at each join between takes, next to the same spot in the main take, so
+  splices are judged by a number.
+
 ## 0.2.0 (2026-10-19)
 
 - First time? Say "do a test run": a 50-second narrated video of a public Cisco page in about 5 to 10 minutes,
