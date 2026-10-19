@@ -1,6 +1,6 @@
 ---
 name: record-demo
-description: Plan, record, and produce a narrated virtual SE product demo video (or a short product ad) from a live, signed-in product in Chrome, with AI voice, captions, and a player page. Use when the person says "help me record a demo", "make a demo video", "build a virtual SE demo", asks you to come up with a demo idea or scenario for a video in their product or environment, or asks to continue a demo job in jobs/.
+description: Plan, record, and produce a narrated virtual SE product demo video (or a short product ad) from a live, signed-in product in Chrome, with AI voice, captions, and a player page. Use when the person says "help me record a demo", "make a demo video", "build a virtual SE demo", asks you to come up with a demo idea or scenario for a video in their product or environment, asks to continue a demo job in jobs/, or says "do a test run" (a short first video that proves the setup, with no demo environment or sign-in).
 model: claude-opus-5-5
 effort: high
 ---
@@ -33,6 +33,33 @@ idea. A missing key or the wrong effort found after an hour of planning costs a 
 3. **Setup.** Run `scripts/setup.sh`. If it does not end with "SETUP OK", walk them through
    references/SETUP.md one failing line at a time, including OpenRouter. Never ask for the key in chat and never
    read `.env`.
+
+## Test run
+
+Use this when the person says "do a test run", or when `jobs/` does not exist yet (their first time) and they
+agree to one before the interview. It records a short narrated video of a public cisco.com page with the files in
+`test-run/` (next to this skill), proving the install, OpenRouter key, capture, voice, render, captions, and player.
+No interview, research, claim check, music, or storyboard stop. Run Step 0 first (items 0, 1, and 3).
+
+Tell them first: it takes about 5 to 10 minutes and about 2 cents of OpenRouter credit (the job's cap is $1); a separate
+Chrome window opens on a public Cisco page, with nothing to sign in to; leave it alone while it records (about a minute).
+
+1. From the studio root: `scripts/new-job.sh test-run` (if it exists, `test-run-2`, and so on; `<slug>` below), then
+   `cp -R .claude/skills/record-demo/test-run/job/. jobs/<slug>/` and
+   `python3 -c "import json; f='jobs/<slug>/job.json'; d=json.load(open(f)); d.update(json.load(open('.claude/skills/record-demo/test-run/job-settings.json'))); json.dump(d, open(f, 'w'), indent=2)"`.
+2. `scripts/chrome.sh <slug>`. In `jobs/<slug>/`: `TAG=rec node capture/rec.js take1 capture/takes/test_run.js`, then
+   `python3 lib/recsheet.py take1 4 12 26 44` and look at `review/sheet_take1.jpg`: the Cisco page, no cookie banner.
+3. Voice: `python3 lib/take.py T1 google/gemini-3.8-flash-tts Iapetus`, `python3 lib/stt.py audio/takes/T1.wav`,
+   `python3 lib/check_take.py T1`, `python3 lib/build_voice.py T1` (it must end with `edge check: ok`).
+4. Picture and sound: `python3 lib/build_clips.py`, `python3 lib/cursor_tracks.py`, `python3 lib/sfx.py`,
+   `python3 lib/sfx_events.py`, `python3 lib/mix.py out/mix.wav`.
+5. Render: `build/render_par.sh out/<slug>_v1.mp4 8 out/mix.wav`, `python3 lib/deliver.py <slug>_v1.mp4`,
+   `python3 lib/spend.py`. Then from the studio root `scripts/chrome.sh <slug> --stop`.
+
+If a step fails, stop and tell them which part of the setup it points to (key, Chrome, voice, render), using
+references/SETUP.md. Tell them after: the video is `jobs/<slug>/out/<slug>_v1.mp4` and the player with captions
+is `jobs/<slug>/player.html` (offer `open jobs/<slug>/player.html`); what it cost; and that a real demo starts with
+the interview, needs a demo environment they sign in to, and takes 1 to 2 hours. Offer to start it.
 
 ## Step 1: interview
 

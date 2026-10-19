@@ -1,0 +1,9 @@
+This is a short test run of the demo studio. It checks recording, the voice, captions, and the player, all on this Mac.
+
+This is a public Cisco product page, open in the job's own Chrome window. Nothing here needs a sign in, so recording can start right away.
+
+The recorder drives the page the way a person would. The pointer moves, the page scrolls, and every frame is saved for the edit.
+
+In the edit, the camera can push in on part of the screen, so smaller text stays readable in the final video.
+
+That is the whole pipeline. A real demo starts with a short interview, then research, a storyboard for your approval, and the full build.

@@ -1,0 +1,11 @@
+{
+  "title": "Demo studio test run",
+  "disclosure": "Test run of the demo studio. An AI-generated voice over a public cisco.com page. Not a product demo and not official marketing.",
+  "budget_usd": 1,
+  "hours": 1,
+  "app_url": "https://www.cisco.com/site/us/en/products/security/hypershield/index.html",
+  "app_match": "cisco.com",
+  "theme": "light",
+  "respell": {},
+  "music": {"file": "", "level_db": -9, "windows": []}
+}

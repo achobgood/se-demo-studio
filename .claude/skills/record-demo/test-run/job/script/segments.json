@@ -1,0 +1,11 @@
+{
+  "intro_seconds": 3.0,
+  "tail_seconds": 5.0,
+  "segments": [
+    {"name": "intro", "gap": 0.6, "chapter": "Test run"},
+    {"name": "page", "gap": 1.0, "chapter": "The page"},
+    {"name": "scroll", "gap": 0.8, "chapter": "Recording"},
+    {"name": "zoom", "gap": 0.8, "chapter": "The edit"},
+    {"name": "close", "gap": 0.0, "chapter": "Next"}
+  ]
+}

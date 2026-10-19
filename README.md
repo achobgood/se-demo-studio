@@ -17,6 +17,8 @@ Built from four real jobs, including a 5-minute Cisco Cloud Control demo (see `e
    record a demo"**.
 3. Claude checks your setup first and walks you through anything missing, including OpenRouter.
 
+First time? Say **do a test run**. About 5 to 10 minutes, under 5 cents.
+
 ## What you need
 
 - A Mac with Google Chrome, Node.js 20 or newer, and Python 3. `scripts/setup.sh` checks all of it and installs
