@@ -66,6 +66,11 @@ const rampChip = el('div', 'ramp', FT, '');
 const RAMPS = [].concat(...Object.values(FOOT).map(m => m.ramps || [])).filter((r, i, a) => a.findIndex(x => x[0] === r[0]) === i);
 const CAM = FR.camera;
 for (let i = 1; i < CAM.length; i++) if (CAM[i][0] < CAM[i - 1][0]) console.error('camera keys out of order at ' + i + ': ' + CAM[i - 1][0].toFixed(2) + ' > ' + CAM[i][0].toFixed(2));
+// Frame.camera clamps the center so the zoomed view never leaves the capture; a target nearer the edge than
+// 960/zoom (x) or 540/zoom (y) is moved inward without a word, so say which keys that happens to
+CAM.forEach(([t, x, y, z], i) => { const s = Math.max(1, z), hw = 960 / s, hh = 540 / s;
+  const cx = clamp(x, hw, 1920 - hw), cy = clamp(y, hh, 1080 - hh);
+  if (s > 1 && (cx !== x || cy !== y)) console.error('camera key ' + i + ' at ' + t.toFixed(2) + ': (' + x + ', ' + y + ') at zoom ' + z + ' is clamped to (' + Math.round(cx) + ', ' + Math.round(cy) + '); it will not center there'); });
 function camAt(t) {
   let i = CAM.findIndex(k => k[0] > t); if (i < 0) return CAM[CAM.length - 1].slice(1); if (i === 0) return CAM[0].slice(1);
   const a = CAM[i - 1], b = CAM[i]; const k = E.sio(clamp((t - a[0]) / (b[0] - a[0])));

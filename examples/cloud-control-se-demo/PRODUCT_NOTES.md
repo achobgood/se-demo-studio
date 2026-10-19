@@ -20,6 +20,8 @@ Cisco product. Recheck anything here against current official sources and the li
 
 - The demo: "AgenticOps with Cisco Cloud Control" instant demo in dCloud, which opens
   https://cloud.cisco.com/home. Demo users are read-only for configuration. It may be shared with other demo users.
+- Scheduled faults: an "AP-Reboot" workflow ran every two hours "to trigger device unrechability events", plus a
+  switch power-cycle workflow. Incidents may be synthetic and data can change between takes.
 - Surfaces: Home (Assistant), Actions, AI Canvas (Default and Reasoning modes), Inventory, Workflows, and the
   top-bar product tabs. ThousandEyes opens embedded under the Cloud Control top bar; Meraki leaves Cloud Control
   (about 30 seconds to load); Collaboration Control Hub renders under the top bar with a "Read-only Mode" notice.

@@ -21,9 +21,22 @@ or `null`), `respell` (spoken form to written form, e.g. `{"S D WAN": "SD-WAN"}`
 | Contact sheet of a take | `python3 lib/recsheet.py <take> 5 20 35 ...` (recording seconds) -> `review/sheet_<take>.jpg` |
 | Frame at a recording time | `python3 lib/frameat.py <take> <seconds>` |
 
+If the DevTools endpoint hangs (L12, L13): kill hung `node capture/...` processes, close runaway tabs with
+`curl -s http://127.0.0.1:<port>/json/close/<id>`, and if it still does not answer (Chrome may have updated itself
+while running), restart this job's Chrome with `scripts/chrome.sh <slug> --stop`, then `scripts/chrome.sh <slug>`.
+The signed-in session survives a restart.
+
 A take script (`capture/takes/example_take.js`) receives `page, C, mv, click, clickLoc, type, typed, wheel, mark,
 sleep, dtext`. `mark('name')` drops a labeled timestamp into `log.json` that you can find later. Output:
 `capture/rec/<take>/NNNNN.jpg` plus `log.json` (frame times, pointer track, clicks, keys).
+
+A link inside an embedded product page can open a new tab and break the single screen share: set `target=_self`
+on the anchor before clicking (see `examples/cloud-control-se-demo/code/take_example.js`) (L17).
+
+Canvas apps (L38, L54): start a drag pan on empty canvas (check `document.elementFromPoint(x, y)` is the
+background before pressing); after a click, confirm the element you meant is the one selected; measure label
+height at each app zoom step before choosing app zoom plus a push-in; the app's own search (type a name, press
+Enter) is the most reliable way to bring an element on screen.
 
 In apps with single sign-on, record in the long-lived signed-in tab (`TAG` = that tab's tag) and navigate by
 in-app clicks: a `page.goto` or a brand-new tab can pass through the sign-in page and the guard ends the take
@@ -93,7 +106,7 @@ mark('owner_done');
 | Word timestamps | `python3 lib/stt.py audio/takes/T1_iapetus.wav` |
 | Wording check vs script | `python3 lib/check_take.py T1_iapetus [T2_...]` |
 | Judge takes by ear | `PURPOSE="judge takes" python3 lib/chat.py openai/gpt-audio prompt.txt review/judge.json audio/takes/T1.wav audio/takes/T2.wav` |
-| Assemble narration | `python3 lib/build_voice.py T1_iapetus [segment=T2_iapetus ...]` -> `audio/voice.wav`, `build/cues.json`; it ends with an edge check, and any `EDGE MISMATCH` means a paragraph lost its first or last word (L55) |
+| Assemble narration | `python3 lib/build_voice.py T1_iapetus [segment=T2_iapetus ...]` -> `audio/voice.wav`, `build/cues.json`; it ends with an edge check, and any `EDGE MISMATCH` means a paragraph lost its first or last word (L55). Decide a join by its `JOIN` numbers, not by asking the listening model; use the listening model for missing or misread words and artifacts (L56) |
 
 Use `--extra '{"instructions": "..."}'` only for a model whose style field you have tested. Gemini TTS returns
 raw PCM; take.py converts it.
@@ -109,11 +122,17 @@ raw PCM; take.py converts it.
 | Words and camera | edit `build/story.js` (title, agenda, frame shots/urls/chapters/camera, value, close) |
 | Check frames | `node build/render.js stills review/stills 3 42.5 118` then look at them (`python3 lib/grid.py`) |
 
+At every cut, look at the incoming clip's first frames (`python3 lib/frameat.py <take> <seconds>`); if a spinner or
+"Loading" is still up, move that clip's first key later, to where the screencast stops sending frames (L21).
+
 Rerun `lib/cursor_tracks.py` after any change to cues or clips; the page reads `footage.js` and `cues.js`.
 
 Treat these printed warnings as errors (L57): `WARNING <clip>: key ... dropped` (a cue word matched too early),
 `WARNING shots: ... gap` and `WARNING shots: ... holds still` (from `build_clips.py`). A RAMPS label names what was
 compressed ("about 80 seconds of waiting"); a duration stated as fact comes from the system's timestamps (L51).
+
+Key camera moves near a click to that take's recorded click times (`FOOT.<take>.clicks`, readable in `build/story.js`,
+in timeline seconds), not to word times: word-keyed moves drift onto the wrong click when a take is re-recorded (L28).
 
 ## 5. Sound and mix
 

@@ -80,16 +80,21 @@ note. It sets positioning; it does not authorize a technical claim the sources d
    for parallel exploration, at most two driving the browser at once, each in its own tagged tab (L12), and
    only one at a time doing anything that changes state. You own the final flow. Zoom with the app's own zoom and
    pan controls when it has them, and with the edit's camera push-in and pan on dense pages that have none; click
-   elements to open their settings panels (L38). Close every item in
-   INTERVIEW.md's "Still unverified" list, if it has one.
+   elements to open their settings panels (L38). Avoid browser zoom (it reflows the layout); captures are at
+   device scale 2, so push-ins up to about 2x stay sharp; on a canvas, hold the whole canvas about two seconds
+   before zooming in. Close every item in INTERVIEW.md's "Still unverified" list, if it has one.
 2. Write `research/DEMO_MAP.md`: every surface with its exact name, what demo data lives there, what each
    available action does and whether it changes state, how long slow steps take, which AI agents or features
    actually answered (L9), and which incidents the data supports end to end. Also: which identity each surface
-   needs, which open in a new tab, which direct links work (L44, L45), that the version on screen is the one live
-   traffic uses (L46), and where the product records events the screen cannot show (L41).
+   needs, which open in a new tab, which direct links work, and the menu path to use where a link is refused (L44,
+   L45), that the version on screen is the one live traffic uses (L46), and where the product records events the
+   screen cannot show; when that record masks an input, point at the result it produced, not the input (L41).
 3. Pick ONE story and build the whole demo around it (L1 to L3). {{STORY HINT FROM THE INTERVIEW, or "Choose the
-   strongest story the data supports."}} Confirm its data is still there. Decide what the demo will not
-   investigate and how the SE says so.
+   strongest story the data supports."}} Confirm its data is still there now and again just before final takes:
+   instant demos reset, and scheduled workflows can change the data between takes (L1). The incident may be a
+   scheduled, injected fault: narrate no cause the data does not show, and prefer fixed, historical records to
+   "right now" views so every take shows the same picture (L2). Decide what the demo will not investigate and
+   how the SE says so.
 4. Write `research/STORYBOARD.md`: shot by shot, each shot with the click or typing, the value point it proves,
    the draft talk-track line over it, and the source for that line. Looking good never outranks being true.
 5. **Storyboard checkpoint (required).** Write `STORYBOARD_READY.md` with: the story in three sentences, the
@@ -100,7 +105,10 @@ note. It sets positioning; it does not authorize a technical claim the sources d
    "STORYBOARD APPROVED" (possibly with changes you must apply). Check the notes file every few minutes while
    you wait, and keep doing non-recording work (voice auditions, music beds, sources) in the meantime.
 6. Rehearse the full click path once without recording (find coordinates with `capture/tab.js`), then record.
-   Rehearse any owner action once with the owner too (L39).
+   Rehearse any owner action once with the owner too (L39). Record beats in story order: opening an item can
+   auto-run an analysis, post notifications, or show up in another view, so a later take may not find the state
+   an earlier one saw (L19). Just before final takes, ask every AI agent the story uses once more. If one the
+   story depends on no longer answers, print "OWNER DECISION NEEDED:" instead of building a thinner story (L9).
 
 ## Suggested structure (adapt it if a better one emerges)
 
@@ -124,10 +132,12 @@ loading, and quiet reading beats. Runtime: about {{LENGTH_MINUTES}} minutes; {{R
   footage; any general statement about what the product does for every customer needs a source.
 - No invented metrics, percentages, time savings, customers, quotes, testimonials, or logos. No numbers by
   default: published figures are usually anecdotes, hypotheticals, or internal counts. Do not narrate counts in
-  demo data (L8).
+  demo data (L8). Say only what the UI states; never infer a fact from a name or hostname (L7).
 - No invented SE experience: never "most customers tell me", "I see this every week", or a customer story.
 - AI helps investigate; people decide. Say "helps find the cause", never "finds the root cause", and never claim
   autonomous fixing or that it sees everything. Keep any "AI can make mistakes" footer legible at least once.
+- When two products' data does not line up (different sites, days, or start times), say what each one shows and
+  let the viewer connect them; never join them into one cause (L3).
 - Anything labeled preview, beta, controlled availability, or in development is left out, or its label stays
   visible if it appears on screen.
 - Put availability, licensing, and eligibility qualifiers in end-card fine print, worded exactly as the sources
@@ -149,13 +159,18 @@ Never generate, redraw, or AI-imagine the product's UI. Generated art is only fo
 close, and transitions, and none of it may imitate a product screen.
 
 - Capture with `capture/rec.js` (DevTools screencast, 1920x1080 CSS pixels at device scale 2, scrollbars hidden,
-  theme pinned). Frames arrive only when the page changes; `lib/build_clips.py` resamples to 30 fps.
+  theme pinned). Frames arrive only when the page changes; `lib/build_clips.py` resamples to 30 fps. The pinned
+  theme is browser emulation only; if the app has its own account Theme setting, set it to match before the
+  first take (L14).
 - The capture has no cursor. `rec.js` logs pointer moves, clicks, and keys; the render draws the cursor from that
-  log. Move along natural curves with short settles, and type with uneven, human timing (L16).
-- Record long continuous takes (L18). Check every take right away with `lib/recsheet.py`.
+  log. Move along natural curves with short settles, and type with uneven, human timing (L16). Read the box back
+  with `typed()` and press Enter only on an exact match.
+- Record long continuous takes (L18). Check every take right away with `lib/recsheet.py`. Delete superseded and
+  failed raw takes as you go, with an absolute path (`rm -rf <job>/capture/rec/<take>`, L60), and record long
+  waits at `JPGQ=75` (L32).
 - Present footage in the slim browser frame (build/story.js) with chapter chips, the footer "{{FOOTER TEXT,
   default: Real product UI · demo environment, fictional data}}", and gentle push-ins to make key text readable
-  (mind the camera clamp, L29). A callout is for the rare point a push-in cannot make.
+  (render stills print any push-in the frame edge clamps, L29). A callout is for the rare point a push-in cannot make.
 
 ## Signed-in capture
 
@@ -207,7 +222,8 @@ close, and transitions, and none of it may imitate a product screen.
   require anything else on this list, print "OWNER DECISION NEEDED:" with the question and keep working.
 - Log every state change (what, where, when, why) in `logs/state_changes.md`, and only after the take's own marks
   confirm it happened. A script that runs several live takes runs one instance at a time and does not reset state
-  on a failure that must be retried (L53).
+  on a failure that must be retried. Each runner writes its own output file, and a reset step logs a row only when
+  it actually changed something (L53).
 - Redaction: {{REDACTION DECISION. Default: blur every real person, account, email, org or tenant identifier,
   and session ID, including the signed-in demo account and other users' names in thread titles and share
   dialogs, and the owner's own identifiers (for example their phone number shown as a caller); fictional demo
@@ -228,13 +244,18 @@ and `engine.js` rarely need changes.
 
 ## Audio
 
+- Write the final talk track from the recorded takes, after recording: live AI answers change run to run, so the
+  storyboard's lines are a draft (L4).
 - Voice: the SE should sound like a person talking over a screen share, not a narrator reading copy. Audition
   voices on a short paragraph first (`lib/take.py ... --dir audio/audition --text <file>`), then record several
   full takes of the talk track across the best two or three. Have an audio-capable model score them for
   naturalness, conversational register, and warmth (`lib/chat.py`), and check every take's wording with
-  `lib/stt.py` and `lib/check_take.py`. Start from L22's winner; the catalog changes often.
+  `lib/stt.py` and `lib/check_take.py`. Whisper mishears some words; before rewording a line that
+  `check_take.py` flags, confirm with a short listen (`lib/chat.py openai/gpt-audio`) (L24). Start from the demo
+  voice in `.claude/skills/record-demo/references/MODELS.md` (L22); the catalog changes often.
 - Pronunciation lives in the speech text (L23): {{RESPELLINGS FOR THIS PRODUCT}}. Put the same pairs in job.json
-  "respell" so captions show the written form. Listen-check every product name in the winning take.
+  "respell" so captions show the written form. Listen-check every product name in the winning take. If a voice
+  keeps saying a word wrong, reword the line (L23).
 - Test whether a model's style field actually changes the read before relying on it. Never put directions in the
   spoken text, and confirm no take reads a direction aloud.
 - Assemble with `lib/build_voice.py`; cut only at paragraph gaps (L25). Drive every cut, push-in, and chapter
@@ -285,6 +306,10 @@ Never raise the cap yourself. The key lives in the studio `.env`; never print, e
 Use the toolkit and the models on OpenRouter. If you need to install anything else, stop and print a message that
 starts with "TOOL REQUEST:": name the tool, why, where it comes from, and roughly how large it is. Wait for the
 go-ahead.
+
+Shell: macOS has no `timeout` command; run long takes in the background and wait for the notification. Delete
+with absolute paths and no globs (the command safety check blocks `rm` after a `cd` or with a glob), and write
+re-runs to a fresh folder (L60).
 
 Subagents: use the studio's agents (`demo-explorer`, `demo-researcher`, `claim-checker`) or general subagents
 however helps. They run on Opus 5.5 at high effort, set in the studio settings; do not override the model.

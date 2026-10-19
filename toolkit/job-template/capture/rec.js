@@ -45,7 +45,7 @@ const C = require('./cdp'); const fs = require('fs'); const path = require('path
   const clickLoc = async (loc, ms) => { const b = await loc.boundingBox(); if (!b) throw new Error('element not visible'); await click(b.x + b.width / 2, b.y + b.height / 2, ms); };
   // human typing: 80 to 150 ms per key with jitter (fast typing drops characters in rich text boxes); every key is logged
   const type = async (str, d = 95) => { for (const ch of str) { await page.keyboard.type(ch); log.marks.push({ t: Date.now() / 1000, k: 'key' });
-      let w = d * (.55 + Math.random() * .9); if (ch === ' ') w += Math.random() < .25 ? 140 : 30; if (/[.,?]/.test(ch)) w += 180; await sleep(w); } };
+      let w = d * (.85 + Math.random() * .7); if (ch === ' ') w += Math.random() < .25 ? 140 : 30; if (/[.,?]/.test(ch)) w += 180; await sleep(w); } };
   // read back the focused text box; press Enter only when it matches exactly what you typed
   const typed = async (sel = '[contenteditable=true], textarea, input[type=text]') => (await page.locator(sel).first().evaluate(e => e.value ?? e.innerText)).trim();
   const wheel = async (dy, steps = 30, ms = 1500) => { for (let i = 0; i < steps; i++) { await page.mouse.wheel(0, dy / steps); await sleep(ms / steps); } };

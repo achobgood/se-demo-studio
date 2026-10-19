@@ -1,5 +1,6 @@
 # Assemble the narration from a base take, cutting only at paragraph gaps, with authored pauses for the picture.
-# Optionally take single paragraphs from other takes of the SAME voice and settings (loudness matched to the base).
+# Optionally take single paragraphs from other takes of the SAME voice and settings (loudness matched to the base);
+# each join between takes prints its level step in dB next to the base take's step at the same place.
 # usage: python3 lib/build_voice.py BASE_TAKE [segment_name=OTHER_TAKE ...]  -> audio/voice.wav, build/cues.json
 # Pauses come from script/segments.json ("gap" after each segment); intro_seconds of silence precede the voice.
 import array, json, math, os, sys, wave
@@ -59,3 +60,19 @@ for s, para in zip(cues['segments'], paragraphs()):
     if not ws or ntok(tw[0]) != ntok(ws[0]) or ntok(tw[-1]) != ntok(ws[-1]):
         bad += 1; print('EDGE MISMATCH %s: script %r..%r, voice %r..%r' % (s['name'], tw[0], tw[-1], ws[0] if ws else '', ws[-1] if ws else ''))
 print('edge check:', 'FAIL, %d segment(s)' % bad if bad else 'ok')
+# join levels: wherever the take changes, the active-speech level in dB of the 3 s of voice before the join and
+# the 3 s after it, compared with the same paragraph boundary in the base take's continuous read. Decide a join
+# by these numbers; a listening model's verdict on joins is not repeatable.
+db = lambda seg, g=1.0: 20 * math.log10(max(1e-9, rms(seg) * g / 32768))
+gain = lambda p: baseR / p['rms'] if p['take'] != base else 1.0
+W3 = int(3 * SR)
+for i in range(1, len(parts)):
+    a, b = parts[i - 1], parts[i]
+    if a['take'] == b['take']: continue
+    step = db(b['seg'][:W3], gain(b)) - db(a['seg'][-W3:], gain(a))
+    pcm, words, spans = load(base); sa, sb = spans[i - 1], spans[i]
+    if sa is None or sb is None: ref = 'not aligned'
+    else:
+        e, s = int(words[sa[3]]['end'] * SR), int(words[sb[2]]['start'] * SR)
+        ref = '%+.1f dB' % (db(pcm[s:s + W3]) - db(pcm[max(0, e - W3):e]))
+    print('JOIN %s/%s: step %+.1f dB (base take at the same join: %s)' % (a['s']['name'], b['s']['name'], step, ref))

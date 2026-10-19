@@ -51,8 +51,9 @@ L12. **Keep DevTools clients few.** With four exploring agents attached at once 
     (`scripts/chrome.sh <job> --stop`, then start). The signed-in session survived every restart.
 L13. **Chrome can auto-update while running** and the DevTools endpoint then stops answering. A restart fixes it.
 L14. **Theme flips mid-take.** Apps follow the OS appearance (dark at night) and some have an account-level Theme
-    preference that overrides the browser emulation. Pin `"theme"` in job.json, start every take with
-    `page.goto`, and check the app's own profile theme setting. One take flipped to dark halfway through and had
+    preference that overrides the browser emulation. Pin `"theme"` in job.json, start every take from a known
+    state (a page load, or `capture/park.js` in single sign-on apps, L49), and check the app's own profile theme
+    setting. One take flipped to dark halfway through and had
     to be re-recorded.
 L15. **Shadow DOM hides chat text.** Assistant and canvas conversations often live in shadow roots, so
     `document.body.innerText` misses them. Use `dtext()`.
