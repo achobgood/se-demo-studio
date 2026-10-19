@@ -1,8 +1,10 @@
 #!/bin/bash
-# Create a new job folder from the toolkit template.  usage: scripts/new-job.sh <job-slug> [chrome_port]
+# Create a new job folder from the toolkit template.  usage: scripts/new-job.sh <job-slug> [chrome_port | --test-run]
+# --test-run also copies the ready-made test run files from .claude/skills/record-demo/test-run/ into the job.
 set -euo pipefail
 cd "$(dirname "$0")/.."
-SLUG=${1:?usage: scripts/new-job.sh <job-slug> [chrome_port]}
+SLUG=${1:?usage: scripts/new-job.sh <job-slug> [chrome_port | --test-run]}
+TEST=0; if [ "${2:-}" = "--test-run" ]; then TEST=1; set -- "$1"; fi
 [[ "$SLUG" =~ ^[a-z0-9][a-z0-9-]*$ ]] || { echo "Use lowercase letters, digits and dashes, e.g. cloud-control-webex"; exit 1; }
 DIR=jobs/$SLUG; [ -e "$DIR" ] && { echo "$DIR already exists"; exit 1; }
 mkdir -p jobs   # jobs/ is never in the repo; it is created on first use
@@ -19,4 +21,11 @@ import json,sys; f,slug,port=sys.argv[1:4]; d=json.load(open(f)); d['slug']=slug
 PY
 : > "$DIR/logs/costs.jsonl"; : > "$DIR/ORCHESTRATOR_NOTES.md"
 printf '# State changes made in the demo environment\n\n| When | What | Where | Why |\n|---|---|---|---|\n' > "$DIR/logs/state_changes.md"
+if [ $TEST = 1 ]; then
+  T=.claude/skills/record-demo/test-run; cp -R "$T/job/." "$DIR/"
+  python3 - "$DIR/job.json" "$T/job-settings.json" <<'PY'
+import json,sys; f,s=sys.argv[1:3]; d=json.load(open(f)); d.update(json.load(open(s))); json.dump(d,open(f,'w'),indent=2)
+PY
+  echo "Created test run $DIR (Chrome port $PORT). Next: scripts/chrome.sh $SLUG"; exit 0
+fi
 echo "Created $DIR (Chrome port $PORT). Next: edit $DIR/job.json, then scripts/chrome.sh $SLUG"

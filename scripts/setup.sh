@@ -27,4 +27,4 @@ else
 fi
 command -v pdftotext >/dev/null && say "pdftotext (optional)" "ok" || say "pdftotext (optional)" "not installed; PDF sources will not fetch (brew install poppler)"
 [ -f "$HOME/Library/Application Support/node-terminal/canvas-control/nodeterm.sh" ] && say "NodeTerm" "ok" || say "NodeTerm" "not found (recommended: https://nodeterm.dev); without it the builder runs in a second Terminal window"
-echo; if [ $ok = 1 ]; then echo "SETUP OK"; else echo "SETUP INCOMPLETE: fix the lines above, then rerun scripts/setup.sh"; exit 1; fi
+echo; if [ $ok = 1 ]; then echo "SETUP OK"; [ -d jobs ] || echo "First time? In Claude, say: do a test run  (about 5 to 10 minutes, a few cents)"; else echo "SETUP INCOMPLETE: fix the lines above, then rerun scripts/setup.sh"; exit 1; fi
