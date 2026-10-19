@@ -106,7 +106,7 @@ mark('owner_done');
 | Word timestamps | `python3 lib/stt.py audio/takes/T1_iapetus.wav` |
 | Wording check vs script | `python3 lib/check_take.py T1_iapetus [T2_...]` |
 | Judge takes by ear | `PURPOSE="judge takes" python3 lib/chat.py openai/gpt-audio prompt.txt review/judge.json audio/takes/T1.wav audio/takes/T2.wav` |
-| Assemble narration | `python3 lib/build_voice.py T1_iapetus [segment=T2_iapetus ...]` -> `audio/voice.wav`, `build/cues.json`; it ends with an edge check, and any `EDGE MISMATCH` means a paragraph lost its first or last word (L55). Decide a join by its `JOIN` numbers, not by asking the listening model; use the listening model for missing or misread words and artifacts (L56) |
+| Assemble narration | `python3 lib/build_voice.py T1_iapetus [segment=T2_iapetus ...]` -> `audio/voice.wav`, `build/cues.json`; it ends with an edge check, and any `EDGE MISMATCH` means a paragraph lost its first or last word (L55), except when a number word was transcribed as digits ("three" as "3"): check those by ear. Decide a join by its `JOIN` numbers, not by asking the listening model; use the listening model for missing or misread words and artifacts (L56) |
 
 Use `--extra '{"instructions": "..."}'` only for a model whose style field you have tested. Gemini TTS returns
 raw PCM; take.py converts it.

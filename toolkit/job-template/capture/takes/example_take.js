@@ -2,6 +2,8 @@
 // person, type a question at human speed, verify it, submit, and wait for the answer while the screencast runs.
 // Coordinates are CSS pixels in the 1920x1080 viewport. Find them during rehearsal with capture/tab.js.
 // See examples/cloud-control-se-demo/code/take_example.js for a complete recorded take.
+// In apps with single sign-on, do not load a page here: the load can pass through the sign-in page and the guard
+// ends the take. Park the tab with capture/park.js and start with an atStart check instead (PIPELINE.md, L49).
 module.exports = async ({ page, C, mv, click, clickLoc, type, typed, wheel, mark, sleep, dtext }) => {
   await page.goto(C.CFG.app_url, { waitUntil: 'domcontentloaded' });
   await sleep(6000);                                   // let the page settle; this stretch is trimmed in the edit

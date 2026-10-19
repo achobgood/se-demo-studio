@@ -2,10 +2,17 @@
 
 Collected from four real jobs in September 2026: a 90-second Cisco Cloud Control ad, a 5-minute Cloud Control
 virtual SE demo (Mexico City incident), a paused Cloud Control plus Webex Control Hub demo, and a Packet Path
-explainer, plus sections added in October 2026. Numbers in brackets (L7) are cited from the builder prompt.
+explainer, plus sections added in October 2026.
+
+This file is history, not required reading. Each lesson's rule now sits at the step where it applies (the builder
+prompt template, PIPELINE.md, SUPERVISING.md, INTERVIEW.md, AI_CALLER.md, or the toolkit code), and that rule
+cites the lesson by number, as (L7). Read a lesson to see why its rule exists, or before departing from the rule.
 Every lesson applies to any product; products are named only as the example a lesson came from. Product-specific
 notes live with their worked example (for Cisco Cloud Control, `examples/cloud-control-se-demo/PRODUCT_NOTES.md`).
-Two sections are headed "read only if": skip them when the job does not have that condition.
+
+A new lesson: write its rule where the builder reads it at that step (or a check in the script that step runs),
+cite the next number there, and add the numbered story here. `scripts/check-repo.sh` fails a push whose citation
+has no lesson here.
 
 ## Story and truth
 

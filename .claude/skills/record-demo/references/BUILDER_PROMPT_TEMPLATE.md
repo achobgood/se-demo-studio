@@ -37,9 +37,9 @@ content to keep off screen, branding, budget, deadline, story constraints.}}
    comes from it or from a source you fetch and add to `research/SOURCES_ADDENDUM.md` with a verbatim quote.
 3. `research/PRODUCT_UNDERSTANDING.md`: the problem, how the product works, the real workflow with exact
    surface names, where the value comes from, what must not be claimed, and the moments worth filming.
-4. `.claude/skills/record-demo/references/LESSONS_LEARNED.md` (studio root): what earlier jobs learned. Rules
-   below cite it as L1, L2, and so on. Skip a section headed "read only if" when this job does not have that
-   condition.
+4. `.claude/skills/record-demo/references/LESSONS_LEARNED.md` (studio root) is the history behind the rules
+   below, which cite it as (L1), (L2). You do not need to read it. Before you depart from a rule because it seems
+   not to fit this job, read the lesson it cites.
 5. `.claude/skills/record-demo/references/PIPELINE.md` (studio root): the toolkit, command by command.
 6. `examples/cloud-control-se-demo/` (studio root): a finished 5-minute demo's prompt, storyboard, script,
    claim list, and edit code. Read it for patterns; do not reuse its narration, and do not follow model or path

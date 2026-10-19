@@ -132,7 +132,7 @@ decision back; check the rough cut; give the final report.
 - references/BUILDER_PROMPT_TEMPLATE.md: the builder's prompt.
 - references/SUPERVISING.md: launching, watching, the storyboard checkpoint, the final report.
 - references/PIPELINE.md: every toolkit command in order.
-- references/LESSONS_LEARNED.md: what went wrong in earlier jobs and how it was fixed.
+- references/LESSONS_LEARNED.md: the history behind each rule's (L7) citation; not required reading.
 - references/CISCO_CLAIM_RULES.md: sourcing, wording, and branding for Cisco products.
 - references/MODELS.md: which OpenRouter models worked.
 - references/AI_CALLER.md: a live phone call placed and held by ChatGPT voice mode, no human on the line.

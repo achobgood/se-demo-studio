@@ -3,6 +3,14 @@
 What changed in each studio version, newest first. Your version is in the `VERSION` file and on the first line
 that `scripts/setup.sh` prints.
 
+## 0.3.1 (2026-10-19)
+
+- The builder no longer reads the lessons file on every job; each lesson is stated once, at its step.
+  `LESSONS_LEARNED.md` stays as the history behind each rule.
+- The starter take script says not to load a page in apps with single sign-on, where the sign-in guard would end
+  the take.
+- The voice edge check notes its one false alarm: a number word transcribed as digits.
+
 ## 0.3.0 (2026-10-19)
 
 - The builder's instructions now state what earlier jobs learned at the step where it applies, instead of
