@@ -81,3 +81,9 @@ Nothing here is brand, legal, or SME reviewed. Treat the output as an internal d
 | `examples/cloud-control-se-demo/` | A finished 5-minute demo: prompt, storyboard, script, claims, edit code |
 | `jobs/` | Your jobs, one folder each. Never zip or share it: while a job runs it holds your signed-in browser profile, and it keeps raw, unblurred footage. To share the studio, share the GitHub link. |
 | `.env` | Your OpenRouter key (created by setup; only you can read it) |
+
+## License
+
+The studio is licensed under the Apache License 2.0 (see `LICENSE`). The bundled fonts in
+`toolkit/job-template/build/fonts/` keep their own SIL Open Font License 1.1: IBM Plex Mono
+(`OFL-IBM-Plex.txt`) and Inter (`OFL-Inter.txt`).
