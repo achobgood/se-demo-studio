@@ -17,6 +17,8 @@ Built from four real jobs, including a 5-minute Cisco Cloud Control demo (see `e
    record a demo"**.
 3. Claude checks your setup first and walks you through anything missing, including OpenRouter.
 
+First time? Say **do a test run**. About 5 to 10 minutes, under 5 cents.
+
 ## Updates
 
 - To get the newest version, run `git pull` in the studio folder.
