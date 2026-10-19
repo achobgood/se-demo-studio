@@ -28,7 +28,8 @@ runs unattended. The builder's window can still ask to approve an unusual comman
 it now and then, or to answer from the NodeTerm canvas. Nothing is installed without their yes (TOOL REQUEST).
 
 **Without NodeTerm:** ask the person to open a second Terminal window, `cd` to the studio root, run
-`claude --model claude-opus-5-5`, and paste the line from LAUNCH.txt (write it as in step 1). Record "Terminal
+`claude --model claude-opus-5-5`, and paste the line from LAUNCH.txt (write it as in step 1). If the job uses the AI caller and
+Claude in Chrome is not enabled by default, run `claude --chrome --model claude-opus-5-5` instead. Record "Terminal
 window" and the launch time in `jobs/<slug>/SUPERVISOR.md`. Watch `STATUS.md` the same way. To reach
 the builder, append to `ORCHESTRATOR_NOTES.md` and ask the person to type "New entry in ORCHESTRATOR_NOTES.md,
 read it now." into that window. Do not run the builder as a subagent: it could not launch its own explorers or

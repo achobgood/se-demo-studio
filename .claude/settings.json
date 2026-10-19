@@ -29,7 +29,8 @@
       "Bash(rm -rf out/chunks*)",
       "Bash(rm -rf capture/rec/*)",
       "Bash(rm -rf assets/clips/*)",
-      "Bash(python3 -m json.tool *)"
+      "Bash(python3 -m json.tool *)",
+      "mcp__claude-in-chrome__*"
     ],
     "defaultMode": "acceptEdits"
   }

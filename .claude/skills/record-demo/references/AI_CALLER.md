@@ -23,17 +23,38 @@ AI Agent).
 - ChatGPT's microphone and voice are routed to the cables by `capture/caller_patch.js` inside the ChatGPT tab,
   whatever Chrome's own microphone setting says.
 
-## Setup (once per Mac)
+## Setup (once per Mac, about 10 minutes)
 
-1. Install both cables: `brew install blackhole-2ch blackhole-16ch` (admin password). If a new cable does not
-   appear in `node capture/caller.js check`, restart macOS audio once: `sudo killall coreaudiod`.
-2. Webex desktop app, Settings > Audio: **Speaker = BlackHole 2ch**, **Microphone = BlackHole 16ch**. The names
-   are easy to swap; a swap shows up as call audio (ringback) on the 16ch track and silence on 2ch. While these
-   are set, Webex calls are not audible on the Mac.
-3. The person's regular Chrome, signed in to chatgpt.com, with the microphone allowed for chatgpt.com. Use the
-   regular Chrome, not the job's Chrome (see "What did not work").
-4. macOS app control (Accessibility) for the terminal running Claude, so `hangup` can press Webex's End call
-   button. `node capture/caller.js hangup` with no call up should answer "NO END BUTTON FOUND", not an error.
+The supervisor walks the person through these steps before the builder launches, one at a time, saying exactly
+what to click. The builder cannot do them: they need the Mac password, the Webex app's settings, or the person's
+phone. Run the commands from the job folder.
+
+1. **Audio cables.** Ask the person to paste `brew install blackhole-2ch blackhole-16ch` into a Terminal window
+   and type their Mac password when asked. Then run `node capture/caller.js check`. If a cable shows MISSING, ask
+   them to run `sudo killall coreaudiod` in that Terminal window, and check again.
+2. **Claude in Chrome.** Needs Claude Code signed in with a Claude Pro, Max, Team, or Enterprise account. Ask the
+   person to type `/chrome` in this Claude session and choose **Enabled by default**, so every new session,
+   including the builder, can use their Chrome. If Claude Code offers to install the extension, they choose
+   **Install extension** and follow its steps (it is also at
+   https://chromewebstore.google.com/detail/claude/fcoeoabgfenejglbffodgkkbkcdhcgfn). When Chrome asks whether
+   Claude may act on chatgpt.com, they allow it. They can turn "Enabled by default" off after the job.
+3. **ChatGPT.** In their regular Chrome (not the job's Chrome), they sign in to chatgpt.com, open any chat, press
+   the voice button once, and allow the microphone when Chrome asks. Then they end voice mode.
+4. **Webex.** Needs the Webex desktop app signed in with Webex Calling that can dial outside numbers. In the
+   Webex app, Settings > Audio: **Speaker = BlackHole 2ch**, **Microphone = BlackHole 16ch**. While these are set,
+   Webex calls are silent on the Mac; tell them to switch back after the job. The Mac's own sound settings stay
+   as they are.
+5. **Mac permissions for the terminal app running Claude (Terminal or NodeTerm).** In System Settings > Privacy &
+   Security, turn it on under **Microphone** (so the cables can be recorded) and **Accessibility** (so Claude can
+   press Webex's End call button). macOS may also ask on first use; they click Allow. `node capture/caller.js
+   hangup` with no call up should answer "NO END BUTTON FOUND", not an error.
+6. **Test call to their own phone.** `node capture/caller.js record setup_test`, then `node capture/caller.js
+   dial <their mobile number>`. They answer, say one sentence, and hang up. Then `node capture/caller.js
+   stoprec`. Pass: the `agent` line shows sound (numbers above 0.02). If the sound is on the `caller` line
+   instead, Webex's speaker and microphone are swapped (step 4). If both lines are all 0.00, the terminal has no
+   Microphone permission (step 5); quit and reopen the terminal after allowing it.
+
+Launch the builder only after step 6 passes.
 
 ## Run order
 

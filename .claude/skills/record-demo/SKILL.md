@@ -79,7 +79,8 @@ do and that it will stop for their approval at the storyboard.
 
 ## Step 5: launch and supervise
 
-Launch the builder from the studio root with `--model claude-opus-5-5`: as a NodeTerm session, or in a second
+If the job uses the AI caller, first walk the person through references/AI_CALLER.md "Setup" and launch only
+after its test call passes. Launch the builder from the studio root with `--model claude-opus-5-5`: as a NodeTerm session, or in a second
 Terminal window when NodeTerm is not installed (both in references/SUPERVISING.md). Then supervise. Relay LOGIN NEEDED, OWNER DECISION NEEDED, and TOOL REQUEST messages, and relay OWNER
 ACTION NEEDED at once (a take is waiting on it; when the demo must respond, only after the builder says its tested
 responder is armed); present the storyboard in full at STORYBOARD READY and pass their

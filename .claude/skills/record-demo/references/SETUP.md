@@ -17,7 +17,7 @@ Node.js, Python, or Chrome installers may need IT.
 | Google Chrome | Install from https://www.google.com/chrome into Applications (the system one or the one in their home folder). Capture drives a separate Chrome window with its own profile, so their normal browsing is untouched. |
 | toolkit install | `(cd toolkit && npm install)` and read any error. Behind a corporate proxy, ask IT for the proxy address and run `npm config set proxy <that address>`. |
 | pdftotext (optional) | `brew install poppler`. Needed only when an official source is a PDF (a data sheet, for example); without it that source fails to fetch and the researcher uses another page. |
-| AI caller (optional) | Only for demos where ChatGPT places a live call: BlackHole 2ch and 16ch, Webex desktop audio settings, ChatGPT in the regular Chrome, and the Claude in Chrome extension. Not checked by setup.sh; see references/AI_CALLER.md, "Setup". |
+| AI caller (optional) | Only for demos where ChatGPT places a live call. Needs a Claude Pro, Max, Team, or Enterprise account (for Claude in Chrome), a ChatGPT account, and Webex Calling in the Webex desktop app. Not checked by setup.sh; when the interview chooses it, walk the person through references/AI_CALLER.md, "Setup" (about 10 minutes, once per Mac). |
 | NodeTerm | Recommended; download from https://nodeterm.dev. Without it the builder runs in a second Terminal window (references/SUPERVISING.md). |
 
 ## OpenRouter
