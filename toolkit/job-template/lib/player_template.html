@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{TITLE}}</title>
+<link href="build/fonts/fonts.css" rel="stylesheet">
+<style>
+:root{--bg:#0b1120;--panel:#111a2e;--line:rgba(160,190,255,.14);--text:#e9eefb;--muted:#93a0bb;--acc:#60a5fa}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--bg:#f3f5f9;--panel:#fff;--line:rgba(20,40,80,.12);--text:#101828;--muted:#5b6780;--acc:#1d6ae5}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 Inter,system-ui,sans-serif}
+main{max-width:1280px;margin:0 auto;padding:32px 16px 64px}
+h1{font-size:28px;letter-spacing:-.02em;margin:0 0 4px}p.sub{margin:0 0 20px;color:var(--muted)}
+video{width:100%;aspect-ratio:16/9;background:#000;border-radius:12px;display:block}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 8px}
+.chip{all:unset;cursor:pointer;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--panel);font-size:14px}
+.chip span{margin-left:8px;font:500 12px "IBM Plex Mono",monospace;color:var(--muted)}
+.chip.on,.chip:hover{border-color:var(--acc)}
+ol{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:8px}
+li button{all:unset;cursor:pointer;display:flex;gap:16px;width:100%;box-sizing:border-box;padding:12px 16px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+li button:hover,li button.on{border-color:var(--acc)}
+.t{font:500 14px "IBM Plex Mono",monospace;color:var(--acc);min-width:44px;padding-top:2px}
+.b em{display:block;font-style:normal;font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.note{margin-top:24px;font-size:14px;color:var(--muted)}
+</style></head><body><main>
+<h1>{{TITLE}}</h1>
+<p class="sub">{{DISCLOSURE}} Click a chapter or a line to jump to it.</p>
+<video id="v" src="{{VIDEO}}" controls playsinline preload="metadata"><track kind="captions" srclang="en" label="English" src="{{VTT}}"></video>
+<div class="chips" id="c">{{CHAPTERS}}</div>
+<ol id="l">{{LIST}}</ol>
+<p class="note">Script, sources, claim table, state-change log, and review findings: README.md and script/SCRIPT.md.</p>
+</main><script>
+const v=document.getElementById('v'),bs=[...document.querySelectorAll('#l button')],cs=[...document.querySelectorAll('#c .chip')];
+[...bs,...cs].forEach(b=>b.onclick=()=>{v.currentTime=+b.dataset.t;v.play();});
+const mark=(arr)=>{let k=-1;arr.forEach((b,i)=>{if(v.currentTime>=+b.dataset.t)k=i});arr.forEach((b,i)=>b.classList.toggle('on',i===k));};
+v.ontimeupdate=()=>{mark(bs);mark(cs);};
+</script></body></html>

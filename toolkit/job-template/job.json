@@ -1,0 +1,13 @@
+{
+  "slug": "JOB_SLUG",
+  "title": "Product name, virtual SE demo",
+  "disclosure": "Internal draft. A virtual systems engineer demo with an AI-generated voice, recorded in a demo environment with fictional data. Not official marketing.",
+  "budget_usd": 15,
+  "hours": 4,
+  "chrome_port": 9333,
+  "app_url": "https://example.com/",
+  "app_match": "example.com",
+  "theme": "light",
+  "respell": {},
+  "music": {"file": "", "level_db": -9, "windows": [["intro", "plan"], ["close", null]]}
+}

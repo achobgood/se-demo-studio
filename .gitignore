@@ -1,0 +1,8 @@
+.env
+toolkit/node_modules/
+jobs/*
+!jobs/.gitkeep
+.DS_Store
+.claude/settings.local.json
+__pycache__/
+STUDIO_IMPROVEMENT*

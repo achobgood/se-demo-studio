@@ -1,0 +1,9 @@
+Hi, and thanks for making the time. I'm going to walk you through a short demo on our demo environment.
+
+Here's the plan. We'll start in one place, investigate one problem, and hand it off.
+
+This is the home page. Everything we need today starts here, so let's take a look around.
+
+The first thing to notice is that the products you already run stay in charge of their own domains.
+
+That's the demo. Thanks for watching, and talk with your account team about next steps.

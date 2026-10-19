@@ -1,0 +1,11 @@
+{
+  "intro_seconds": 5.0,
+  "tail_seconds": 6.5,
+  "segments": [
+    {"name": "intro", "gap": 0.7, "chapter": "Open"},
+    {"name": "plan", "gap": 0.9, "chapter": "The plan"},
+    {"name": "walkthrough", "gap": 1.2, "chapter": "Walkthrough"},
+    {"name": "value", "gap": 0.8, "chapter": "Value"},
+    {"name": "close", "gap": 0.0, "chapter": "Close"}
+  ]
+}

@@ -1,0 +1,47 @@
+Hi, and thanks for making the time. I'm your Cisco systems engineer, and for the next few minutes I'm going to show you Cisco Cloud Control, running in a demo environment. The company is PseudoCo, a fictional enterprise. We'll follow one problem from start to finish. Something's wrong at their Mexico City campus.
+
+Here's the plan. We'll start from one place, triage the alert, investigate with the AI Assistant and AI Canvas, check the evidence in the product that owns it, and then hand it off. In Cisco's own words, teams are forced to move among specialized tools and reconstruct the same issue from different vantage points. That's the part we want to shorten.
+
+So this is Cloud Control after I sign in. Across the top are the Cisco products this environment has connected. Intersight, Meraki, Thousand Eyes, and a few more. They stay right there as tabs.
+
+In the middle, it's pulled up the top actions that need review. And there's a box where I can ask a question in plain language.
+
+Let's go to Actions. This is the team's work list. Related notifications get grouped into one action, so you're not reviewing alerts product by product. I'll search for Mexico.
+
+This one groups S D WAN events from San Jose with Meraki devices in Mexico City. Let me open it, and the Assistant takes a first pass at the analysis.
+
+It's reading the action record, the Catalyst S D WAN telemetry, and the Meraki data. That takes a couple of minutes, so I'll skip ahead.
+
+Here's the summary and the related alerts. Most of them are S D WAN events from the San Jose edges. The Meraki rows are the Mexico City access point and switch going unreachable.
+
+The analysis separates the two. San Jose had a control plane problem that took down tunnels and interrupted security services. The Mexico City devices dropped on their own in the same window, and the access point shows a power event. The San Jose piece goes to the S D WAN team. I want to understand Mexico City.
+
+So I'll ask it right here. What's going on at the site right now?
+
+Okay. The switch is back online, but one access point is still offline, even though its original alert was marked resolved. And notice this. There's no Meraki security appliance at this site, so Meraki can't check the WAN uplink. That's a visibility gap, and we'll come back to it.
+
+We still don't know why, and it might span more than one product. That's what AI Canvas is for. I'll click Collaborate in Canvas. The action's context comes with me, so I'm not starting over.
+
+Now I'll switch to Reasoning mode, which is meant for complex questions, and ask why devices are unreachable at the Mexico City site.
+
+While that runs, a fair question here is, can the AI change my network on its own? In what I'm showing you, no. It gathers evidence and recommends next steps. Changes go through workflows that a person reviews and runs, and your permissions in each product still apply.
+
+Here's the answer, and it's added a card to the canvas. It sees both access points and the switch going unreachable at overlapping times, which points to a site-wide upstream problem, not individual devices. Its top candidate is the WAN link, and it flags the same gap. Without a Meraki security appliance, it can't confirm uplink health from the Meraki side.
+
+That's a good lead. And the line at the bottom says it well. Assistant can make mistakes, verify responses. So let's check the WAN side with a product that watches it.
+
+I'll click Thousand Eyes, in the same top bar. Thousand Eyes monitors this site's internet uplinks, and there's an active alert on the Mexico City public uplink test.
+
+Let me open it. The packet loss chart is red across the day, and the path view shows traffic from both Mexico City edges stopping before it reaches the destination. So the uplinks themselves are losing traffic. That's the piece Meraki couldn't see, and Thousand Eyes stays the authority for this data.
+
+Which brings up another fair question. Does Cloud Control replace my controllers? It doesn't. Each product still handles its own specialized management, and Cloud Control connects the work between them.
+
+Back to the canvas. The next step belongs to the WAN team, so I'll set up the handoff. Generate summary turns the canvas into a report for whoever picks this up.
+
+And Share gives other authorized operators access to this canvas. Everything we asked and found stays here, so the next person doesn't have to rebuild the context.
+
+So where does the value come from? It builds on the Cisco products you already run. Start with those, and every product you connect adds context.
+
+And the last fair question. What does this cost? Cloud Control and AI Canvas are included at no additional cost with eligible Cisco subscriptions.
+
+That's the demo. If you'd like to see this on your own environment, talk with your Cisco account team about connecting the products you already run. Thanks for your time.
