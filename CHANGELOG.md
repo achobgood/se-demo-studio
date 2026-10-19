@@ -3,9 +3,15 @@
 What changed in each studio version, newest first. Your version is in the `VERSION` file and on the first line
 that `scripts/setup.sh` prints.
 
-## 0.2.0 (unreleased)
+## 0.2.0 (2026-10-19)
 
-- Entries added at release.
+- First time? Say "do a test run": a 50-second narrated video of a public Cisco page in about 5 to 10 minutes,
+  for a few cents. It proves your setup before you book a demo environment.
+- Fixed: on a fresh clone, creating a job failed because the template's empty folders were missing.
+- Your jobs folder is never part of the repo now; it is created the first time you make a job.
+- Updates: run `git pull`. Setup shows your version on its first line and reinstalls the tools when they change
+  (once after this update, about 400 MB).
+- The studio is licensed under Apache 2.0; the bundled fonts keep their own open font licenses.
 
 ## 0.1.0 (2026-10-19)
 
