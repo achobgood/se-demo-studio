@@ -12,6 +12,7 @@ that `scripts/setup.sh` prints.
 - Updates: run `git pull`. Setup shows your version on its first line and reinstalls the tools when they change
   (once after this update, about 400 MB).
 - The studio is licensed under Apache 2.0; the bundled fonts keep their own open font licenses.
+- The model list no longer suggests a free test voice that OpenRouter removed.
 
 ## 0.1.0 (2026-10-19)
 
