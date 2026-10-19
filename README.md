@@ -17,6 +17,12 @@ Built from four real jobs, including a 5-minute Cisco Cloud Control demo (see `e
    record a demo"**.
 3. Claude checks your setup first and walks you through anything missing, including OpenRouter.
 
+## Updates
+
+- To get the newest version, run `git pull` in the studio folder.
+- Claude runs setup each time you start a new demo, and setup installs anything the new version needs.
+- To see your version, run `cat VERSION`, or read the first line setup prints. What changed is in `CHANGELOG.md`.
+
 ## What you need
 
 - A Mac with Google Chrome, Node.js 20 or newer, and Python 3. `scripts/setup.sh` checks all of it and installs
