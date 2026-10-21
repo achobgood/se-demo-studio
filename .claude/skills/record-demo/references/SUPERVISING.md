@@ -98,3 +98,7 @@ reclaim (raw takes and clips). Distinguish "the video is done" from "the video i
 Before the report, and also when a job stops early, make sure the job's Chrome is stopped
 (`scripts/chrome.sh <slug> --stop`) and ask the person to delete `jobs/<slug>/.chrome-profile`, which holds their
 signed-in session. Remind them never to zip or share `jobs/`: it holds raw, unblurred footage.
+
+If the job used the AI caller, also give them the "After the job" list in references/AI_CALLER.md: Webex audio
+back to their usual speaker and microphone (calls are silent on the Mac until then), and "Enabled by default" off
+in `/chrome` if they want it off.

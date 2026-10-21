@@ -27,4 +27,8 @@ else
 fi
 command -v pdftotext >/dev/null && say "pdftotext (optional)" "ok" || say "pdftotext (optional)" "not installed; PDF sources will not fetch (brew install poppler)"
 [ -f "$HOME/Library/Application Support/node-terminal/canvas-control/nodeterm.sh" ] && say "NodeTerm" "ok" || say "NodeTerm" "not found (recommended: https://nodeterm.dev); without it the builder runs in a second Terminal window"
+# Optional AI caller prerequisites: reported only, never part of SETUP OK.
+cables=$(system_profiler SPAudioDataType 2>/dev/null | grep -c -E "BlackHole (2|16)ch:"); webex=no; [ -d /Applications/Webex.app ] || [ -d "$HOME/Applications/Webex.app" ] && webex=yes
+if [ "$cables" -ge 2 ] && [ $webex = yes ]; then say "AI caller (optional)" "cables and Webex app found; Setup steps 4 to 8 in references/AI_CALLER.md still apply"
+else say "AI caller (optional)" "not set up (cables: $cables of 2 found, Webex app: $webex); only needed for AI caller demos, see references/AI_CALLER.md Setup"; fi
 echo; if [ $ok = 1 ]; then echo "SETUP OK"; [ -d jobs ] || echo "First time? In Claude, say: do a test run  (about 5 to 10 minutes, a few cents)"; else echo "SETUP INCOMPLETE: fix the lines above, then rerun scripts/setup.sh"; exit 1; fi

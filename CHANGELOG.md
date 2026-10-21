@@ -3,6 +3,19 @@
 What changed in each studio version, newest first. Your version is in the `VERSION` file and on the first line
 that `scripts/setup.sh` prints.
 
+## 0.3.2 (2026-10-21)
+
+- AI caller setup is harder to get stuck on. The interview now asks four readiness questions before offering it
+  (Webex Calling that can dial out, a ChatGPT voice button, permission to install a driver, the number to dial).
+- Setup gains two tests before the builder launches: a ChatGPT voice test (step 7) and a once-per-number test
+  call to the real entry point (step 8). Before, the ChatGPT side was first tested after launch.
+- BlackHole can be installed without Homebrew, and the docs say to stop and ask IT when the install is blocked.
+- New "If something is stuck" list (a leftover recording after a crash, ChatGPT heard on the Mac's speakers,
+  missing page labels, microphone blocked) and an "After the job" list (put Webex audio back, or calls stay silent
+  on the Mac). The final report now reminds the person of it.
+- `scripts/setup.sh` reports whether the BlackHole cables and the Webex app are present. It never fails on it.
+- The AI caller doc now says it was verified on one Mac only, and what to do when a ChatGPT or Webex label changes.
+
 ## 0.3.1 (2026-10-19)
 
 - The builder no longer reads the lessons file on every job; each lesson is stated once, at its step.

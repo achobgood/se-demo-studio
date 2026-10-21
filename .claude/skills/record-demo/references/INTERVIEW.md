@@ -91,7 +91,9 @@ Ask this round right after round 2 when the environment is their own or the stor
     AI Agent with no keypad menu), offer the AI caller instead (references/AI_CALLER.md): ChatGPT voice mode
     places and holds the call with no human on the line. Say that OpenAI then hears the whole call, and that it
     needs a one-time setup of about 10 minutes (audio cables, Claude in Chrome, Webex audio settings, a test call
-    to their own phone).
+    to their own phone). Before they choose it, ask the four readiness questions at the top of AI_CALLER.md
+    "Setup" (Webex Calling that can dial outside numbers, a ChatGPT voice button, permission to install a driver,
+    and the number to dial). If any answer is no, drop the AI caller now, not after the story is built.
 16. **Time windows.** Schedules that limit when live takes can run (business hours, maintenance windows, a demo
     reservation ending), with the time zone. Everything else can run any time.
 17. **Off-screen events.** Anything the screen recording cannot capture (phone audio, another device, an email
