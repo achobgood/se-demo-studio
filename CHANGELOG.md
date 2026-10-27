@@ -3,6 +3,29 @@
 What changed in each studio version, newest first. Your version is in the `VERSION` file and on the first line
 that `scripts/setup.sh` prints.
 
+## 0.3.3 (2026-10-27)
+
+- New users: the README starts with "Before you start" (Terminal, installing and signing in to Claude Code,
+  Node.js, Chrome, git), explains the two Claude windows and which one to talk in, lists which approval questions
+  to answer yes to, and gives real build times (3 to 5 hours).
+- Fewer approval questions in the builder window: the studio settings pre-approve the toolkit commands with
+  `TAG=`, `JPGQ=`, `PURPOSE=`, and `JSONMODE=` in front, and NodeTerm `write`; turning off the sign-in guard always
+  asks. Auto-compact is on for studio sessions. A Chrome check rule that never matched is fixed.
+- New `lib/status.py` writes status lines for the supervisor, and `lib/clean.py` deletes takes, clips, and render
+  chunks only inside the job. Sign-in warnings from `rec.js`, `park.js`, and screenshots now reach `STATUS.md` on
+  their own, so the person is told.
+- `scripts/setup.sh` fails when Claude was started outside the studio folder, where the studio's agents do not
+  load.
+- Fewer re-cuts: the interview asks for the whole must-show list and a length ceiling; the storyboard comes with
+  the claim check's summary and a contact sheet of the key screens; text-heavy frames are scanned before the rough
+  cut; full renders happen only at checkpoints; the job's sign-in is kept until the person says the job is done.
+- Conversational products: the builder reads the agent's own question rules before writing requests, and runs
+  independent sessions side by side.
+- AI caller: the Mac's sound output now goes on BlackHole 16ch too (and back after the job); ChatGPT opens in the
+  builder's own Chrome tab group; loopback runs right before each dial. First jobs are steered away from live
+  calls.
+- Status messages and relays are written in plain words.
+
 ## 0.3.2 (2026-10-21)
 
 - AI caller setup is harder to get stuck on. The interview now asks four readiness questions before offering it

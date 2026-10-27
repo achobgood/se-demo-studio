@@ -258,6 +258,67 @@ L62. **Owner availability gates live takes.** A cue sat unanswered for 10 minute
     the builder held live takes and did other work until the supervisor wrote "OWNER READY FOR <action>" in
     `ORCHESTRATOR_NOTES.md`; only then did it arm the responder and print the cue.
 
+## Speed and scope (October 2026, a CLI product ad with a Contact Center act)
+
+L66. **Prove the builder can type into a take node before the first take.** A product driven through a terminal
+    agent was filmed from separate NodeTerm nodes, and the builder answered each session's questions with NodeTerm
+    `write`. Claude Code's permission check refused that write on the first take; the take waited about 30 minutes
+    until the owner approved it. The studio settings now pre-approve that write, and the builder sends one test
+    write to an idle node before the first take, so any approval is asked for before filming starts.
+L67. **Settle the whole scope before the first final, and keep the sign-in until the job is closed.** One ad grew
+    three times after its final (a Contact Center act, then a live call, then a knowledge base). Each round needed a
+    new storyboard, a restarted Chrome, a new sign-in (the profile had been deleted at the first final), and new
+    renders. Ask for the must-show list per product area with a length ceiling, and delete `.chrome-profile` only
+    when the owner says the job is finished.
+L68. **When the product is a conversational agent, read its question rules before writing requests.** The agent
+    under demo always confirmed the target and asked for plan approval, whatever the request said. Requests written
+    without knowing that went through two storyboard rounds. Read the agent's own instructions, list what it will
+    ask, put the details that matter in the request, and plan the rest of the answers.
+L69. **Run independent sessions side by side.** Five builds ran one after another for about 35 minutes; later two
+    unrelated builds ran at once in separate nodes with no conflict. The storyboard marks which requests depend on
+    which, and independent ones run in parallel, two or three at a time.
+L70. **Check the sign-in right before a take that changes the product.** A product session expired three times in
+    one job, once in the middle of a filmed import. Re-park the tab and confirm it is signed in immediately before
+    any take whose action cannot be repeated freely.
+L71. **A compacted builder sits idle.** With auto-compact off in the owner's personal settings, the builder hit its
+    context limit, compacted on the owner's command, and then waited at an empty prompt with work pending. The
+    studio settings now turn auto-compact on, and the supervisor checks for "idle with work pending" after any
+    quiet stretch.
+L72. **Render only at checkpoints.** While waiting on a second builder, the first rendered four interim versions
+    nobody had asked to see, and the owner asked why. Render the rough cut, one version after a round of fixes, and
+    the final; edit the timeline in between.
+L73. **Scan every text-heavy frame before the first rough cut.** Terminal replays showed the tool's header (version,
+    plan, and folder path), a paragraph about a rejected login token, and a clipped line. The supervisor caught them
+    in the rough cut, which cost a render. A per-frame text scan for banned strings, error wording, and clipping,
+    run while filming, caught the rest before review.
+
+## Sharing with new users (October 2026, an independent review of the October jobs)
+
+L75. **A marker the supervisor never sees helps nobody.** In one job a take was deleted because a sign-in page
+    appeared, and `rec.js` printed LOGIN NEEDED in the builder window only; STATUS.md never got the line, so the
+    owner was not told. `rec.js`, `park.js`, and `shot()` now append their own LOGIN NEEDED lines, and the builder
+    writes every other marker with `python3 lib/status.py`, one pre-approved command that prints and logs it.
+L76. **Say who approves, and where.** At one storyboard the owner asked "who approves the storyboard? me?", and
+    the approval was typed into the builder's chat instead of the supervisor's, so the notes channel went quiet. The
+    supervisor now says plainly that the person approves, and answers in the supervisor's window.
+L77. **Run the claim check before the storyboard is shown, not after.** One storyboard was approved less than two
+    minutes after STORYBOARD READY, while the status line still said the claim check was "landing now"; another
+    job fixed eight unsupported claims between v1 and v2. The builder now runs the claim checker on the draft and
+    puts its summary in STORYBOARD_READY.md.
+L78. **Show the picture at the storyboard.** The first time anyone saw a frame was the rough cut, where the owner
+    found a tool header with a folder path, a token paragraph, a clipped line, and refresh clicks under narration.
+    Each cost a render and a review round. STORYBOARD_READY.md now carries a contact sheet of the key screens.
+L79. **Relay in plain words.** Status lines that reached the owner said "added a setSinkId pin" and "WATCHER
+    ARMED". Markers and relays now say what happened, what the person must do, and how long it takes, without tool
+    names.
+L80. **The wrong folder fails quietly.** Two supervising sessions started one folder above the studio root, so the
+    researcher ran as a general-purpose agent with its brief pasted in. Setup now refuses to pass outside the
+    studio folder, and preflight checks for `.demo-studio` first.
+L81. **Live actions cost the owner hours.** One job sent 9 call cues for 3 usable calls and waited about two hours
+    on the phone side, an hour of it with the owner away; another spent about two hours on AI caller audio before
+    the first usable call. For a person's first job, recommend no live actions, and present the AI caller as an
+    advanced option that needs them for an hour or more.
+
 ## AI caller: read only if ChatGPT places the calls (references/AI_CALLER.md)
 
 L63. **Two cables, and check which track the call lands on.** One virtual cable cannot carry both directions; each
@@ -271,3 +332,12 @@ L64. **ChatGPT runs in the regular Chrome, not the job's Chrome.** A DevTools mi
 L65. **Decide "is the call live" from audio, not the transcript.** Voice turns can reach the ChatGPT page late or
     not at all, and nothing appears while the phone rings. A transcript silence timer hung up before the call was
     answered. `caller.js watch` reads the live recordings instead.
+L74. **Claude in Chrome sees only its own tab group, and a reload drops the audio patch.** A builder could not see the
+    owner's open ChatGPT tab, opened its own in a new tab group, and found it signed out. Later a page reload left
+    the call silent: the call reached the product, but nothing reached the cable. Open chatgpt.com in the builder's
+    tab group and have the owner sign in there first, never reload a patched tab, and run `loopback` right before
+    each dial.
+L82. **The Mac's sound output goes on the cable too.** AI_CALLER.md said to leave the Mac's sound output alone and
+    let the tab patch route ChatGPT's voice. In two jobs (a Contact Center outage agent and a bike-shop repair
+    agent) the call side heard ChatGPT only once macOS sound output was set to BlackHole 16ch. Setup now sets it,
+    and the after-job list sets it back.

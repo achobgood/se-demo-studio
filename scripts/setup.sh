@@ -1,10 +1,13 @@
 #!/bin/bash
 # One-time studio setup and a health check you can rerun any time. Safe to run repeatedly.
 # usage: scripts/setup.sh
+start=$(pwd -P)
 cd "$(dirname "$0")/.."
 ok=1
 say() { printf '%-28s %s\n' "$1" "$2"; }
 say "Studio version" "$(cat VERSION 2>/dev/null || echo unknown)"
+# Claude must run in the studio folder, or the studio's agents do not load (L80).
+[ "$start" = "$(pwd -P)" ] && say "Studio folder" "ok" || { say "Studio folder" "WRONG FOLDER: run from $(pwd -P). Type /exit, then cd to that folder and run claude there"; ok=0; }
 [ "$(uname)" = "Darwin" ] && say "macOS" "ok" || { say "macOS" "MISSING: this studio is built and tested for macOS only"; ok=0; }
 if command -v node >/dev/null; then v=$(node -p 'process.versions.node.split(".")[0]'); [ "$v" -ge 20 ] && say "Node.js" "ok ($(node --version))" || { say "Node.js" "TOO OLD: need 20 or newer (brew install node)"; ok=0; }; else say "Node.js" "MISSING: brew install node  (or https://nodejs.org)"; ok=0; fi
 if command -v python3 >/dev/null; then say "Python 3" "ok ($(python3 --version 2>&1))"; else say "Python 3" "MISSING: xcode-select --install  (or brew install python)"; ok=0; fi

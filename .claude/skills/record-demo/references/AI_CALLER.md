@@ -26,10 +26,11 @@ tell the person what you see, and do not guess a different control.
 | ChatGPT to call | ChatGPT voice = BlackHole 16ch, Webex microphone = BlackHole 16ch | `audio/calls/<name>_caller.wav` |
 
 - One cable cannot carry both directions: each side would hear itself. Hence two cables.
-- The Mac's own speakers and microphone stay as they are. Only Webex's audio
-  settings and the ChatGPT tab use the cables. Do not change the system output to a BlackHole device.
-- ChatGPT's microphone and voice are routed to the cables by `capture/caller_patch.js` inside the ChatGPT tab,
-  whatever Chrome's own microphone setting says.
+- The Mac's sound output must be BlackHole 16ch while calls run (System Settings > Sound > Output). In two jobs
+  the call side heard ChatGPT only once it was (L82). Everything the Mac plays then goes into the cable, so the Mac
+  is silent until it is switched back after the job. The Mac's own microphone stays as it is.
+- ChatGPT's microphone and voice are also routed to the cables by `capture/caller_patch.js` inside the ChatGPT
+  tab, whatever Chrome's own microphone setting says.
 
 ## Setup (once per Mac, about 10 minutes)
 
@@ -60,8 +61,8 @@ Ask these first. A no to any of them ends the AI caller plan, so offer the demo 
    the voice button once, and allow the microphone when Chrome asks. Then they end voice mode.
 4. **Webex.** Needs the Webex desktop app signed in with Webex Calling that can dial outside numbers. In the
    Webex app, Settings > Audio: **Speaker = BlackHole 2ch**, **Microphone = BlackHole 16ch**. While these are set,
-   Webex calls are silent on the Mac; tell them to switch back after the job. The Mac's own sound settings stay
-   as they are.
+   Webex calls are silent on the Mac; tell them to switch back after the job. Then in System Settings > Sound >
+   Output, choose **BlackHole 16ch** (L82); the Mac plays no sound until they switch it back.
 5. **Mac permissions for the terminal app running Claude (Terminal or NodeTerm).** In System Settings > Privacy &
    Security, turn it on under **Microphone** (so the cables can be recorded) and **Accessibility** (so Claude can
    press Webex's End call button). macOS may also ask on first use; they click Allow. `node capture/caller.js
@@ -91,8 +92,12 @@ Dial only the person's own phone or the demo tenant's entry point they named in 
 will call any number, and ChatGPT will talk to whoever answers.
 
 1. `node capture/caller.js check`: both cables present, Webex running.
-2. Open chatgpt.com in a Claude in Chrome tab. Paste the whole of `capture/caller_patch.js` into javascript_tool.
-   It returns `patched` (or `already`). Run it again after any reload.
+2. Open chatgpt.com in a new tab in the builder's own Claude in Chrome tab group (`tabs_create_mcp`). Claude in
+   Chrome sees only its own tab group, not the person's other tabs, and the new tab may be signed out. If it shows
+   a sign-in, print "LOGIN NEEDED:" and have the person sign in in that tab first; do not screenshot it (L74).
+   Paste the whole of `capture/caller_patch.js` into javascript_tool. It returns `patched` (or `already`). Never
+   reload a patched tab: a reload removes the patch and the call goes silent on the cable (L74). If it did reload,
+   paste the patch again and rerun step 5 before dialing.
 3. Send the caller persona as a typed message, ending with: Reply to this message with just "Ready" for now.
    Persona for a Contact Center AI Agent: who the caller is, the fictional facts they hold (name, account, ZIP),
    what they want, that they wait for the agent to speak first, one or two sentences per reply, no keypad, and
@@ -102,7 +107,10 @@ will call any number, and ChatGPT will talk to whoever answers.
 4. Start voice mode: click the last `button[aria-label="Start Voice"]`; wait for `button[aria-label="End Voice"]`
    and a `mic BlackHole 2ch` line in `window.__aiCallerLog`. `mic FAILED` means Chrome blocked the microphone.
 5. `node capture/caller.js loopback`: speaks a test line into BlackHole 2ch and must print `PASS` (ChatGPT's reply
-   reached BlackHole 16ch). Do not dial on a FAIL.
+   reached BlackHole 16ch). Do not dial on a FAIL. Run it right before each dial, not once per session (L74). If
+   it fails while the Mac's sound output is BlackHole 16ch and the patch is active, do not keep retrying: print
+   "OWNER DECISION NEEDED:" and offer one short test call to the person's own phone (Setup step 6) to check the
+   caller side (L82).
 6. `node capture/caller.js record <name>`, then `node capture/caller.js dial <number>`, then
    `node capture/caller.js watch [max] [idle] [answer]`. Watch hangs up through Webex and stops the recording when
    the call side stays silent past `answer` seconds (ringing, no answer), after `idle` seconds of silence on both
@@ -115,10 +123,10 @@ will call any number, and ChatGPT will talk to whoever answers.
 
 ## After the job
 
-Tell the person, and do not skip it: Webex calls stay silent on their Mac until they put the app back.
+Tell the person, and do not skip it: their Mac and Webex calls stay silent until they put both back.
 
-1. In the Webex app, Settings > Audio: set Speaker and Microphone back to their usual devices (they were
-   BlackHole 2ch and 16ch).
+1. In System Settings > Sound > Output, choose their usual speakers (it was BlackHole 16ch). In the Webex app,
+   Settings > Audio: set Speaker and Microphone back to their usual devices (they were BlackHole 2ch and 16ch).
 2. ChatGPT: voice mode ended, so the microphone is not open.
 3. `node capture/caller.js stoprec` from the job folder answers "not recording" when nothing is left running.
 4. Optional: `/chrome` in Claude, and turn "Enabled by default" off if they only enabled it for this job.
@@ -172,8 +180,9 @@ Tell the person, and do not skip it: Webex calls stay silent on their Mac until 
   it, so a closed terminal or a crash leaves it behind. Run `node capture/caller.js stoprec`; it stops the
   recorders and removes the file. If a recorder is still running (`pgrep -fl avfoundation` lists them), ask the
   person, then stop only those naming BlackHole: `pkill -f 'avfoundation.*BlackHole'`.
-- **ChatGPT's voice is heard on the Mac's speakers and `loopback` says FAIL.** The patch is not active in that tab.
-  Paste `caller_patch.js` again (a reload removes it). Do not change the Mac's system output to fix it.
+- **ChatGPT's voice is heard on the Mac's speakers and `loopback` says FAIL.** The Mac's sound output is not
+  BlackHole 16ch (Setup step 4), or the patch is not active in that tab. Check the output, then paste
+  `caller_patch.js` again (a reload removes it).
 - **A page label is not found** (voice button, message box, transcript bubbles, Webex End call): see the Status
   paragraph at the top. List the buttons, tell the person, and do not guess.
 - **`mic FAILED`** in `window.__aiCallerLog`: Chrome blocked the microphone for chatgpt.com. They allow it in

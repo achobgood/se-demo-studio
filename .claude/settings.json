@@ -1,6 +1,7 @@
 {
   "model": "claude-opus-5-5",
   "effortLevel": "high",
+  "autoCompactEnabled": true,
   "env": {
     "CLAUDE_CODE_SUBAGENT_MODEL": "claude-opus-5-5"
   },
@@ -9,7 +10,15 @@
       "Read(./.env)",
       "Read(./jobs/*/.chrome-profile/**)"
     ],
+    "ask": [
+      "Bash(*SIGNIN_GUARD*)"
+    ],
     "allow": [
+      "Bash(TAG=* node capture/*)",
+      "Bash(JPGQ=* node capture/*)",
+      "Bash(PURPOSE=* python3 lib/*)",
+      "Bash(JSONMODE=* python3 lib/*)",
+      "Bash(sh \"$HOME/Library/Application Support/node-terminal/canvas-control/nodeterm.sh\" write *)",
       "Bash(scripts/setup.sh)",
       "Bash(scripts/check-openrouter.sh)",
       "Bash(scripts/new-job.sh *)",
@@ -20,7 +29,7 @@
       "Bash(node build/render.js *)",
       "Bash(build/render_par.sh *)",
       "Bash(curl -s http://127.0.0.1:*)",
-      "Bash(curl -s -m * http://127.0.0.1:*)",
+      "Bash(curl -s -m * http://127.0.0.1*)",
       "Bash(cd jobs/*)",
       "Bash(ls *)",
       "Bash(du *)",

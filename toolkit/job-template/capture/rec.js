@@ -14,14 +14,14 @@ const C = require('./cdp'); const fs = require('fs'); const path = require('path
   const cdp = await C.setup(page);
   // never start a take on a sign-in page (checked before an earlier take of the same name is replaced)
   const notSignedIn = await C.signInReason(page);
-  if (notSignedIn) { console.log(`LOGIN NEEDED: take ${name} not started, the page looks like a sign-in page (${notSignedIn}). Sign in off camera, then rerun.`); process.exit(2); }
+  if (notSignedIn) { C.status(`LOGIN NEEDED: take ${name} not started, the page looks like a sign-in page (${notSignedIn}). Sign in off camera, then rerun.`); process.exit(2); }
   fs.rmSync(dir, { recursive: true, force: true }); fs.mkdirSync(dir, { recursive: true });
   // if a sign-in page appears mid-take: stop, delete this take's raw frames, log the deletion, and exit
   let aborted = false;
   const guard = async () => { if (aborted) return; const why = await C.signInReason(page); if (!why || aborted) return; aborted = true;
     await cdp.send('Page.stopScreencast').catch(() => {}); fs.rmSync(dir, { recursive: true, force: true });
     try { fs.appendFileSync(path.join(C.JOB, 'logs', 'state_changes.md'), `| ${new Date().toISOString()} | Deleted raw take ${name} | capture/rec/${name} | A sign-in page appeared (${why}); sign-in screens are never kept |\n`); } catch (e) {}
-    console.log(`LOGIN NEEDED: take ${name} stopped and its raw frames deleted, a sign-in page appeared (${why}). Sign in off camera, then rerun.`); process.exit(3); };
+    C.status(`LOGIN NEEDED: take ${name} stopped and its raw frames deleted, a sign-in page appeared (${why}). Sign in off camera, then rerun.`); process.exit(3); };
   const dtext = async (n = 20000) => page.evaluate(C.DTEXT, n);
   let cur = { x: 1700, y: 900 }; const log = { frames: [], cursor: [], marks: [] }; let t0 = null; let n = 0;
   cdp.on('Page.screencastFrame', async f => {

@@ -50,10 +50,17 @@ async function signInReason(page) {
   }).catch(() => '');
   return why ? why + ' on ' + u.split('?')[0] : '';
 }
+// Print a marker line and append it with a timestamp to STATUS.md, which the supervisor watches (L75).
+function status(line) {
+  console.log(line);
+  const d = new Date(), p = n => String(n).padStart(2, '0');
+  const ts = `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+  try { fs.appendFileSync(path.join(JOB, 'STATUS.md'), `${ts} ${line}\n`); } catch (e) {}
+}
 // Screenshot with a raw-CDP fallback (Playwright screenshots can hang on "waiting for fonts").
 async function shot(page, name, dir) {
   const why = await signInReason(page);
-  if (why) { console.log(`LOGIN NEEDED: screenshot "${name}" not taken, the page looks like a sign-in page (${why})`); return null; }
+  if (why) { status(`LOGIN NEEDED: screenshot "${name}" not taken, the page looks like a sign-in page (${why})`); return null; }
   const f = path.join(dir || path.join(JOB, 'capture', 'explore'), name + '.png');
   fs.mkdirSync(path.dirname(f), { recursive: true });
   try { await page.screenshot({ path: f, timeout: 15000 }); }
@@ -71,4 +78,4 @@ async function tagged(ctx, tag) {
   await page.evaluate(t => { window.name = t; }, tag); await sleep(6000);
   return page;
 }
-module.exports = { connect, setup, shot, tagged, signInReason, DTEXT, ffmpeg, HIDE_CSS, CFG, JOB, PORT, sleep };
+module.exports = { connect, setup, shot, status, tagged, signInReason, DTEXT, ffmpeg, HIDE_CSS, CFG, JOB, PORT, sleep };

@@ -33,7 +33,8 @@ if (require.main === module) (async () => {
   if (!s) { console.log(`usage: node capture/park.js <name>. Names: ${Object.keys(PARK).join(', ') || 'none yet, fill PARK in capture/park.js'}`); process.exit(1); }
   const tag = s.tab || 'rec'; const { ctx } = await C.connect(); const page = await C.tagged(ctx, tag); await C.setup(page);
   const dtext = async (n = 20000) => page.evaluate(C.DTEXT, n);
-  const done = async (code, line) => { try { await page.evaluate(t => { window.name = t; }, tag); } catch (e) {} console.log(line); process.exit(code); };
+  const done = async (code, line) => { try { await page.evaluate(t => { window.name = t; }, tag); } catch (e) {}
+    if (code === 2) C.status(line); else console.log(line); process.exit(code); };
   try {
     if (s.go) { await page.goto(s.go, { waitUntil: 'domcontentloaded' }); await C.sleep(s.settle ?? 6000); }
     const why = await C.signInReason(page);

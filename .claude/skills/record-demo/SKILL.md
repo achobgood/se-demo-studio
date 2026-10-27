@@ -19,8 +19,9 @@ Run this before any exploration or planning, including when the conversation sta
 idea. A missing key or the wrong effort found after an hour of planning costs a restart.
 
 0. **Studio root.** The session must start in the studio root (the folder holding `.demo-studio`); the studio's
-   agents (`demo-researcher`, `demo-explorer`, `claim-checker`) only register there. If the Agent tool says one is
-   not found, ask the person to restart `claude` in the studio root. If they would rather not, run a
+   agents (`demo-researcher`, `demo-explorer`, `claim-checker`) only register there. Check first with
+   `ls .demo-studio`: if it is not found, or the Agent tool says an agent is not found, ask the person to type
+   `/exit`, `cd` to the studio root, and run `claude` again (L80). If they would rather not, run a
    general-purpose agent instead, with the agent file's body from `.claude/agents/<name>.md` pasted in as its
    instructions, and say you did.
 1. **Model and effort.** This studio must run on Opus 5.5 at high effort. If the effort shown above is not
@@ -58,7 +59,8 @@ Chrome window opens on a public Cisco page, with nothing to sign in to; leave it
 If a step fails, stop and tell them which part of the setup it points to (key, Chrome, voice, render), using
 references/SETUP.md. Tell them after: the video is `jobs/<slug>/out/<slug>_v1.mp4` and the player with captions
 is `jobs/<slug>/player.html` (offer `open jobs/<slug>/player.html`); what it cost; and that a real demo starts with
-the interview, needs a demo environment they sign in to, and takes a few hours (a recent one took about 4). Offer to start it.
+the interview, needs a demo environment they sign in to, and takes 3 to 5 hours (8 in a job whose scope grew after
+its final). Offer to start it.
 
 ## Step 1: interview
 

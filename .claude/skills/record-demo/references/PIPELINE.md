@@ -153,6 +153,8 @@ Each window runs from the first segment's start to the second segment's end (`nu
 | Full render with audio | `build/render_par.sh out/<slug>_v1.mp4 8 out/mix.wav` (prints any page errors) |
 | Captions and player | `python3 lib/deliver.py <slug>_v1.mp4` -> `out/*.srt`, `out/*.vtt`, `player.html` |
 | Spend so far | `python3 lib/spend.py` |
+| Status marker for the supervisor | `python3 lib/status.py "MARKER: text"` (prints it and appends it to `STATUS.md`, L75) |
+| Delete a take, a clip, or render chunks | `python3 lib/clean.py rec <take>`, `clips <clip>`, or `chunks` (only inside this job, L60) |
 
 ## Review helpers
 
