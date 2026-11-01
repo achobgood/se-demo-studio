@@ -5,3 +5,4 @@ toolkit/node_modules/
 .claude/settings.local.json
 __pycache__/
 STUDIO_IMPROVEMENT*
+toolkit/job-template/capture/cablerec

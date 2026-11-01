@@ -19,6 +19,7 @@ Node.js, Python, or Chrome installers may need IT.
 | pdftotext (optional) | `brew install poppler`. Needed only when an official source is a PDF (a data sheet, for example); without it that source fails to fetch and the researcher uses another page. |
 | AI caller (optional) | Only for demos where ChatGPT places a live call. Needs a Claude Pro, Max, Team, or Enterprise account (for Claude in Chrome), a ChatGPT account, and Webex Calling in the Webex desktop app. setup.sh only reports whether the BlackHole cables and the Webex app are present and never fails on it; when the interview chooses the AI caller, walk the person through references/AI_CALLER.md, "Setup" (about 10 minutes, once per Mac). Installing the cables needs the Mac password, which a company-managed Mac may not allow. |
 | NodeTerm | Recommended; download from https://nodeterm.dev. Without it the builder runs in a second Terminal window (references/SUPERVISING.md). |
+| Free disk | Reported only; it never fails setup. A 5-minute job can use about 10 GB before cleanup, so under 20 GB free the line says LOW. Ask the person to free space before recording (see Disk below). |
 
 ## OpenRouter
 

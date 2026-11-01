@@ -3,6 +3,16 @@
 What changed in each studio version, newest first. Your version is in the `VERSION` file and on the first line
 that `scripts/setup.sh` prints.
 
+## 0.3.4 (2026-11-01)
+
+- AI caller: `record` now uses a small CoreAudio recorder (`capture/cablerec`, built by `check` or `record` with
+  swiftc from the Xcode command line tools). ffmpeg left 0.107 s of silence about once a second in calls; a test
+  tone now has none. `watch` finds the start of the sound in the WAV, so it no longer hears the file header as
+  the call side and hangs up early.
+- `scripts/setup.sh` shows free disk space and says LOW under 20 GB. It never changes SETUP OK.
+- The publishing copy refuses jobs: with `git config --local studio.copy publishing`, `scripts/setup.sh` reports
+  it as a failure and `scripts/new-job.sh` stops before creating anything.
+
 ## 0.3.3 (2026-10-27)
 
 - New users: the README starts with "Before you start" (Terminal, installing and signing in to Claude Code,

@@ -5,6 +5,8 @@ Teammates only run `git pull` on `main`, so `main` must only ever hold tested, r
 ## Two copies of the studio
 
 - **Publishing copy** at `~/Documents/se-demo-studio`: you edit here on the `dev` branch. Never run demo jobs here.
+  It has `git config --local studio.copy publishing`, so `scripts/setup.sh` reports it as a failure and
+  `scripts/new-job.sh` refuses to create a job in it.
 - **Jobs copy**: a second clone that stays on `main` and only pulls. Run your real demo jobs here, like a teammate.
 
 ## Release steps

@@ -50,7 +50,9 @@ Ask these first. A no to any of them ends the AI caller plan, so offer the demo 
    and type their Mac password when asked. Without Homebrew, they download the 2ch and 16ch installers from
    https://existential.audio/blackhole/ and run both. Either way the install needs the Mac password; if it is
    refused or blocked, stop and tell them to ask IT. Then run `node capture/caller.js check`. If a cable shows
-   MISSING, ask them to run `sudo killall coreaudiod` in that Terminal window, and check again.
+   MISSING, ask them to run `sudo killall coreaudiod` in that Terminal window, and check again. `check` also
+   builds the call recorder (capture/cablerec) with swiftc, from the Xcode command line tools. If that line says
+   MISSING, ask them to run `xcode-select --install`, click Install, and check again when it finishes.
 2. **Claude in Chrome.** Needs Claude Code signed in with a Claude Pro, Max, Team, or Enterprise account. Ask the
    person to type `/chrome` in this Claude session and choose **Enabled by default**, so every new session,
    including the builder, can use their Chrome. If Claude Code offers to install the extension, they choose
@@ -162,8 +164,10 @@ Tell the person, and do not skip it: their Mac and Webex calls stay silent until
   older patch; the combined file has the same code but has not run as one paste yet.
 - **One ffmpeg recording both cables.** Call `contactcenter1` came out 126.6 s on one track and 162.7 s on the other
   for a run of about 182 s. The device input also leaves timestamp gaps (8.06 s written for a 10 s capture).
-  `record` now runs one ffmpeg per cable with `aresample=async` gap filling: a 60 s run gave 59.68 s and
-  59.72 s. Whether those gaps also cut real audio (small holes in speech) is not verified; listen to one take.
+  `record` then ran one ffmpeg per cable with `aresample=async` gap filling: a 60 s run gave 59.68 s and
+  59.72 s. Those gaps did cut real audio: calls on 2026-10-16 had 0.107 s of silence about once a second, and a
+  steady 1 kHz tone recorded that way on 2026-11-01 had 8 holes of 0.107 s in 8 s. `record` now uses
+  capture/cablerec (CoreAudio) for each cable: 0 holes on the same tone, and a 30 s run kept 30.000 s.
 
 - **The job's own Chrome (DevTools-driven profile).** A fresh profile has no microphone permission. A DevTools
   `Browser.grantPermissions` grant showed "granted" only while the command was connected; once it exited the page
@@ -180,6 +184,7 @@ Tell the person, and do not skip it: their Mac and Webex calls stay silent until
   it, so a closed terminal or a crash leaves it behind. Run `node capture/caller.js stoprec`; it stops the
   recorders and removes the file. If a recorder is still running (`pgrep -fl avfoundation` lists them), ask the
   person, then stop only those naming BlackHole: `pkill -f 'avfoundation.*BlackHole'`.
+- **`hangup` times out after a call.** Ask the person to press End call in the Webex app by hand.
 - **ChatGPT's voice is heard on the Mac's speakers and `loopback` says FAIL.** The Mac's sound output is not
   BlackHole 16ch (Setup step 4), or the patch is not active in that tab. Check the output, then paste
   `caller_patch.js` again (a reload removes it).

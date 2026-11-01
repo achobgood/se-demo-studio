@@ -3,6 +3,10 @@
 # --test-run also copies the ready-made test run files from .claude/skills/record-demo/test-run/ into the job.
 set -euo pipefail
 cd "$(dirname "$0")/.."
+# The publishing copy is for editing the studio, never for jobs (RELEASING.md). Only this clone's own setting is read.
+if [ "$(git config --local --get studio.copy 2>/dev/null || true)" = "publishing" ]; then
+  echo "Studio copy: this is the publishing copy; run demo jobs in the jobs copy (RELEASING.md)"; exit 1
+fi
 SLUG=${1:?usage: scripts/new-job.sh <job-slug> [chrome_port | --test-run]}
 TEST=0; if [ "${2:-}" = "--test-run" ]; then TEST=1; set -- "$1"; fi
 [[ "$SLUG" =~ ^[a-z0-9][a-z0-9-]*$ ]] || { echo "Use lowercase letters, digits and dashes, e.g. cloud-control-webex"; exit 1; }

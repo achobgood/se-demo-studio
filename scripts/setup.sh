@@ -8,6 +8,8 @@ say() { printf '%-28s %s\n' "$1" "$2"; }
 say "Studio version" "$(cat VERSION 2>/dev/null || echo unknown)"
 # Claude must run in the studio folder, or the studio's agents do not load (L80).
 [ "$start" = "$(pwd -P)" ] && say "Studio folder" "ok" || { say "Studio folder" "WRONG FOLDER: run from $(pwd -P). Type /exit, then cd to that folder and run claude there"; ok=0; }
+# The publishing copy is for editing the studio, never for jobs (RELEASING.md). Only this clone's own setting is read.
+[ "$(git config --local --get studio.copy 2>/dev/null)" = "publishing" ] && { say "Studio copy" "this is the publishing copy; run demo jobs in the jobs copy (RELEASING.md)"; ok=0; }
 [ "$(uname)" = "Darwin" ] && say "macOS" "ok" || { say "macOS" "MISSING: this studio is built and tested for macOS only"; ok=0; }
 if command -v node >/dev/null; then v=$(node -p 'process.versions.node.split(".")[0]'); [ "$v" -ge 20 ] && say "Node.js" "ok ($(node --version))" || { say "Node.js" "TOO OLD: need 20 or newer (brew install node)"; ok=0; }; else say "Node.js" "MISSING: brew install node  (or https://nodejs.org)"; ok=0; fi
 if command -v python3 >/dev/null; then say "Python 3" "ok ($(python3 --version 2>&1))"; else say "Python 3" "MISSING: xcode-select --install  (or brew install python)"; ok=0; fi
@@ -30,6 +32,8 @@ else
 fi
 command -v pdftotext >/dev/null && say "pdftotext (optional)" "ok" || say "pdftotext (optional)" "not installed; PDF sources will not fetch (brew install poppler)"
 [ -f "$HOME/Library/Application Support/node-terminal/canvas-control/nodeterm.sh" ] && say "NodeTerm" "ok" || say "NodeTerm" "not found (recommended: https://nodeterm.dev); without it the builder runs in a second Terminal window"
+# Free space on the studio's disk: reported only, never part of SETUP OK.
+free=$(df -g . | awk 'NR==2 {print $4}'); [ "${free:-0}" -ge 20 ] && say "Free disk" "ok ($free GB free)" || say "Free disk" "LOW: $free GB free; a 5-minute job can use about 10 GB, so free space before recording"
 # Optional AI caller prerequisites: reported only, never part of SETUP OK.
 cables=$(system_profiler SPAudioDataType 2>/dev/null | grep -c -E "BlackHole (2|16)ch:"); webex=no; [ -d /Applications/Webex.app ] || [ -d "$HOME/Applications/Webex.app" ] && webex=yes
 if [ "$cables" -ge 2 ] && [ $webex = yes ]; then say "AI caller (optional)" "cables and Webex app found; Setup steps 4 to 8 in references/AI_CALLER.md still apply"

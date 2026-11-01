@@ -6,7 +6,7 @@
 //   call -> Webex speaker = "BlackHole 2ch"  -> ChatGPT microphone   (recorded as the "agent" track)
 //   ChatGPT voice -> "BlackHole 16ch" -> Webex microphone              (recorded as the "caller" track)
 // usage: node capture/caller.js <command> [args]
-//   check               both cables present and the Webex desktop app running
+//   check               both cables present, the call recorder built, and the Webex desktop app running
 //   loopback            speak a test line into BlackHole 2ch (macOS say) and report BlackHole 16ch per second:
 //                       proves ChatGPT hears and answers into the cable, with no phone call
 //   dial <number>       place the call from the Webex desktop app (webextel: link, dials with no prompt)
@@ -35,16 +35,25 @@ function hangup() {
       if (/\\b(end call|hang ?up)\\b/i.test(n)) { b.actions.byName('AXPress').perform(); hit = n.trim(); break; }
     } catch (e) {} } if (hit) break; } hit || 'NO END BUTTON FOUND (no call window: the call may already have ended)'`);
 }
+// capture/cablerec (CoreAudio, Swift) records one cable to a WAV until SIGINT. check and record build it from
+// cablerec.swift when it is missing; that needs swiftc, from the Xcode command line tools.
+const CABLEREC = path.join(__dirname, 'cablerec');
+function buildRec() {
+  if (fs.existsSync(CABLEREC)) return 'ok';
+  try { execFileSync('xcrun', ['--find', 'swiftc'], { stdio: 'ignore' }); } catch (e) { return 'MISSING: run xcode-select --install'; }
+  try { execFileSync('swiftc', ['-O', CABLEREC + '.swift', '-o', CABLEREC], { stdio: ['ignore', 'ignore', 'pipe'] }); return 'built from cablerec.swift'; }
+  catch (e) { return 'BUILD FAILED: ' + String(e.stderr || e.message).trim().split('\n')[0]; }
+}
 function recStart(name) {
   if (fs.existsSync(PIDF)) return 'already recording: ' + fs.readFileSync(PIDF, 'utf8');
+  const built = buildRec(); if (!fs.existsSync(CABLEREC)) throw new Error('call recorder ' + built);
   fs.mkdirSync(CALLS, { recursive: true });
   const a = path.join(CALLS, name + '_agent.wav'), c = path.join(CALLS, name + '_caller.wav');
-  // One ffmpeg per cable: a single process with two avfoundation inputs dropped audio (2026-10-16 test
+  // One recorder per cable: a single ffmpeg with two avfoundation inputs dropped audio (2026-10-16 test
   // call: 126.6 s and 162.7 s of a ~182 s run), which breaks sync with the screen recording.
-  // The device input also leaves timestamp gaps (8.06 s written for 10.0 s): aresample=async fills them with
-  // silence so each file matches wall-clock time (20.000 s for a 20 s capture, verified 2026-10-16).
-  const rec = (dev, file) => { const p = spawn(FFMPEG, ['-hide_banner', '-loglevel', 'error', '-y', '-thread_queue_size', '4096', '-f', 'avfoundation',
-    '-i', ':' + dev, '-af', 'aresample=async=1:first_pts=0,pan=mono|c0=c0', '-ar', '48000', file], { detached: true, stdio: 'ignore' }); p.unref(); return p.pid; };
+  // ffmpeg's avfoundation input also left 0.107 s of silence about once a second in real calls (2026-10-16; a
+  // steady tone had 9 holes in 8 s). cablerec records each cable instead: 0 holes on the same tone.
+  const rec = (dev, file) => { const p = spawn(CABLEREC, [dev, file], { detached: true, stdio: 'ignore' }); p.unref(); return p.pid; };
   const pids = [rec(IN, a), rec(OUT, c)];
   fs.writeFileSync(PIDF, JSON.stringify({ pids, name, started: new Date().toISOString(), agent: a, caller: c }));
   return `recording ${name} (pids ${pids.join(', ')}) started ${new Date().toISOString()}`;
@@ -63,7 +72,11 @@ async function recStop() {
 }
 // Peak of the last <sec> seconds of a WAV the recorder is still writing (16-bit mono 48 kHz).
 function tailPeak(file, sec = 2) {
-  try { const st = fs.statSync(file), len = Math.min(st.size - 44, 96000 * sec) & ~1; if (len <= 0) return 0;
+  // cablerec (AVAudioFile) writes a ~4 KB header with FLLR padding, not 44 bytes: find the data chunk so header
+  // bytes are never read as sound (2026-10-26: a call hung up at 18 s on a false "call side has audio").
+  try { const st = fs.statSync(file), h = Buffer.alloc(Math.min(st.size, 8192)), fd0 = fs.openSync(file, 'r'); fs.readSync(fd0, h, 0, h.length, 0); fs.closeSync(fd0);
+    const di = h.indexOf('data'); if (di < 0) return 0; const hdr = di + 8;
+    const len = Math.min(st.size - hdr, 96000 * sec) & ~1; if (len <= 0) return 0;
     const b = Buffer.alloc(len), fd = fs.openSync(file, 'r'); fs.readSync(fd, b, 0, len, st.size - len); fs.closeSync(fd);
     let m = 0; for (let i = 0; i + 1 < len; i += 2) m = Math.max(m, Math.abs(b.readInt16LE(i))); return m / 32768; } catch (e) { return 0; }
 }
@@ -79,6 +92,7 @@ function tailPeak(file, sec = 2) {
     else if (cmd === 'check') {
       const devs = execFileSync('system_profiler', ['SPAudioDataType'], { encoding: 'utf8' });
       for (const d of [IN, OUT]) console.log(`${d}: ${devs.includes(d + ':') ? 'present' : 'MISSING (references/AI_CALLER.md, Setup)'}`);
+      console.log('call recorder (capture/cablerec): ' + buildRec());
       console.log('Webex app: ' + (osa(`Application('System Events').processes.byName('Webex').exists()`) === 'true' ? 'running' : 'NOT RUNNING'));
     }
     else if (cmd === 'loopback') {
