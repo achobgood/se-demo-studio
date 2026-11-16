@@ -3,6 +3,14 @@
 What changed in each studio version, newest first. Your version is in the `VERSION` file and on the first line
 that `scripts/setup.sh` prints.
 
+## Unreleased
+
+- Lessons L83 to L88 (feasibility first when a customer asks whether one product can act on another's decision):
+  map the decide, send, receive, approve, act, verify, report chain before touring screens; open a workflow's
+  steps before trusting its name; search the marketplace for verified items; treat the product's AI assistant as a
+  lead; start documentation research in parallel; click the product's links instead of typing URLs. The builder
+  template's exploration step now carries these rules.
+
 ## 0.3.4 (2026-11-01)
 
 - AI caller: `record` now uses a small CoreAudio recorder (`capture/cablerec`, built by `check` or `record` with

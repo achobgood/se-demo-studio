@@ -341,3 +341,34 @@ L82. **The Mac's sound output goes on the cable too.** AI_CALLER.md said to leav
     let the tab patch route ChatGPT's voice. In two jobs (a Contact Center outage agent and a bike-shop repair
     agent) the call side heard ChatGPT only once macOS sound output was set to BlackHole 16ch. Setup now sets it,
     and the after-job list sets it back.
+
+## Feasibility first: a customer asks "can product A act on product B's decision?" (November 2026)
+
+L83. **Break the customer's ask into links and mark each one before exploring screens.** The ask was "after the
+    analytics product decides, can the operations platform remediate?" The useful map was the chain: decide, send,
+    receive, approve, act, verify, report back. For each link, write verified (seen in the tenant), docs (official
+    documentation only), or absent. In that job the receiving feature existed but had nothing configured (an empty
+    webhooks list), and the deciding product's response module was not installed at all. Both facts surfaced after
+    an hour of screen tours; a ten-minute pass over the chain would have found them first and set the demo's honest
+    boundary.
+L84. **Open the steps before trusting a workflow's name.** Demo catalogs contain validated, well-described
+    "remediation" workflows whose steps are wait timers with no target: a storyboard, not enforcement. Another
+    workflow's "quarantine" step only stored a variable. Before building a story on any automation, open two or
+    three of its action steps and read the step type and target, and check its run history. Say "illustrative" on
+    screen for anything that is a storyboard.
+L85. **Search the product's marketplace for verified items before calling a capability undemonstrable.** The only
+    real, documented example of the pattern the customer asked about was an uninstalled, vendor-verified item in the
+    product's exchange. Its details page carried the request body, the outcomes, the release path, and the limits,
+    which made it showable without installing anything in a read-only tenant.
+L86. **Treat the product's AI assistant as a lead, not a source.** It listed matching catalog items and quoted the
+    right documentation, but could not return the definitions it was asked about, and said so. Use its answer to
+    pick what to open, then confirm in the editor or settings page. Its quoted documentation still needs the real
+    page.
+L87. **Start the documentation research in parallel at the beginning.** Two background research agents with narrow
+    briefs returned in about three minutes with the deciding facts (the sending product's built-in action cannot set
+    an auth header; a verified exchange item already implements the pattern). Launch them as soon as the chain in
+    L83 shows which links need documentation, while the browser explores the rest.
+L88. **Click the product's own links; do not type or guess URLs while exploring.** Guessed paths returned "page not
+    found" twice where the menu path worked, and the owner stopped a constructed search URL. Clicking is also the
+    path a presenter uses on camera. The browser extension may also refuse a linked domain until the owner allows
+    that site in the extension; ask for it at the start, since spoken permission does not change the setting.

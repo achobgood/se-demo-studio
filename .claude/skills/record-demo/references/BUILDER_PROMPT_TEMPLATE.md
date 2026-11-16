@@ -87,6 +87,14 @@ note. It sets positioning; it does not authorize a technical claim the sources d
    instructions before writing any request, and list the questions it always asks whatever the request says (for
    example, confirm the target, approve a plan). Put the details that matter in each request, and plan the
    remaining answers in the storyboard (L68).
+   When the story is "product A acts on product B's decision", first write the chain (decide, send, receive,
+   approve, act, verify, report) and mark each link verified, docs, or absent before touring screens; send the
+   docs links to background research subagents at once (L83, L87). Before building on any workflow or
+   automation, open a few of its action steps and read their type and target, and check its run history; name
+   tells you nothing (L84). Search the product's marketplace for verified items before calling a capability
+   undemonstrable (L85). Use the product's AI assistant to pick what to open, then confirm in the UI (L86).
+   Navigate by clicking the product's links, not typed URLs, and ask the owner up front to allow any linked
+   domain in the browser extension (L88).
 2. Write `research/DEMO_MAP.md`: every surface with its exact name, what demo data lives there, what each
    available action does and whether it changes state, how long slow steps take, which AI agents or features
    actually answered (L9), and which incidents the data supports end to end. Also: which identity each surface
