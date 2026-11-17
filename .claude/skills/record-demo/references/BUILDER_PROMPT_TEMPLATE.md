@@ -59,7 +59,8 @@ note. It sets positioning; it does not authorize a technical claim the sources d
   screen share looks. Motion graphics are limited to a short title, at most one agenda card, a short value recap,
   and the close. When the owner decides some steps cannot be shown in the environment, bridge each with an
   abstract motion-graphics scene and on-screen text labeled illustrative (no mock product screens, no logos, no
-  timing claims), then cut to the real screen that backs it up (L92).
+  timing claims), then cut to the real screen that backs it up (L92). Build them with `STORY.motion` in
+  `build/story.js`; `build/motion.js` draws them (see PIPELINE.md, Picture).
 - **Pace.** The cursor moves with purpose, questions are typed on screen, answers arrive, and the SE lets a key
   screen sit long enough to read. Speed up long waits and label them ("Sped up · the answer took about 75
   seconds"), but never fake a result or reorder cause and effect. A label names what was compressed, and any

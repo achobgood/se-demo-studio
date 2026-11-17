@@ -77,7 +77,7 @@ function camAt(t) {
   return [lerp(a[1], b[1], k), lerp(a[2], b[2], k), lerp(a[3], b[3], k)];
 }
 scene(t => {
-  const o = env(t, FR.in, FR.out, .7, .7); FT.style.opacity = o; if (o <= 0) return;
+  const o = env(t, FR.in, FR.out, .7, .7) * (1 - (window.motionCover ? window.motionCover(t) : 0)); FT.style.opacity = o; if (o <= 0) return;
   const shot = FR.shots.find(s => t >= s[0] && t < s[1]) || FR.shots[FR.shots.length - 1];
   const url = (FR.urls.filter(u => t >= u[0]).pop() || FR.urls[0])[1]; if (F._url !== url) { F.setUrl(url); F._url = url; }
   F.only(shot[2]); F.play(shot[2], t, true);

@@ -46,3 +46,20 @@ const STORY = {
     fine: 'Virtual SE demo with an AI-generated voice, recorded in a demo environment with fictional data. Not official marketing.',
   },
 };
+
+// ---------- Illustrative motion segments (build/motion.js), optional ----------
+// Use only for steps the owner agreed cannot be shown in the environment (L92). Abstract lanes, cards, tokens and
+// chips with plain-text product names; never a mock product screen, a logo, or a timing claim. Cut back to the
+// real screen that backs each segment. Example (times come from the narration, like everything else):
+// const card = (x, y, w, small, text, at, o = {}) => Object.assign({ cls: 'mg-card', html: `<small>${small}</small>${text}`, x, y, w, at }, o);
+// STORY.motionLabel = 'Illustrative · a pattern you configure';
+// STORY.motion = [{ from: S0('handoff') - 0.2, to: S1('handoff') + 0.6, kicker: 'Illustrative · not in this lab',
+//   title: 'The handoff', els: [
+//     { cls: 'mg-lane', x: 120, y: 230, w: 800, h: 730 }, { cls: 'mg-lane-h', html: 'Product A', x: 150, y: 254 },
+//     card(160, 300, 668, 'Request · example', 'Contain client', W('request', 'handoff')),
+//     { cls: 'mg-token', html: 'request', x: 560, y: 470, at: W('sends', 'handoff'),
+//       moves: [[W('sends', 'handoff') + 1.1, 1040, 430]] },
+//   ] }];
+// STORY.tags = [[W('fair', 'q1'), E('q1'), 'Customer question 1 of 3']];
+STORY.motion = STORY.motion || [];
+STORY.tags = STORY.tags || [];

@@ -46,6 +46,10 @@ for a yes.
    whole video, and anything to keep out (unreleased features, a competitor, a product that is not connected in
    the demo). Ask whether anything may be added after the final. Settle the whole list now: each addition after
    the final costs a new storyboard, a new sign-in, and new renders (L67).
+   Then ask which steps of the story the environment cannot show live (a product that is not in the demo, a
+   connection that is not configured, an action the demo may not take). Recommend keeping the full length and
+   bridging each such step with an abstract motion-graphics scene labeled illustrative, followed by the real
+   screen that backs it up; list the steps by name in INTERVIEW.md (L92).
 7. **How far the demo may act.** "Look and ask" (navigate, search, ask the AI questions: safest), or "full
    control" (also run investigations, assign or resolve items, run demo workflows). Tenant administration is
    never allowed by default. If the story's strongest moment needs a configuration change, ask for that exact

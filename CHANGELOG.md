@@ -19,7 +19,12 @@ that `scripts/setup.sh` prints.
 - Lessons L99 and L100: under a sign-in deadline, record look-only live screens as provisional takes before the
   storyboard is approved; do not rely on a saved assistant thread surviving to the take. Rules added at the
   builder template's storyboard checkpoint and rehearsal step.
-- 0.3.4 was never released on its own; its changes ship in this release.
+- Illustrative motion segments are now part of every job: `build/motion.js` draws abstract lanes, cards, tokens,
+  and chips from `STORY.motion` in `story.js`, with an illustrative label on each segment, and fades the screen
+  share out underneath. The interview asks which steps the environment cannot show live, and PIPELINE.md says how
+  to build the segments without mock screens, logos, or timing claims. Proven on a 5-minute job before release.
+- 0.3.4 was never released on its own; its changes ship in this release. Released without the usual test run, at
+  the owner's choice; the repo checks passed and the motion code was checked with rendered stills.
 
 ## 0.3.4 (2026-11-01)
 

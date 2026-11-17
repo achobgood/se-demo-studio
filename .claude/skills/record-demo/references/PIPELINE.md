@@ -120,10 +120,16 @@ raw PCM; take.py converts it.
 | Blur redaction regions | `python3 lib/redact.py [clip ...]` (regions in `build/edit.py` REDACT; rerun after every `build_clips.py`, which rebuilds clips from the raw frames) |
 | Add cursor, clicks, keys | `python3 lib/cursor_tracks.py` -> `build/footage.js`, `build/cues.js` |
 | Words and camera | edit `build/story.js` (title, agenda, frame shots/urls/chapters/camera, value, close) |
+| Illustrative motion segments | add `STORY.motion` (and `STORY.motionLabel`, `STORY.tags`) in `build/story.js`; `build/motion.js` draws them and fades the screen share out under each one (example at the end of `story.js`) |
 | Check frames | `node build/render.js stills review/stills 3 42.5 118` then look at them (`python3 lib/grid.py`) |
 
 At every cut, look at the incoming clip's first frames (`python3 lib/frameat.py <take> <seconds>`); if a spinner or
 "Loading" is still up, move that clip's first key later, to where the screencast stops sending frames (L21).
+
+Motion segments stand in for steps the environment cannot show (L92). Use abstract lanes, cards, tokens, and chips
+with plain-text product names, real documented field names, and example values marked as examples. Never draw a
+mock product screen or a logo, never add a timing claim, and never animate over real UI as if the product acted.
+Keep the illustrative label on every segment, and cut to the real screen that backs it up.
 
 Rerun `lib/cursor_tracks.py` after any change to cues or clips; the page reads `footage.js` and `cues.js`.
 
