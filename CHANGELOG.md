@@ -3,7 +3,7 @@
 What changed in each studio version, newest first. Your version is in the `VERSION` file and on the first line
 that `scripts/setup.sh` prints.
 
-## Unreleased
+## 0.3.5 (2026-11-16)
 
 - Lessons L83 to L88 (feasibility first when a customer asks whether one product can act on another's decision):
   map the decide, send, receive, approve, act, verify, report chain before touring screens; open a workflow's
@@ -12,10 +12,14 @@ that `scripts/setup.sh` prints.
   template's exploration step now carries these rules.
 - Lessons L89 to L98 from owner coaching: answer from the live product first, find earlier research and re-verify
   it, know the studio's voice and music tools before proposing a format, bridge undemoable steps with labeled
-  motion graphics instead of shortening the video, read shared references for technique, Opus for reasoning subagents and cheaper models or scripts for mechanical work
-  with mechanical work in scripts, desktop by default, look before asking for links, keep a resume prompt and
-  friction log, and no mirrored-pair copy. Rules added to SKILL.md, INTERVIEW.md, the builder template, and the
+  motion graphics instead of shortening the video, read shared references for technique, Opus for reasoning
+  subagents and cheaper models or scripts for mechanical work, desktop by default, look before asking for links,
+  keep a resume prompt and friction log, and no mirrored-pair copy. Rules added to SKILL.md, INTERVIEW.md, the builder template, and the
   Cisco claim rules.
+- Lessons L99 and L100: under a sign-in deadline, record look-only live screens as provisional takes before the
+  storyboard is approved; do not rely on a saved assistant thread surviving to the take. Rules added at the
+  builder template's storyboard checkpoint and rehearsal step.
+- 0.3.4 was never released on its own; its changes ship in this release.
 
 ## 0.3.4 (2026-11-01)
 

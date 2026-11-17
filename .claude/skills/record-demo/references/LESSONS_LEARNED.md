@@ -419,3 +419,14 @@ L98. **No mirrored pairs in copy.** A walkthrough headline read "[Product A] dec
     generic AI slop." Before showing narration or on-screen text, search it for two short parallel sentences with
     swapped subjects, "X, not Y" turns, and tidy closing lines, and rewrite each as one plain sentence that says
     what happens.
+
+## Building against a deadline (November 2026, the same cross-product job, builder phase)
+
+L99. **Under a sign-in deadline, record look-only screens before approval.** The owner had about 1 hour 50 minutes
+    left on the demo sign-in. The builder explored for 40 minutes, wrote the storyboard, and recorded every live
+    screen as a provisional take while waiting for approval; the approved storyboard matched, the takes became
+    finals, and the final video was done as the window closed. Only look-only takes qualify: no state change before
+    approval.
+L100. **Saved assistant threads can disappear before the take.** A thread used in planning earlier the same day was
+    gone when the builder explored. Rehearse the questions off camera and type them on camera; treat a saved thread
+    as a bonus, and check it still opens intact before building a shot on it.

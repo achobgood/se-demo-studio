@@ -124,12 +124,17 @@ note. It sets positioning; it does not authorize a technical claim the sources d
    for anything the Footage rules ban, so the owner sees the picture before any take (L78). Then print a message
    that starts with "STORYBOARD READY:" and **stop and wait**. Do not record final takes until `ORCHESTRATOR_NOTES.md` contains an entry that says
    "STORYBOARD APPROVED" (possibly with changes you must apply). Check the notes file every few minutes while
-   you wait, and keep doing non-recording work (voice auditions, music beds, sources) in the meantime.
+   you wait, and keep doing non-recording work (voice auditions, music beds, sources) in the meantime. When the
+   sign-in or the demo reservation has a deadline, record the look-only live screens as provisional takes while
+   you wait, and keep each one as a final if the approved storyboard matches it; never make a state change
+   before approval (L99).
 6. Rehearse the full click path once without recording (find coordinates with `capture/tab.js`), then record.
    Rehearse any owner action once with the owner too (L39). Record beats in story order: opening an item can
    auto-run an analysis, post notifications, or show up in another view, so a later take may not find the state
    an earlier one saw (L19). Just before final takes, ask every AI agent the story uses once more. If one the
    story depends on no longer answers, print "OWNER DECISION NEEDED:" instead of building a thinner story (L9).
+   Do not rely on a saved assistant thread surviving to the take: plan to type the questions on camera after
+   rehearsing them, and reuse a saved thread only if it still opens intact (L100).
 
 ## Suggested structure (adapt it if a better one emerges)
 
