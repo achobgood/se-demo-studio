@@ -26,6 +26,36 @@ function kf(t, keys, e = E.io) {
   return keys[keys.length - 1][1];
 }
 const env = (t, a, b, fi = .35, fo = .35) => Math.min(ramp(t, a, a + fi), 1 - ramp(t, b - fo, b));
+// ---------- Springs: closed form, so any frame renders on its own without simulating the frames before it ----------
+// spring(t) runs 0 to 1 over the t seconds since a change; k stiffness, d damping (critical or over: no overshoot).
+function spring(t, k = 170, d = 26) {
+  if (t <= 0) return 0;
+  const w0 = Math.sqrt(k), z = d / (2 * w0);
+  if (z < 1) { const wd = w0 * Math.sqrt(1 - z * z); return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + (z * w0 / wd) * Math.sin(wd * t)); }
+  return 1 - Math.exp(-w0 * t) * (1 + w0 * t);
+}
+// ui: chips, toggles, leading edges (tiny overshoot); base: cards, containers, moves; heavy: big type and large cards (none)
+const SPRING = { ui: [320, 30], base: [170, 26], heavy: [120, 24] };
+const springK = p => Array.isArray(p) ? p : (SPRING[p] || SPRING.base);
+const springAt = (t, p = 'base') => spring(t, ...springK(p));
+// seconds a preset takes to come within 2% of its target and stay there (for moves keyed to an arrival time)
+const SPRING_SECS = {};
+function springSecs(p = 'base') {
+  const key = String(springK(p)); if (SPRING_SECS[key] != null) return SPRING_SECS[key];
+  let s = 2; for (let t = 2; t > 0; t -= .01) { if (Math.abs(1 - springAt(t, p)) > .02) break; s = t; }
+  return SPRING_SECS[key] = s;
+}
+// keys [[time, value], ...] in time order, value a number or an array; one spring starts at each key's time and the
+// springs add up, so a value with several targets stays continuous even when a change starts before the last settles
+function track(t, keys, preset = 'base') {
+  const add = (v, a, b, k) => Array.isArray(v) ? v.map((x, j) => x + (b[j] - a[j]) * k) : v + (b - a) * k;
+  let v = keys[0][1];
+  for (let i = 1; i < keys.length; i++) v = add(v, keys[i - 1][1], keys[i][1], springAt(t - keys[i][0], preset));
+  return v;
+}
+// text inside a moving or resizing box: fades in just after the change at tIn, gone before the next change at tOut,
+// so two texts in the same box never overlap (use -Infinity / Infinity for an open end)
+const swapAlpha = (t, tIn, tOut) => Math.min(clamp((t - tIn - .08) / .12), clamp((tOut - .1 - t) / .1));
 const WORDS = CUES.words;
 function at(w, n = 1, end = false) {
   const norm = s => s.toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -69,6 +99,7 @@ class Frame {
     x = clamp(x, hw, 1920 - hw); y = clamp(y, hh, 1080 - hh);
     this.cx = x; this.cy = y; this.s = s;
     this.cam.style.transform = `scale(${this.k}) translate(${960 - x * s}px, ${540 - y * s}px) scale(${s})`;
+    const c = this._cp; if (c) this.cursorAt(c[0], c[1], this.cursor.style.opacity, c[3]);  // play() may run first in a frame: re-place the cursor with this frame's camera
   }
   map(x, y) { return [this.k * (960 + (x - this.cx) * this.s), this.k * (540 + (y - this.cy) * this.s)]; }
   only(name) { for (const [k, i] of Object.entries(this.imgs)) i.style.opacity = k === name ? 1 : 0; }
@@ -83,10 +114,10 @@ class Frame {
     if (cursor && p) {
       const down = m.clicks.some(c => t >= c - .05 && t < c + .12);
       this.cursorAt(p[0], p[1], 1, down);
-    } else this.cursor.style.opacity = 0;
+    } else { this.cursor.style.opacity = 0; this._cp = null; }
   }
   cursorAt(x, y, o, down = false) {
-    const [px, py] = this.map(x, y);
+    this._cp = [x, y, o, down]; const [px, py] = this.map(x, y);
     this.cursor.style.opacity = o;
     this.cursor.style.transform = `translate(${px - 4}px, ${py - 2}px) scale(${down ? .84 : 1})`;
   }

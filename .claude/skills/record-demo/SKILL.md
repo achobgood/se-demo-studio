@@ -65,7 +65,11 @@ its final). Offer to start it.
 ## Step 1: interview
 
 Follow references/INTERVIEW.md. Start by asking for the ask in their own words, then the rounds of questions.
-Save answers to `jobs/<slug>/INTERVIEW.md` once the job exists (keep them in your notes until then). Read the
+Once you know the product, read `knowledge/<product>/ASK_ROUTING.md` if it exists: it maps customer asks to paths
+earlier jobs checked in the demo environment, so you can propose a story it supports. When a job's copy
+(`jobs/<slug>/research/ASK_ROUTING.md`, listed by `scripts/find-notes.sh`) is newer than knowledge/, start from the
+newer one. The person may not know the
+product well; you learn it and record it (L101, L103). Save answers to `jobs/<slug>/INTERVIEW.md` once the job exists (keep them in your notes until then). Read the
 summary back and get a yes.
 
 If the conversation already settled most answers (for example the person asked for a demo idea and you discussed
@@ -85,12 +89,17 @@ at the product happens in the job's own Chrome and the person signs in once.
 
 ## Step 3: research (in parallel with sign-in)
 
-Before launching anything, search `jobs/*/research` for earlier work on the same product and hand it to the
-researcher as a map; every fact in it is re-checked live (L90). Answer the ask from the live product and official
-docs, not from local notes alone (L89).
+Before launching anything, run `scripts/find-notes.sh <product words>` from the studio root. It lists
+`knowledge/<product>/` first, then matching job research, interviews, and examples, newest first. Copy the files
+this job will use into `jobs/<slug>/research/prior/` and name them in the researcher brief as a map; every fact
+in them is re-checked live (L90, L103). When a job's copy of a product's notes is newer than knowledge/, start from
+the newer one. Answer the ask from the live product and official docs, not from local notes alone (L89). Send
+documentation research to the researcher from the start, split by question (L102). The `demo-explorer` agents
+belong to the builder, which gives them one shared brief built from `research/prior/`, one product area each;
+this step runs only the researcher and your own look, so no more than two agents drive the browser (L12).
 
-1. Launch the `demo-researcher` agent in the background with the product, the audience, the ask, and the job
-   path. It writes `research/SOURCES.md` (verbatim quotes, URLs, availability, contradictions) and
+1. Launch the `demo-researcher` agent in the background with the product, the audience, the ask, the job path,
+   and the files in `research/prior/`. It writes `research/SOURCES.md` (verbatim quotes, URLs, availability, contradictions) and
    `research/PRODUCT_UNDERSTANDING.md` (problem, how it works, workflow with exact surface names, where the value
    comes from, must-not-claim list, demo moments).
 2. Meanwhile start the job's Chrome with `scripts/chrome.sh <slug> <demo url>` and ask the person to sign in

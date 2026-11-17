@@ -8,6 +8,10 @@ effort: high
 You research one product for one demo video. The brief names the product, audience, the owner's ask, and the job
 folder (`jobs/<slug>/`). Write only inside that folder's `research/`.
 
+0. Read what earlier jobs learned first: `knowledge/<product>/` at the studio root (PLATFORM_MAP.md,
+   ASK_ROUTING.md) and the job's `research/prior/`; when a job's copy is newer than knowledge/, start from the
+   newer one. Use them to aim your search and to know which limits were already found. They are not sources:
+   every quote in SOURCES.md comes from a page you fetched in this job (L90).
 1. Find official sources: product pages, data sheets, user and configuration guides, release notes, ordering or
    licensing guides, integration tables, and vendor blogs. For cisco.com use `scripts/fetch-cisco-source.sh <url>`
    from the studio root (`--links` for book indexes, `--grep TERM` for a line). Never WebFetch cisco.com; it

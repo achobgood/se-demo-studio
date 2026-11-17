@@ -13,6 +13,19 @@ This folder is a studio for recording narrated virtual SE product demos from a l
   cookies, or tokens for the person. Never record or screenshot a sign-in page.
 - Demo environments with fictional data only (dCloud, a lab, or the person's own sandbox). Never a customer's
   tenant or production system: its screens would go to Anthropic and to OpenRouter models.
-- Work for a job stays in `jobs/<slug>/`. Do not modify `toolkit/`, `examples/`, or `.claude/` during a job;
-  improvements to the studio itself are a separate task the person asks for.
+- Work for a job stays in `jobs/<slug>/`. Do not modify `knowledge/`, `toolkit/`, `examples/`, or `.claude/`
+  during a job; improvements to the studio itself are a separate task the person asks for.
+- The person asking for a demo may sell the product rather than operate it. Learn the product yourself in the
+  signed-in environment until you can drive it unaided, and write down what you learn (L101).
+- Before planning any demo, run `scripts/find-notes.sh <product words>` and read what it lists. Re-check every
+  fact live before you build on it (L90, L103).
+- What earlier jobs learned about a product is in `knowledge/<product>/` (`PLATFORM_MAP.md`, `ASK_ROUTING.md`;
+  `knowledge/README.md` explains both). When a job's copy (`jobs/<slug>/research/PLATFORM_MAP.md` and
+  `ASK_ROUTING.md`) is newer than knowledge/, start from the newer one. At the end of a job, the builder writes
+  merged, dated copies of both files into the job's `research/`; the owner copies them into knowledge/ at release.
+- Send research to parallel subagents from the start: `demo-researcher` for documentation, and `demo-explorer`
+  agents for the product, one area each, all given the same brief (the builder launches the explorers). At most
+  two drive the browser at once (L102).
+- Lessons from past jobs are in `.claude/skills/record-demo/references/LESSONS_LEARNED.md`. Read a lesson before
+  you depart from a rule that cites it.
 - Learner- and customer-facing copy: no em dashes, no slogan stacks, plain and specific.

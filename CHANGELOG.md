@@ -3,6 +3,36 @@
 What changed in each studio version, newest first. Your version is in the `VERSION` file and on the first line
 that `scripts/setup.sh` prints.
 
+## 0.4.0 (2026-11-16)
+
+- Motion segments get a real motion engine: closed-form springs (`spring`, `track`, presets ui, base, heavy) and
+  `swapAlpha` in `build/engine.js`; `motion.js` elements gain `spring`, `swap`, and `sfx`, and a `moves` key is the
+  arrival time. New render checks: `render.js motionsheet` (one picture per motion state), `strip` (consecutive
+  frames around a fast move or swap), `same` (renders a frame twice and compares), and `motioncues` (motion sound
+  times). New synthesized sounds whoosh, tick, and pop, merged by `sfx_events.py`, which warns when the cues are
+  stale. `lib/lint_timeline.py` flags randomness, clocks, timers, and transitions in the picture code.
+- Fixed: the recorded cursor could be placed with the previous frame's camera, so the first frame of a render chunk
+  in a zoomed shot showed the cursor in the wrong place.
+- Builder rules for motion: banned generic looks, one accent, something new every 2 to 4 seconds, spring presets,
+  no text overlap during swaps, a state list per motion segment at the storyboard, a style guide when the job has
+  motion segments or the owner gives a reference (grammar, never content), motion sounds well under the voice, and
+  a scored critique of motion sheets, strips, and full-size stills inside the existing review (at most two rounds;
+  a segment that could pass for a product screen fails honesty).
+- Product knowledge: `knowledge/<product>/PLATFORM_MAP.md` and `ASK_ROUTING.md`, starting with Cloud Control.
+  `scripts/find-notes.sh <product words>` lists what earlier jobs learned. CLAUDE.md now points every new session
+  at the knowledge folder, the helper, and the lessons. Builders write updated copies inside their own job; the
+  owner copies them into `knowledge/` at release, so the jobs copy keeps pulling cleanly.
+- Research: explorers and the researcher read prior notes first, report coverage and what they did not do, label
+  evidence, and log agent probes; new jobs start with `research/DEMO_MAP.md` and `research/AGENT_PROBE.md`
+  skeletons and a `research/prior/` folder.
+- Lessons L101 to L103: learn the platform yourself and record it, send research to subagents from the start, and
+  keep notes findable at launch.
+- Optional tool: yt-dlp, for a style reference given as a video link (its command is not yet tested; a downloaded
+  file or screenshots work without it).
+- Released without the usual test run, at the owner's choice. The repo checks passed, and the motion code, render
+  checks, and sound cues were tested on a copy of a finished 5-minute job. Motion sound levels have not been
+  checked by ear yet.
+
 ## 0.3.5 (2026-11-16)
 
 - Lessons L83 to L88 (feasibility first when a customer asks whether one product can act on another's decision):

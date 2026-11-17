@@ -425,3 +425,21 @@ L99. **Under a sign-in deadline, record look-only screens before approval.** The
 L100. **Saved assistant threads can disappear before the take.** A thread used in planning earlier the same day was
     gone when the builder explored. Rehearse the questions off camera and type them on camera; treat a saved thread
     as a bonus, and check it still opens intact before building a shot on it.
+
+## Learning the platform for the person who asked (November 2026, owner direction after the same job)
+
+L101. **Learn the platform yourself and write down what you learn.** The person asking for a demo often cannot
+    show you the product: they may be selling it, not operating it. In the cross-product job the session had to
+    find every click path, what each screen held, and which features were real or staged, without a guide.
+    Explore the signed-in product until you can drive it unaided, and record it as you go in a platform map
+    (surfaces, click paths, what is real, what is staged or empty, what changes state, what failed) that the
+    next job on the same product can start from.
+L102. **Send research out to subagents from the start.** Exploration and documentation research ran faster when
+    separate agents took separate areas in parallel with one shared brief, and slower when one session did
+    everything in sequence. Split exploration by product area and documentation by question, give each agent the
+    same brief and its own area, and keep at most two driving the browser at once (L12).
+L103. **Notes help only if the next session can find them at launch.** Lessons, platform maps, and research written
+    in one job sat in folders no new session would look in. Every place knowledge is kept needs a pointer in the
+    studio CLAUDE.md, which every session reads at launch, and a helper that finds prior notes for a product, so
+    the first step of a new job is reading what earlier jobs learned.
+

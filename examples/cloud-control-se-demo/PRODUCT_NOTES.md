@@ -3,6 +3,7 @@
 Read this only when a job's product is Cisco Cloud Control. These notes came from the September 2026 Cloud
 Control jobs. They add to `.claude/skills/record-demo/references/CISCO_CLAIM_RULES.md`, which applies to every
 Cisco product. Recheck anything here against current official sources and the live demo before relying on it.
+The newer platform map and ask routing for this product are in `knowledge/cloud-control/`.
 
 ## Claim rules
 

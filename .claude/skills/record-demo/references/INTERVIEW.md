@@ -50,6 +50,11 @@ for a yes.
    connection that is not configured, an action the demo may not take). Recommend keeping the full length and
    bridging each such step with an abstract motion-graphics scene labeled illustrative, followed by the real
    screen that backs it up; list the steps by name in INTERVIEW.md (L92).
+   Optional: ask whether they have a style reference for the motion graphics (a frame, a video, a folder of
+   images, or a link to a video). Without one, the reference is the product's own UI. Ask what to take from it
+   (pacing, type, color, how things move) and tell them the builder takes its style only, never its content,
+   logos, or characters (L93). Once the job exists, copy the files into `jobs/<slug>/research/reference/` and note
+   the path or the link in INTERVIEW.md; a link is downloaded only if they supplied it, for reference only.
 7. **How far the demo may act.** "Look and ask" (navigate, search, ask the AI questions: safest), or "full
    control" (also run investigations, assign or resolve items, run demo workflows). Tenant administration is
    never allowed by default. If the story's strongest moment needs a configuration change, ask for that exact

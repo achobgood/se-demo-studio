@@ -122,6 +122,9 @@ raw PCM; take.py converts it.
 | Words and camera | edit `build/story.js` (title, agenda, frame shots/urls/chapters/camera, value, close) |
 | Illustrative motion segments | add `STORY.motion` (and `STORY.motionLabel`, `STORY.tags`) in `build/story.js`; `build/motion.js` draws them and fades the screen share out under each one (example at the end of `story.js`) |
 | Check frames | `node build/render.js stills review/stills 3 42.5 118` then look at them (`python3 lib/grid.py`) |
+| One still per motion state | `node build/render.js motionsheet review/motion` -> `review/motion/<segment index>.jpg` (each element's entry plus 0.6 s, each swap, each `moves` key) |
+| Frames around a fast moment | `node build/render.js strip review/strip 84.3 [n=12] [fps=30]` -> `review/strip/strip_<t>.jpg` (n consecutive frames centered on t; catches overlaps during swaps) |
+| Determinism checks (before the rough cut) | `python3 lib/lint_timeline.py` (flags `Math.random`, `Date.now`, `performance.now`, timers, `requestAnimationFrame`, CSS transitions or animations, `will-change` in `build/`; exit 1 on any) and `node build/render.js same review/same 12.5 80.2` (renders each time twice, prints SAME or DIFFERENT; exit 1 on any DIFFERENT) |
 
 At every cut, look at the incoming clip's first frames (`python3 lib/frameat.py <take> <seconds>`); if a spinner or
 "Loading" is still up, move that clip's first key later, to where the screencast stops sending frames (L21).
@@ -130,6 +133,16 @@ Motion segments stand in for steps the environment cannot show (L92). Use abstra
 with plain-text product names, real documented field names, and example values marked as examples. Never draw a
 mock product screen or a logo, never add a timing claim, and never animate over real UI as if the product acted.
 Keep the illustrative label on every segment, and cut to the real screen that backs it up.
+
+Each element in `STORY.motion` takes the existing fields plus three optional ones: `spring` (`'ui'`, `'base'`, or
+`'heavy'`; default `'base'`) for its entry and `moves`; `swap` (`[[t, html], ...]`), content changes inside the same
+element behind a short blur, so old and new text never overlap; and `sfx` (`'whoosh'`, `'tick'`, or `'pop'`), a
+sound at its entry, and for `whoosh` on each `moves` key too. When to use each preset and sound is in the builder
+prompt (Visual style, Audio).
+
+A `moves` key is the arrival time: the element holds still, then travels for one spring settle time (about 0.45 s
+with `base`, 0.23 s with `ui`, 0.54 s with `heavy`) and arrives at the keyed time. It no longer glides across the
+whole interval between keys, so put the key on the word where the element should land.
 
 Rerun `lib/cursor_tracks.py` after any change to cues or clips; the page reads `footage.js` and `cues.js`.
 
@@ -145,7 +158,8 @@ in timeline seconds), not to word times: word-keyed moves drift onto the wrong c
 | Step | Command |
 |---|---|
 | Click and key sounds | `python3 lib/sfx.py` (once) |
-| Sound cue sheet | `python3 lib/sfx_events.py` |
+| Motion sound cues | `node build/render.js motioncues` -> `build/motion_cues.json` (from the `sfx` fields; run before `sfx_events.py`) |
+| Sound cue sheet | `python3 lib/sfx_events.py` (merges `build/motion_cues.json` when present, well under the voice) |
 | Music bed | `python3 lib/music.py google/lyria-3-pro-preview prompt.txt audio/music/bed1` (make 2 or 3, judge them) |
 | Mix and master | `python3 lib/mix.py out/mix.wav` (-16 LUFS; music windows from job.json, ducked under voice) |
 
@@ -167,6 +181,11 @@ Each window runs from the first segment's start to the second segment's end (`nu
 - `lib/chat.py MODEL prompt.txt out.json frames...`: send frames or audio to a reviewer model.
 - `lib/grid.py out.jpg 3 files...`: contact sheet of any images.
 - The `claim-checker` agent: checks the talk track and on-screen text against `research/SOURCES.md`.
+- Style reference frames, one every 0.5 s, for `research/STYLE_GUIDE.md`:
+  `mkdir -p research/reference/frames && ../../toolkit/node_modules/ffmpeg-static/ffmpeg -i research/reference/<file> -vf "fps=2,scale=960:-2" -q:v 3 research/reference/frames/%04d.jpg`.
+  A reference the owner gave as a web link: `yt-dlp -f "bv*[height<=1080]/b" -o "research/reference/ref.%(ext)s" "<link>"`
+  (optional tool, `brew install yt-dlp`; only a link the owner supplied, for reference only). This yt-dlp command
+  has not been tested yet; a downloaded file or screenshots from the owner work without it.
 
 ## Tested
 

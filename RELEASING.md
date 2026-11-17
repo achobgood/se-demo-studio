@@ -12,6 +12,9 @@ Teammates only run `git pull` on `main`, so `main` must only ever hold tested, r
 ## Release steps
 
 1. On `dev`, put the new number in `VERSION` and add a few lines for it to `CHANGELOG.md` with today's date.
+   If a job in the jobs copy has newer product notes, copy that newest job's `research/PLATFORM_MAP.md` and
+   `research/ASK_ROUTING.md` into `knowledge/<product>/` here, check them against `knowledge/README.md`, and add
+   them. Never edit `knowledge/` in the jobs copy: its next `git pull` would abort.
 2. Run the repo checks: `scripts/check-repo.sh`. Fix anything it reports.
 3. Push `dev` (`git push origin dev`), then test it in the jobs copy, which has your key and the installed tools:
    `git fetch && git checkout dev`, start `claude` there and say "do a test run", confirm it finishes and the

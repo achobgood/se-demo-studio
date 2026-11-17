@@ -60,7 +60,8 @@ note. It sets positioning; it does not authorize a technical claim the sources d
   and the close. When the owner decides some steps cannot be shown in the environment, bridge each with an
   abstract motion-graphics scene and on-screen text labeled illustrative (no mock product screens, no logos, no
   timing claims), then cut to the real screen that backs it up (L92). Build them with `STORY.motion` in
-  `build/story.js`; `build/motion.js` draws them (see PIPELINE.md, Picture).
+  `build/story.js`; `build/motion.js` draws them (see PIPELINE.md, Picture), and follow the motion segment rules
+  under Visual style.
 - **Pace.** The cursor moves with purpose, questions are typed on screen, answers arrive, and the SE lets a key
   screen sit long enough to read. Speed up long waits and label them ("Sped up · the answer took about 75
   seconds"), but never fake a result or reorder cause and effect. A label names what was compressed, and any
@@ -74,10 +75,21 @@ note. It sets positioning; it does not authorize a technical claim the sources d
   default: unnamed, with no face, avatar, photo, or name}}. If the owner performs live actions, do not call all
   the data fictional: say the company, its customers, and the story data are fictional (L59).
 - **Sound.** Music only under the title and the close. Sound effects only for the recorded clicks and
-  keystrokes, kept subtle.
+  keystrokes and for motion segment elements that set `sfx`, all kept subtle and well under the voice.
 
 ## Understand before you film
 
+0. Start from what earlier jobs learned (L101, L103). Read `research/prior/` and the product's folder in
+   `knowledge/` at the studio root, if there is one; when a job's copy (`research/PLATFORM_MAP.md` in another job,
+   listed by `scripts/find-notes.sh`) is newer than knowledge/, start from the newer one. The platform map gives
+   click paths, what is real, staged, or empty, state-changing controls, traps, and earlier agent probes. Use them as
+   a map and re-check each fact live before the storyboard depends on it (L90). Build the explorers' shared brief
+   from them and give each explorer one product area (L102). Probe every AI agent the story might use and log it in
+   `research/AGENT_PROBE.md` (L9); each explorer logs its probes in its own report, and you copy them into
+   AGENT_PROBE.md. While exploring, an initial zero, empty table, or placeholder can mean loading rather than
+   absence, so wait and look again. Check the screen as well as the page text: page text can include dialogs the
+   viewer cannot see. Distinctions such as "connected is not recently collected" belong in the demo map and claim
+   notes, never in narration (L98).
 1. Explore the signed-in product end to end through this job's Chrome (see Signed-in capture). Try things. Ask
    the AI assistant questions if there is one, open workflows, follow an incident from alert to resolution, and
    read existing threads, dashboards, and saved investigations: other demo users and the demo's authors show
@@ -100,7 +112,7 @@ note. It sets positioning; it does not authorize a technical claim the sources d
    undemonstrable (L85). Use the product's AI assistant to pick what to open, then confirm in the UI (L86).
    Navigate by clicking the product's links, not typed URLs, and ask the owner up front to allow any linked
    domain in the browser extension (L88).
-2. Write `research/DEMO_MAP.md`: every surface with its exact name, what demo data lives there, what each
+2. Write `research/DEMO_MAP.md` (the job starts with its skeleton): every surface with its exact name, what demo data lives there, what each
    available action does and whether it changes state, how long slow steps take, which AI agents or features
    actually answered (L9), and which incidents the data supports end to end. Also: which identity each surface
    needs, which open in a new tab, which direct links work, and the menu path to use where a link is refused (L44,
@@ -122,7 +134,11 @@ note. It sets positioning; it does not authorize a technical claim the sources d
    run the `claim-checker` agent on the draft talk track and on-screen text, fix what it finds, and put its
    summary in the file (L77). Add a contact sheet of the key screens from exploration, one per shot where you
    have one (`python3 lib/grid.py review/storyboard_sheet.jpg 3 capture/explore/<files>`), and check those frames
-   for anything the Footage rules ban, so the owner sees the picture before any take (L78). Then print a message
+   for anything the Footage rules ban, so the owner sees the picture before any take (L78). Add the style guide
+   (`research/STYLE_GUIDE.md`, see Visual style) if the job has one. For each motion segment, add a state list timed
+   to the narration: one row per state with the cue word that triggers it, what is on screen, the on-screen text, and
+   its evidence label (illustrative, example value, or the source or real screen that backs it), with something new
+   every 2 to 4 seconds. The motionsheet comes with the rough cut (see Review). Then print a message
    that starts with "STORYBOARD READY:" and **stop and wait**. Do not record final takes until `ORCHESTRATOR_NOTES.md` contains an entry that says
    "STORYBOARD APPROVED" (possibly with changes you must apply). Check the notes file every few minutes while
    you wait, and keep doing non-recording work (voice auditions, music beds, sources) in the meantime. When the
@@ -183,7 +199,8 @@ references/CISCO_CLAIM_RULES.md.}}
 ## Footage: real UI is the backbone
 
 Never generate, redraw, or AI-imagine the product's UI. Generated art is only for the title, agenda, value recap,
-close, and transitions, and none of it may imitate a product screen.
+close, transitions, and labeled motion segments that show what the screen cannot (L92), and none of it may
+imitate a product screen.
 
 - Capture with `capture/rec.js` (DevTools screencast, 1920x1080 CSS pixels at device scale 2, scrollbars hidden,
   theme pinned). Frames arrive only when the page changes; `lib/build_clips.py` resamples to 30 fps. The pinned
@@ -275,7 +292,45 @@ Take the palette and feel from the real product UI you capture, so the cards and
 clean, generous negative space, precise type, one or two accent colors. The template uses Inter and IBM Plex Mono
 (bundled in `build/fonts/`). Output 1920x1080 at 30 fps. The picture is a deterministic HTML/JS timeline:
 edit `build/story.js` (words on screen, chapters, camera) and `build/edit.py` (which take plays when); `scenes.js`
-and `engine.js` rarely need changes.
+and `engine.js` rarely need changes. Every frame is drawn from its time alone: never `Math.random`, `Date.now`,
+timers, `requestAnimationFrame`, or CSS transitions and animations in `build/`. Before the rough cut,
+`python3 lib/lint_timeline.py` must print no warnings, and `node build/render.js same review/same <times>`, with
+two or three times inside motion segments and camera moves, must print SAME for each. On DIFFERENT, open the two
+PNGs it wrote (`t_<time>.png` and `t_<time>_again.png`): if an element is visibly misplaced, fix it and run
+`same` again; otherwise note the time and pixel count in the README's evidence boundary and continue.
+
+When the job has motion segments or the owner gave a style reference, write `research/STYLE_GUIDE.md` before
+building them: palette (hex), type (family, weight, tracking), shot lengths, transitions, camera moves, and how
+text enters and exits. The reference is the product's own captured UI unless the owner supplied one.
+{{OPTIONAL, delete when the owner gave no style reference:
+The owner's style reference: {{REFERENCE: its path in this job or the link they gave, and what to take from it,
+in their words}}. For a video, extract one frame every 0.5 seconds with the bundled ffmpeg and study them before
+writing the guide:
+`mkdir -p research/reference/frames && ../../toolkit/node_modules/ffmpeg-static/ffmpeg -i research/reference/<file> -vf "fps=2,scale=960:-2" -q:v 3 research/reference/frames/%04d.jpg`
+For a web link, download it with:
+`yt-dlp -f "bv*[height<=1080]/b" -o "research/reference/ref.%(ext)s" "<the owner's link>"`
+This yt-dlp command has not been tested yet. yt-dlp is optional: if it is missing or the command fails, ask the
+owner for a downloaded file or screenshots, which work without it.
+Download only the link the owner gave, and use it as a reference only: none of it appears in the video.}}
+Take the reference's grammar (pacing, type, color, how things move), never its content, logos, or characters. A
+font the guide calls for can be used only after you add it to `build/fonts/` with a license that allows bundling
+it, because renders run offline; otherwise use the closest bundled face and say so in the guide.
+
+Motion segments (L92), when the job has them:
+- **Look.** No centered title on a gradient, no frame borders, no glow, no particle bursts, no corner labels,
+  and not every element fading in the same way: let elements enter with a short move or a change of size. One
+  accent color, from the style guide. Within a segment, something new happens every 2 to 4 seconds (an element
+  enters, moves, or changes its text), each on a narration cue word. The illustrative label is required on every
+  segment and is the one corner label allowed.
+- **Springs.** Set `spring` on each element; it drives the entry and every `moves` key. `ui` (a tiny overshoot)
+  for chips, tokens, and small cards; `base` (the default) for cards, lanes, and containers; `heavy` (no
+  overshoot) for large type and big cards. Type never bounces: anything whose main content is a heading or a
+  large word is `heavy`.
+- **Swaps.** To change what an element says, give it a `swap` list instead of stacking a second element on top.
+  The old text leaves before the new text enters, so text never overlaps during a swap; check each one in a strip
+  (`node build/render.js strip review/strip <t>`).
+- **Camera scaling.** Never set `will-change` on anything the camera scales: its text renders blurry. Leave the
+  `.layer` rule in comp.html alone: it keeps its `will-change` on purpose, and `render.js same` fails without it.
 
 ## Audio
 
@@ -297,10 +352,17 @@ and `engine.js` rarely need changes.
   change from the resulting word timestamps, and make sure what the SE says matches what is on screen then (L5).
 - Music: two or three beds, judged by a model (L26), under the title and close only. Master to -16 LUFS
   (`lib/mix.py`). Export captions with `lib/deliver.py`; do not burn them in.
+- Motion sounds: in motion segments, set `sfx` only on the elements whose arrival matters, not on every one:
+  `whoosh` for something that travels (it also plays on each `moves` key), `tick` for a small state change such
+  as a chip, `pop` for a card arriving. Run `node build/render.js motioncues` before `lib/sfx_events.py`, which
+  mixes them well under the voice; run it again after every new voice take. Music stays under the title and the
+  close only. These sound levels have not been checked by ear yet: they count as verified only after the owner
+  listens to one real mix, so say so in the README's evidence boundary until then.
 
 ## Pacing
 
-Produce a rough end-to-end render with first-pass audio soon after the storyboard is approved and print
+Produce a rough end-to-end render with first-pass audio soon after the storyboard is approved, once the
+determinism checks under Visual style pass, and print
 "ROUGH CUT READY:" with its path. Then improve it in numbered versions (`out/{{SLUG}}_v1.mp4`, `_v2`...). Render
 only at checkpoints: the rough cut, one version after each round of fixes, and the final. In between, edit the
 timeline and check it with stills (`node build/render.js stills`), not full renders (L72). Do not spend more than
@@ -316,6 +378,18 @@ every claim supported? Also check timing drift, legibility, visual consistency, 
 run the `claim-checker` agent over the final talk track and on-screen text against the sources. Verify each
 finding before acting (L35). Log every finding with its disposition in the README. At most two rounds.
 
+In each round, between the rough cut and the final, also critique every motion segment yourself, as a harsh
+motion director rather than its author. Run `node build/render.js motionsheet review/motion` and
+`node build/render.js strip review/strip <t>` at each swap and fast move, open them, and add them to the review
+package. Sheet tiles are small, so also render one full-size still per segment (`node build/render.js stills
+review/stills <t>`) and judge legibility on it. Score each segment 1 to 10 on legibility at
+1920x1080, motion quality (springs, no dead frames), variety (something new every 2 to 4 seconds), composition,
+honesty labels (illustrative label visible, examples marked, no mock product screen or logo), sync with the
+narration, and accuracy of names and values (product and field names exactly as captured or documented, example
+values marked). A segment a viewer could mistake for a product screen fails honesty. List the three
+worst problems with timestamps and fix them before the next version. An honesty or legibility failure blocks the
+final, whatever the scores.
+
 ## Output
 
 Deliver in this folder:
@@ -324,6 +398,12 @@ Deliver in this folder:
   exact clicks and typed questions, the talk track, every on-screen text, the source for each claim, and
   live-run notes (what can differ on the day). Plus `script/speech.txt`, the exact text sent to the voice model;
 - `research/DEMO_MAP.md`, `research/STORYBOARD.md`, `research/CLAIMS.md`;
+- `research/PLATFORM_MAP.md` and `research/ASK_ROUTING.md`: start from the newer of the product's
+  `knowledge/` files and the latest job's copies (or new files if there are none), merge in
+  `research/DEMO_MAP.md` and `research/AGENT_PROBE.md`, and add this job's ask to ASK_ROUTING. Date every fact
+  and label it verified, docs, or absent, following `knowledge/README.md` (studio root). Never edit `knowledge/`
+  itself; the owner copies these two files there at release. They will be public: no real people's names, email
+  addresses, or IDs (L101, L103);
 - a README with: how it was made; every model call with cost and a running total (from `logs/costs.jsonl`); the
   claim table; public image sources; the redaction log; the state-change log; review dispositions; the evidence
   boundary (what was and was not checked, and that no human listen or SME, brand, or legal review has

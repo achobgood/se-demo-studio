@@ -31,6 +31,7 @@ else
   say "OpenRouter key" "NOT SET: put your key in .env (open -e .env), see SETUP in the record-demo skill"; ok=0
 fi
 command -v pdftotext >/dev/null && say "pdftotext (optional)" "ok" || say "pdftotext (optional)" "not installed; PDF sources will not fetch (brew install poppler)"
+command -v yt-dlp >/dev/null && say "yt-dlp (optional)" "ok" || say "yt-dlp (optional)" "not installed; only for a style reference given as a video link (brew install yt-dlp)"
 [ -f "$HOME/Library/Application Support/node-terminal/canvas-control/nodeterm.sh" ] && say "NodeTerm" "ok" || say "NodeTerm" "not found (recommended: https://nodeterm.dev); without it the builder runs in a second Terminal window"
 # Free space on the studio's disk: reported only, never part of SETUP OK.
 free=$(df -g . | awk 'NR==2 {print $4}'); [ "${free:-0}" -ge 20 ] && say "Free disk" "ok ($free GB free)" || say "Free disk" "LOW: $free GB free; a 5-minute job can use about 10 GB, so free space before recording"

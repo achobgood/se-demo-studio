@@ -56,9 +56,14 @@ const STORY = {
 // STORY.motion = [{ from: S0('handoff') - 0.2, to: S1('handoff') + 0.6, kicker: 'Illustrative · not in this lab',
 //   title: 'The handoff', els: [
 //     { cls: 'mg-lane', x: 120, y: 230, w: 800, h: 730 }, { cls: 'mg-lane-h', html: 'Product A', x: 150, y: 254 },
-//     card(160, 300, 668, 'Request · example', 'Contain client', W('request', 'handoff')),
-//     { cls: 'mg-token', html: 'request', x: 560, y: 470, at: W('sends', 'handoff'),
-//       moves: [[W('sends', 'handoff') + 1.1, 1040, 430]] },
+//     card(160, 300, 668, 'Request · example', 'Contain client', W('request', 'handoff'), { sfx: 'pop' }),
+//     // a moves key is the arrival time: the token holds, then springs over in about 0.23 s (ui) and lands on 'arrives'
+//     { cls: 'mg-token', html: 'request', x: 560, y: 470, at: W('sends', 'handoff'), spring: 'ui', sfx: 'whoosh',
+//       moves: [[W('arrives', 'handoff'), 1040, 430]] },
+//     // swap changes the text inside one element (no second element on top); the box springs to the new size
+//     { cls: 'mg-chip', html: 'Approval required', x: 960, y: 560, at: W('approval', 'handoff'), spring: 'ui',
+//       sfx: 'tick', swap: [[W('approved', 'handoff'), 'Approved · example']] },
+//     { cls: 'mg-card', html: 'Contained', x: 960, y: 700, w: 520, at: W('contained', 'handoff'), spring: 'heavy' },
 //   ] }];
 // STORY.tags = [[W('fair', 'q1'), E('q1'), 'Customer question 1 of 3']];
 STORY.motion = STORY.motion || [];

@@ -94,6 +94,8 @@ builder window (L76). Present, in chat:
   redaction scope against real items (L58);
 - the contact sheet (open it for them, for example with `open review/storyboard_sheet.jpg` in the job folder) and
   the claim checker's summary;
+- when the job has them, the style guide (`research/STYLE_GUIDE.md`) and each motion segment's state list (cue
+  word, what is on screen, on-screen text, evidence label); the motionsheet comes later, with the rough cut;
 - your own concerns: anything that reads as an unsupported cause (L3), a number, a beta feature, or marketing
   voice.
 Ask for approval or changes. Then append `STORYBOARD APPROVED` (with any changes, quoted) to
