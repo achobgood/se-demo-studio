@@ -14,6 +14,14 @@ segments. Paths are relative to the job folder unless they start with the studio
 - A segment the interview did not ask for is named in STORYBOARD_READY.md with the reason it helps, so the owner
   approves it at the storyboard.
 
+## Engine choice (owner decision, 2026-11-17)
+
+Motion segments use the studio's own deterministic engine (`build/engine.js`, `build/motion.js`, `build/render.js`).
+Do not add Remotion: its license requires a paid Company License for any company of four or more people. Do not add
+HyperFrames or GSAP without the owner's decision: GSAP's free license excludes tools that build visual animations
+without code in competition with Webflow, which needs a legal reading for this studio. Revisit only if a scene truly
+needs something the engine cannot draw (for example Lottie or 3D), and say so at the storyboard.
+
 ## What a segment may show
 
 When the owner decides some steps cannot be shown in the environment, bridge each with an abstract motion-graphics
