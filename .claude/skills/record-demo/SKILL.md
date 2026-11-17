@@ -85,6 +85,10 @@ at the product happens in the job's own Chrome and the person signs in once.
 
 ## Step 3: research (in parallel with sign-in)
 
+Before launching anything, search `jobs/*/research` for earlier work on the same product and hand it to the
+researcher as a map; every fact in it is re-checked live (L90). Answer the ask from the live product and official
+docs, not from local notes alone (L89).
+
 1. Launch the `demo-researcher` agent in the background with the product, the audience, the ask, and the job
    path. It writes `research/SOURCES.md` (verbatim quotes, URLs, availability, contradictions) and
    `research/PRODUCT_UNDERSTANDING.md` (problem, how it works, workflow with exact surface names, where the value
@@ -123,7 +127,13 @@ decision back; check the rough cut; give the final report.
   the interview, each with its reset rule and logged; never touch another job's Chrome port.
 - Never record, screenshot, or keep a sign-in, SSO, password, or one-time-code page. If a raw frame or screenshot
   shows one, delete the raw files (not just edit copies), log it, and ask the person to sign in again off camera.
-- Opus 5.5 for every session and subagent. Do not pass a different `model` to the Agent tool.
+- Opus 5.5 for every session and for any subagent whose work needs reasoning (research, evaluation, storyboard,
+  script, claim checks), including before a job exists. Mechanical subagents (render checks, screenshot passes,
+  file sweeps) may use Sonnet or Haiku; renders and scans run as scripts, not model calls (L94).
+- Look in open tabs, other jobs' `job.json`, and research notes before asking the person for a link or an
+  identifier (L96). When they share a reference, ask what it changes in how the video is built, not only whether
+  its topic matches (L93).
+- From the first hour, keep a resume prompt and a friction log in the job (L97).
 - Keep "the video is done" separate from "the video is approved for customers". No brand, legal, SME, or human
   listening review happens here unless the person does it.
 

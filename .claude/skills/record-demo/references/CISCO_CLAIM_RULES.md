@@ -42,5 +42,5 @@ review have not happened.
 
 ## Learner-facing copy
 
-No em dashes. No slogan stacks, no "not X but Y" lines, no stacked rhetorical questions, no meta-copy about what
-the video is not. Say what the viewer will see and what it does.
+No em dashes. No slogan stacks, no "not X but Y" lines, no mirrored pairs of short sentences with swapped
+subjects (L98), no stacked rhetorical questions, no meta-copy about what the video is not. Say what the viewer will see and what it does.

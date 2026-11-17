@@ -10,6 +10,12 @@ that `scripts/setup.sh` prints.
   steps before trusting its name; search the marketplace for verified items; treat the product's AI assistant as a
   lead; start documentation research in parallel; click the product's links instead of typing URLs. The builder
   template's exploration step now carries these rules.
+- Lessons L89 to L98 from owner coaching: answer from the live product first, find earlier research and re-verify
+  it, know the studio's voice and music tools before proposing a format, bridge undemoable steps with labeled
+  motion graphics instead of shortening the video, read shared references for technique, Opus for reasoning subagents and cheaper models or scripts for mechanical work
+  with mechanical work in scripts, desktop by default, look before asking for links, keep a resume prompt and
+  friction log, and no mirrored-pair copy. Rules added to SKILL.md, INTERVIEW.md, the builder template, and the
+  Cisco claim rules.
 
 ## 0.3.4 (2026-11-01)
 

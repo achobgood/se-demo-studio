@@ -28,7 +28,10 @@ for a yes.
 2. **Kind and length.** A virtual SE walkthrough (default, about 5 minutes), a short customer ad (60 to 90
    seconds), or an internal explainer. Ask whether it may run longer if the story needs it, and the hard ceiling. The template is built for the walkthrough; for an ad, also read
    `examples/cloud-control-se-demo/README.md` notes on how the 90-second ad differed (hook, reveal, more motion
-   graphics, announcer-style voice).
+   graphics, announcer-style voice). Before proposing a format, know the studio's tools: narration and music come
+   from OpenRouter, and steps the environment cannot show are bridged with labeled motion graphics and on-screen
+   text, not by a shorter video (L91, L92). Assume a desktop presentation and skip phone-width checks unless they
+   say otherwise (L95).
 3. **Audience.** Customers (which roles), partners, or internal SEs. What they should understand after watching,
    and what they should do next.
 4. **Persona.** Default: an unnamed Cisco SE speaking to a generic customer, with a disclosure that the voice is

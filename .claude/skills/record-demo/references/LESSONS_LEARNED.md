@@ -372,3 +372,50 @@ L88. **Click the product's own links; do not type or guess URLs while exploring.
     found" twice where the menu path worked, and the owner stopped a constructed search URL. Clicking is also the
     path a presenter uses on camera. The browser extension may also refuse a linked domain until the owner allows
     that site in the extension; ask for it at the start, since spoken permission does not change the setting.
+
+## Owner coaching (November 2026, the same cross-product job as L83 to L88)
+
+L89. **Answer from the live product first, local notes second.** Asked whether a demo existed for a customer's
+    question, the session started by searching local files. The owner stopped it: "you need to go into [the
+    product] in the browser and figure that out and build the demo if you can." When the ask is what a product
+    can do, open the signed-in product and its official docs first, and think as the SE would: what each customer
+    role must believe by the end.
+L90. **Find the workspace's earlier research, then re-verify it live.** The owner had to point at an existing
+    research folder for the same product, then add "Don't take just the previous research, learn more about the
+    platform by exploring it." Spend two minutes searching `jobs/*/research` for the product before exploring, use
+    what you find as a map, and re-check every fact you build on.
+L91. **Know the studio's own tools before proposing a format.** The session proposed a silent explainer. The
+    owner: "Did you not read you have OpenRouter access for TTS and music?" Setup had just printed the OpenRouter
+    key line, and the pipeline has voice, music, and click sounds. Read SKILL.md, PIPELINE.md, and the setup
+    output before proposing any deliverable.
+L92. **Cover what cannot be shown; do not shrink the video to fit.** The session proposed 25 seconds, then 90;
+    the owner wanted 5 minutes and said to "hand wave via the motion graphics and text around the parts that we
+    can't demo." Keep the default length and bridge each missing step with an abstract motion-graphics scene and
+    on-screen text labeled illustrative: no mock product screens, no logos, no timing claims, and a cut back to the
+    real screen that backs it up.
+L93. **Read a shared reference for what it changes in the build.** A video about motion-graphics technique was
+    judged "unrelated" because it was not about the product. The owner: "the video agent could change the plan."
+    Ask what a reference changes in technique, style, or process, not only whether its topic matches.
+L94. **Opus where reasoning matters; a cheaper model or a script for mechanical work.** An evaluation subagent
+    went to a cheaper model before any job existed. The owner: "No don't use Sonnet, use Opus," then clarified:
+    "Opus for subagents where reasoning matters. Mechanical things can use Sonnet or Haiku where appropriate," and
+    earlier, "Don't burn expensive tokens for mechanical processes, especially calling renders." Research,
+    evaluation, storyboard, script, and claim work run on Opus. Renders and scans run as scripts; render checks,
+    screenshot passes, and file sweeps may use Sonnet or Haiku. Name the model when you launch the subagent.
+L95. **Ask the viewing surface once, then check only that.** A render check spent effort at phone widths. The
+    owner: "We're not concerned about phones in this project." Assume a desktop presentation unless told
+    otherwise, and skip phone-width checks.
+L96. **Look before asking the owner for a link or an identifier.** The session asked for the product's address,
+    then found it in the open tabs a minute later, and later asked for a launch link again. Check open tabs, other
+    jobs' `job.json` `app_url`, and research notes first; ask only for what you cannot find. Signing in stays with
+    the owner.
+L97. **Write the resume prompt and a friction log in the first hour.** The owner had to ask for both: "write a
+    fortified prompt for yourself to continue if needed" and "assess where you are failing and give your future
+    self a better chance of faster success." Keep both in the job from the first checkpoint, so lessons come from
+    notes, not recall.
+L98. **No mirrored pairs in copy.** A walkthrough headline read "[Product A] decides. [Product B] carries it out.",
+    and several talk-track lines used the same shape, although the copy rules already banned slogan stacks. The
+    owner: "I also dont' want the typical AI speak like 'blank blanks. Other blank does blank'. That's textbook
+    generic AI slop." Before showing narration or on-screen text, search it for two short parallel sentences with
+    swapped subjects, "X, not Y" turns, and tidy closing lines, and rewrite each as one plain sentence that says
+    what happens.
