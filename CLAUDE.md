@@ -28,4 +28,6 @@ This folder is a studio for recording narrated virtual SE product demos from a l
   two drive the browser at once (L102).
 - Lessons from past jobs are in `.claude/skills/record-demo/references/LESSONS_LEARNED.md`. Read a lesson before
   you depart from a rule that cites it.
+- Motion segments are used only where the environment cannot show a step or an abstract scene clearly helps, never
+  as decoration. Their rules are in `.claude/skills/record-demo/references/MOTION.md`; read it only for such a job.
 - Learner- and customer-facing copy: no em dashes, no slogan stacks, plain and specific.

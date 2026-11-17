@@ -153,6 +153,8 @@ decision back; check the rough cut; give the final report.
 - references/BUILDER_PROMPT_TEMPLATE.md: the builder's prompt.
 - references/SUPERVISING.md: launching, watching, the storyboard checkpoint, the final report.
 - references/PIPELINE.md: every toolkit command in order.
+- references/MOTION.md: rules for illustrative motion segments and the style guide; read it only when the job has
+  steps the environment cannot show, an abstract scene would clearly help, or the owner gave a style reference.
 - references/LESSONS_LEARNED.md: the history behind each rule's (L7) citation; not required reading.
 - references/CISCO_CLAIM_RULES.md: sourcing, wording, and branding for Cisco products.
 - references/MODELS.md: which OpenRouter models worked.

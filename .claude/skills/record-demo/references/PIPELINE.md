@@ -120,7 +120,7 @@ raw PCM; take.py converts it.
 | Blur redaction regions | `python3 lib/redact.py [clip ...]` (regions in `build/edit.py` REDACT; rerun after every `build_clips.py`, which rebuilds clips from the raw frames) |
 | Add cursor, clicks, keys | `python3 lib/cursor_tracks.py` -> `build/footage.js`, `build/cues.js` |
 | Words and camera | edit `build/story.js` (title, agenda, frame shots/urls/chapters/camera, value, close) |
-| Illustrative motion segments | add `STORY.motion` (and `STORY.motionLabel`, `STORY.tags`) in `build/story.js`; `build/motion.js` draws them and fades the screen share out under each one (example at the end of `story.js`) |
+| Illustrative motion segments | add `STORY.motion` (and `STORY.motionLabel`, `STORY.tags`) in `build/story.js`; `build/motion.js` draws them and fades the screen share out under each one (example at the end of `story.js`); when to use them, element fields, and rules are in references/MOTION.md |
 | Check frames | `node build/render.js stills review/stills 3 42.5 118` then look at them (`python3 lib/grid.py`) |
 | One still per motion state | `node build/render.js motionsheet review/motion` -> `review/motion/<segment index>.jpg` (each element's entry plus 0.6 s, each swap, each `moves` key) |
 | Frames around a fast moment | `node build/render.js strip review/strip 84.3 [n=12] [fps=30]` -> `review/strip/strip_<t>.jpg` (n consecutive frames centered on t; catches overlaps during swaps) |
@@ -129,20 +129,8 @@ raw PCM; take.py converts it.
 At every cut, look at the incoming clip's first frames (`python3 lib/frameat.py <take> <seconds>`); if a spinner or
 "Loading" is still up, move that clip's first key later, to where the screencast stops sending frames (L21).
 
-Motion segments stand in for steps the environment cannot show (L92). Use abstract lanes, cards, tokens, and chips
-with plain-text product names, real documented field names, and example values marked as examples. Never draw a
-mock product screen or a logo, never add a timing claim, and never animate over real UI as if the product acted.
-Keep the illustrative label on every segment, and cut to the real screen that backs it up.
-
-Each element in `STORY.motion` takes the existing fields plus three optional ones: `spring` (`'ui'`, `'base'`, or
-`'heavy'`; default `'base'`) for its entry and `moves`; `swap` (`[[t, html], ...]`), content changes inside the same
-element behind a short blur, so old and new text never overlap; and `sfx` (`'whoosh'`, `'tick'`, or `'pop'`), a
-sound at its entry, and for `whoosh` on each `moves` key too. When to use each preset and sound is in the builder
-prompt (Visual style, Audio).
-
-A `moves` key is the arrival time: the element holds still, then travels for one spring settle time (about 0.45 s
-with `base`, 0.23 s with `ui`, 0.54 s with `heavy`) and arrives at the keyed time. It no longer glides across the
-whole interval between keys, so put the key on the word where the element should land.
+Motion segments (L92) are used only where the environment cannot show a step or an abstract scene clearly helps.
+Their element fields (`spring`, `swap`, `sfx`), `moves` timing, and rules are in references/MOTION.md.
 
 Rerun `lib/cursor_tracks.py` after any change to cues or clips; the page reads `footage.js` and `cues.js`.
 
@@ -181,11 +169,7 @@ Each window runs from the first segment's start to the second segment's end (`nu
 - `lib/chat.py MODEL prompt.txt out.json frames...`: send frames or audio to a reviewer model.
 - `lib/grid.py out.jpg 3 files...`: contact sheet of any images.
 - The `claim-checker` agent: checks the talk track and on-screen text against `research/SOURCES.md`.
-- Style reference frames, one every 0.5 s, for `research/STYLE_GUIDE.md`:
-  `mkdir -p research/reference/frames && ../../toolkit/node_modules/ffmpeg-static/ffmpeg -i research/reference/<file> -vf "fps=2,scale=960:-2" -q:v 3 research/reference/frames/%04d.jpg`.
-  A reference the owner gave as a web link: `yt-dlp -f "bv*[height<=1080]/b" -o "research/reference/ref.%(ext)s" "<link>"`
-  (optional tool, `brew install yt-dlp`; only a link the owner supplied, for reference only). This yt-dlp command
-  has not been tested yet; a downloaded file or screenshots from the owner work without it.
+- Style reference frames and downloads for `research/STYLE_GUIDE.md`: references/MOTION.md, Style guide.
 
 ## Tested
 

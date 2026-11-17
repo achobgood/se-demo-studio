@@ -3,6 +3,14 @@
 What changed in each studio version, newest first. Your version is in the `VERSION` file and on the first line
 that `scripts/setup.sh` prints.
 
+## 0.4.1 (2026-11-17)
+
+- Motion rules moved out of the builder prompt into `references/MOTION.md`, read only when a job needs motion: steps
+  the environment cannot show, an abstract scene that clearly makes the demo clearer, or an owner style reference. A
+  demo that can show everything on real screens uses no motion, and motion is never decoration. A motion segment the
+  interview did not ask for is named at the storyboard for the owner to approve. The honesty rule (a segment that
+  could pass for a product screen fails) stays in the builder prompt itself.
+
 ## 0.4.0 (2026-11-16)
 
 - Motion segments get a real motion engine: closed-form springs (`spring`, `track`, presets ui, base, heavy) and

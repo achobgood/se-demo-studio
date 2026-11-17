@@ -59,9 +59,8 @@ note. It sets positioning; it does not authorize a technical claim the sources d
   screen share looks. Motion graphics are limited to a short title, at most one agenda card, a short value recap,
   and the close. When the owner decides some steps cannot be shown in the environment, bridge each with an
   abstract motion-graphics scene and on-screen text labeled illustrative (no mock product screens, no logos, no
-  timing claims), then cut to the real screen that backs it up (L92). Build them with `STORY.motion` in
-  `build/story.js`; `build/motion.js` draws them (see PIPELINE.md, Picture), and follow the motion segment rules
-  under Visual style.
+  timing claims), then cut to the real screen that backs it up (L92). Use one anywhere else only where it clearly
+  makes the demo clearer, never as decoration (see Visual style).
 - **Pace.** The cursor moves with purpose, questions are typed on screen, answers arrive, and the SE lets a key
   screen sit long enough to read. Speed up long waits and label them ("Sped up · the answer took about 75
   seconds"), but never fake a result or reorder cause and effect. A label names what was compressed, and any
@@ -134,11 +133,8 @@ note. It sets positioning; it does not authorize a technical claim the sources d
    run the `claim-checker` agent on the draft talk track and on-screen text, fix what it finds, and put its
    summary in the file (L77). Add a contact sheet of the key screens from exploration, one per shot where you
    have one (`python3 lib/grid.py review/storyboard_sheet.jpg 3 capture/explore/<files>`), and check those frames
-   for anything the Footage rules ban, so the owner sees the picture before any take (L78). Add the style guide
-   (`research/STYLE_GUIDE.md`, see Visual style) if the job has one. For each motion segment, add a state list timed
-   to the narration: one row per state with the cue word that triggers it, what is on screen, the on-screen text, and
-   its evidence label (illustrative, example value, or the source or real screen that backs it), with something new
-   every 2 to 4 seconds. The motionsheet comes with the rough cut (see Review). Then print a message
+   for anything the Footage rules ban, so the owner sees the picture before any take (L78). If the job has motion
+   segments or a style guide, add them as `.claude/skills/record-demo/references/MOTION.md` (studio root) describes (Storyboard: state list). Then print a message
    that starts with "STORYBOARD READY:" and **stop and wait**. Do not record final takes until `ORCHESTRATOR_NOTES.md` contains an entry that says
    "STORYBOARD APPROVED" (possibly with changes you must apply). Check the notes file every few minutes while
    you wait, and keep doing non-recording work (voice auditions, music beds, sources) in the meantime. When the
@@ -299,38 +295,17 @@ two or three times inside motion segments and camera moves, must print SAME for 
 PNGs it wrote (`t_<time>.png` and `t_<time>_again.png`): if an element is visibly misplaced, fix it and run
 `same` again; otherwise note the time and pixel count in the README's evidence boundary and continue.
 
-When the job has motion segments or the owner gave a style reference, write `research/STYLE_GUIDE.md` before
-building them: palette (hex), type (family, weight, tracking), shot lengths, transitions, camera moves, and how
-text enters and exits. The reference is the product's own captured UI unless the owner supplied one.
+Motion segments (L92). When INTERVIEW.md lists steps the environment cannot show, or you judge that an abstract
+scene would clearly make the demo clearer, read `.claude/skills/record-demo/references/MOTION.md` (studio root)
+before the storyboard and follow it: when to use motion, the style guide, look, springs, swaps, camera scaling,
+motion sounds, and the motion critique. Otherwise skip it; a demo that can show everything on real screens uses no
+motion segments. Every segment is labeled illustrative, draws no mock product screen or logo, and cuts to the real
+screen that backs it up. A segment a viewer could mistake for a product screen fails honesty.
 {{OPTIONAL, delete when the owner gave no style reference:
 The owner's style reference: {{REFERENCE: its path in this job or the link they gave, and what to take from it,
-in their words}}. For a video, extract one frame every 0.5 seconds with the bundled ffmpeg and study them before
-writing the guide:
-`mkdir -p research/reference/frames && ../../toolkit/node_modules/ffmpeg-static/ffmpeg -i research/reference/<file> -vf "fps=2,scale=960:-2" -q:v 3 research/reference/frames/%04d.jpg`
-For a web link, download it with:
-`yt-dlp -f "bv*[height<=1080]/b" -o "research/reference/ref.%(ext)s" "<the owner's link>"`
-This yt-dlp command has not been tested yet. yt-dlp is optional: if it is missing or the command fails, ask the
-owner for a downloaded file or screenshots, which work without it.
-Download only the link the owner gave, and use it as a reference only: none of it appears in the video.}}
-Take the reference's grammar (pacing, type, color, how things move), never its content, logos, or characters. A
-font the guide calls for can be used only after you add it to `build/fonts/` with a license that allows bundling
-it, because renders run offline; otherwise use the closest bundled face and say so in the guide.
+in their words}}. Read `.claude/skills/record-demo/references/MOTION.md` (studio root), Style guide, and write `research/STYLE_GUIDE.md` from the reference
+before building any cards or segments, even if the job has no motion segments.}}
 
-Motion segments (L92), when the job has them:
-- **Look.** No centered title on a gradient, no frame borders, no glow, no particle bursts, no corner labels,
-  and not every element fading in the same way: let elements enter with a short move or a change of size. One
-  accent color, from the style guide. Within a segment, something new happens every 2 to 4 seconds (an element
-  enters, moves, or changes its text), each on a narration cue word. The illustrative label is required on every
-  segment and is the one corner label allowed.
-- **Springs.** Set `spring` on each element; it drives the entry and every `moves` key. `ui` (a tiny overshoot)
-  for chips, tokens, and small cards; `base` (the default) for cards, lanes, and containers; `heavy` (no
-  overshoot) for large type and big cards. Type never bounces: anything whose main content is a heading or a
-  large word is `heavy`.
-- **Swaps.** To change what an element says, give it a `swap` list instead of stacking a second element on top.
-  The old text leaves before the new text enters, so text never overlaps during a swap; check each one in a strip
-  (`node build/render.js strip review/strip <t>`).
-- **Camera scaling.** Never set `will-change` on anything the camera scales: its text renders blurry. Leave the
-  `.layer` rule in comp.html alone: it keeps its `will-change` on purpose, and `render.js same` fails without it.
 
 ## Audio
 
@@ -352,12 +327,7 @@ Motion segments (L92), when the job has them:
   change from the resulting word timestamps, and make sure what the SE says matches what is on screen then (L5).
 - Music: two or three beds, judged by a model (L26), under the title and close only. Master to -16 LUFS
   (`lib/mix.py`). Export captions with `lib/deliver.py`; do not burn them in.
-- Motion sounds: in motion segments, set `sfx` only on the elements whose arrival matters, not on every one:
-  `whoosh` for something that travels (it also plays on each `moves` key), `tick` for a small state change such
-  as a chip, `pop` for a card arriving. Run `node build/render.js motioncues` before `lib/sfx_events.py`, which
-  mixes them well under the voice; run it again after every new voice take. Music stays under the title and the
-  close only. These sound levels have not been checked by ear yet: they count as verified only after the owner
-  listens to one real mix, so say so in the README's evidence boundary until then.
+- Motion sounds, when the job has motion segments: follow `.claude/skills/record-demo/references/MOTION.md` (studio root), Sound.
 
 ## Pacing
 
@@ -378,17 +348,9 @@ every claim supported? Also check timing drift, legibility, visual consistency, 
 run the `claim-checker` agent over the final talk track and on-screen text against the sources. Verify each
 finding before acting (L35). Log every finding with its disposition in the README. At most two rounds.
 
-In each round, between the rough cut and the final, also critique every motion segment yourself, as a harsh
-motion director rather than its author. Run `node build/render.js motionsheet review/motion` and
-`node build/render.js strip review/strip <t>` at each swap and fast move, open them, and add them to the review
-package. Sheet tiles are small, so also render one full-size still per segment (`node build/render.js stills
-review/stills <t>`) and judge legibility on it. Score each segment 1 to 10 on legibility at
-1920x1080, motion quality (springs, no dead frames), variety (something new every 2 to 4 seconds), composition,
-honesty labels (illustrative label visible, examples marked, no mock product screen or logo), sync with the
-narration, and accuracy of names and values (product and field names exactly as captured or documented, example
-values marked). A segment a viewer could mistake for a product screen fails honesty. List the three
-worst problems with timestamps and fix them before the next version. An honesty or legibility failure blocks the
-final, whatever the scores.
+When the job has motion segments, also critique each one in every round as `.claude/skills/record-demo/references/MOTION.md` (studio root), Critique,
+describes. A segment a viewer could mistake for a product screen fails honesty, and an honesty or legibility
+failure blocks the final, whatever the scores.
 
 ## Output
 
