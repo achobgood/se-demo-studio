@@ -7,8 +7,9 @@ to `logs/costs.jsonl`. This order was tested end to end on 2026-09-28.
 ## 0. Configure the job
 
 `job.json`: `title`, `disclosure` (player page), `budget_usd`, `hours`, `chrome_port` (assigned by new-job.sh),
-`app_url` (landing page for new tabs), `app_match` (URL fragment of the product tab), `theme` (`light`, `dark`,
-or `null`), `respell` (spoken form to written form, e.g. `{"S D WAN": "SD-WAN"}`), and `music` (see step 5).
+`app_url` (landing page for new tabs), `app_match` (URL fragment of the product tab), `sso` (`true` for a single
+sign-on app: no new tabs, adopt the signed-in one), `theme` (`light`, `dark`, or `null`), `respell` (spoken form to
+written form, e.g. `{"S D WAN": "SD-WAN"}`), and `music` (see step 5).
 
 ## 1. Browser, exploration, capture
 
@@ -16,6 +17,9 @@ or `null`), `respell` (spoken form to written form, e.g. `{"S D WAN": "SD-WAN"}`
 |---|---|
 | Start this job's Chrome (owner signs in) | `scripts/chrome.sh <slug>` (root); stop with `--stop` |
 | Explore in your own tab | `node capture/tab.js <tag> '<async JS using page, C, shot, text, dtext, sleep>'` |
+| Adopt the signed-in tab (no page load) | `ADOPT=<part of its address> node capture/tab.js <tag> '...'` (also for `rec.js`, `park.js`); with `sso: true` and no `ADOPT`, no new tab is opened |
+| Close stray tabs a click opened | `node capture/closeuntagged.js [--list] [--all]` (untagged tabs only; keeps the untagged product tab unless `--all`) |
+| Rehearse a take (nothing recorded) | `TAG=rec node capture/dry.js <take> capture/takes/<script>.js` -> `MARK` lines and `capture/dry/<take>.json` |
 | Park a tab in a take's starting state (not recorded) | `node capture/park.js <name>` (states listed in its `PARK`) |
 | Record a take | `TAG=rec node capture/rec.js <take> capture/takes/<script>.js` |
 | Contact sheet of a take | `python3 lib/recsheet.py <take> 5 20 35 ...` (recording seconds) -> `review/sheet_<take>.jpg` |
@@ -27,13 +31,16 @@ while running), restart this job's Chrome with `scripts/chrome.sh <slug> --stop`
 The signed-in session survives a restart.
 
 A take script (`capture/takes/example_take.js`) receives `page, C, mv, click, clickLoc, type, typed, wheel, mark,
-sleep, dtext`. `mark('name')` drops a labeled timestamp into `log.json` that you can find later. Output:
+sleep, dtext`. `mark('name')` drops a labeled timestamp into `log.json` that you can find later, and `click(x, y, ms,
+{ mark: 'name' })` (or `clickLoc(loc, ms, { mark })`) drops one at the moment of the press. Every take ends by
+printing its marks in recording seconds, the clock `build/edit.py` and `lib/frameat.py` use. Output:
 `capture/rec/<take>/NNNNN.jpg` plus `log.json` (frame times, pointer track, clicks, keys).
 
 Size each take to the draft narration before recording it: the actions and waits between two cue words must fit
 the time those words take to say, about 0.4 s a word as a starting point (a 20-word paragraph is about 8 s of
 clicks). A take that runs much longer than its words gets squeezed by the edit (keys dropped, or a speed-up the
-narration never mentions) and usually has to be recorded again. Plan any long wait as a labelled speed-up.
+narration never mentions) and usually has to be recorded again. Plan any long wait as a labelled speed-up. Rehearse
+with `capture/dry.js` and compare its MARK times with the words, then check the edit with `lib/fit_report.py`.
 
 A link inside an embedded product page can open a new tab and break the single screen share: set `target=_self`
 on the anchor before clicking (see `examples/cloud-control-se-demo/code/take_example.js`) (L17).
@@ -120,7 +127,8 @@ raw PCM; take.py converts it.
 
 | Step | Command |
 |---|---|
-| Map takes to narration time | edit `build/edit.py` (CLIPS, RAMPS, SHOTS) using `S()`, `E()`, `W()` |
+| Map takes to narration time | edit `build/edit.py` (CLIPS, RAMPS, SHOTS) using `S()`, `E()`, `W()` (`W('No', 'seg', exact=True)` in Python, `W('No', 'seg', { exact: true })` in story.js, for a whole-word match) |
+| Does the footage fit the words? | `python3 lib/fit_report.py [clip ...]` before `build_clips.py`: per key pair, timeline and recording spans, slope, words spoken; FAST (over 1.5x, no RAMPS label), RAMP, HOLD, CUT |
 | Build 30 fps clips | `python3 lib/build_clips.py` -> `assets/clips/<clip>/`, `build/footage.json` |
 | Blur redaction regions | `python3 lib/redact.py [clip ...]` (regions in `build/edit.py` REDACT; rerun after every `build_clips.py`, which rebuilds clips from the raw frames) |
 | Add cursor, clicks, keys | `python3 lib/cursor_tracks.py` -> `build/footage.js`, `build/cues.js` |
@@ -145,6 +153,10 @@ How to find the concept first and the rules are in references/MOTION.md; the sta
 
 Rerun `lib/cursor_tracks.py` after any change to cues or clips; the page reads `footage.js` and `cues.js`.
 
+`W()` matches by prefix, so it prints `WARNING cue 'No' in <seg> matched 'Now' ...` (in story.js: a `CONSOLE` line) when
+the word it found is longer than the cue: pass `exact` or write the whole word. A camera key too near the edge for
+its zoom prints `camera key <i> ... is clamped ... Paste [t, x, y, zoom]` on any still: paste that key.
+
 Treat these printed warnings as errors (L57): `WARNING <clip>: key ... dropped` (a cue word matched too early),
 `WARNING shots: ... gap` and `WARNING shots: ... holds still` (from `build_clips.py`). A RAMPS label names what was
 compressed ("about 80 seconds of waiting"); a duration stated as fact comes from the system's timestamps (L51).
@@ -158,7 +170,7 @@ in timeline seconds), not to word times: word-keyed moves drift onto the wrong c
 |---|---|
 | Click and key sounds | `python3 lib/sfx.py` (once) |
 | Motion sound cues | `node build/render.js motioncues` -> `build/motion_cues.json` (from the `sfx` fields; run before `sfx_events.py`) |
-| Sound cue sheet | `python3 lib/sfx_events.py` (merges `build/motion_cues.json` when present, well under the voice) |
+| Sound cue sheet | `python3 lib/sfx_events.py` (merges `build/motion_cues.json` when present, well under the voice; drops clicks and keys within 60 ms of the previous one, which a jump cut stacks) |
 | Music bed | `python3 lib/music.py google/lyria-3-pro-preview prompt.txt audio/music/bed1` (make 2 or 3, judge them) |
 | Mix and master | `python3 lib/mix.py out/mix.wav` (-16 LUFS; music windows from job.json, ducked under voice) |
 
@@ -207,6 +219,9 @@ label sits just right of its ring. After `ended` the card shrinks to its header.
 
 - `lib/chat.py MODEL prompt.txt out.json frames...`: send frames or audio to a reviewer model.
 - `lib/grid.py out.jpg 3 files...`: contact sheet of any images.
+- `lib/blur_copy.py IN OUT x y w h [...] [--css]`: a copy of an image with boxes pixelated and blurred (for the
+  storyboard sheet; `--css` for 1920-wide coordinates on a device-scale-2 screenshot; PNG output leaves the rest
+  of the image exactly as it was).
 - The `claim-checker` agent: checks the talk track and on-screen text against `research/SOURCES.md`.
 - Style reference frames and downloads for `research/STYLE_GUIDE.md`: references/MOTION.md, Style guide.
 

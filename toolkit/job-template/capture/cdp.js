@@ -1,6 +1,7 @@
 // Attach to this job's dedicated, signed-in Chrome over the DevTools protocol (never launch a second browser
 // on the same profile). Settings come from job.json: chrome_port, app_url (landing page), app_match (a URL
-// fragment that identifies the product tab), theme ("light" | "dark" | null).
+// fragment that identifies the product tab), theme ("light" | "dark" | null), sso (true: never open a new tab;
+// adopt the signed-in one with ADOPT=<part of its address>).
 const path = require('path');
 const fs = require('fs');
 const JOB = path.resolve(__dirname, '..');
@@ -71,8 +72,20 @@ async function shot(page, name, dir) {
 // document.body.innerText misses).
 const DTEXT = n => { const out = []; const walk = r => { for (const c of r.childNodes) { if (c.nodeType === 3) out.push(c.textContent); else if (c.nodeType === 1) { const st = getComputedStyle(c); if (st.display === 'none') continue; if (c.shadowRoot) walk(c.shadowRoot); walk(c); if (/^(DIV|P|LI|TR|H\d|BR|SECTION)$/.test(c.tagName)) out.push('\n'); } } }; walk(document.body); return out.join('').replace(/\n\s*\n+/g, '\n').slice(-n); };
 // Find (or create) the tab tagged with window.name === tag, so parallel agents never share a tab.
-async function tagged(ctx, tag) {
-  for (const p of ctx.pages()) { try { if (await p.evaluate(() => window.name) === tag) return p; } catch (e) {} }
+// With no such tab: ADOPT=<address fragment> (or opts.adoptUrl) tags the open untagged tab whose address contains
+// it, in place with no page load. With sso: true in job.json a new tab is refused (it would land on the sign-in page).
+async function tagged(ctx, tag, opts = {}) {
+  const tabs = [];
+  for (const p of ctx.pages()) { let n = '?'; try { n = await p.evaluate(() => window.name); } catch (e) {} if (n === tag) return p; tabs.push({ p, n }); }
+  const open = () => tabs.map(t => `  ${t.p.url().slice(0, 80)}  tag ${JSON.stringify(t.n)}`).join('\n') || '  (none)';
+  const frag = opts.adoptUrl || process.env.ADOPT;
+  if (frag) {
+    const t = tabs.find(t => t.n === '' && t.p.url().includes(frag));
+    if (!t) throw new Error(`no untagged tab whose address contains "${frag}" to adopt as "${tag}". Open tabs:\n${open()}`);
+    await t.p.evaluate(x => { window.name = x; }, tag);
+    console.log(`adopted ${t.p.url().slice(0, 100)} as "${tag}"`); return t.p;
+  }
+  if (CFG.sso) throw new Error(`no tab tagged "${tag}" and job.json has sso: true, so no new tab is opened: a new tab would land on the sign-in page. Adopt the signed-in tab instead: ADOPT=<part of the signed-in tab's address> node capture/tab.js ${tag} '...'\nOpen tabs:\n${open()}`);
   const page = await ctx.newPage();
   await page.goto(CFG.app_url, { waitUntil: 'domcontentloaded' });
   await page.evaluate(t => { window.name = t; }, tag); await sleep(6000);

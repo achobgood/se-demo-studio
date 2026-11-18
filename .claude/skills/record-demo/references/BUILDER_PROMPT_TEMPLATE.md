@@ -250,9 +250,10 @@ imitate a product screen.
   NEEDED:". In apps with single sign-on, record in the long-lived signed-in tab, navigate by in-app clicks, and
   park the tab in each take's starting state beforehand with `capture/park.js`; no page loads mid-take (L49).
   Only that original signed-in tab may work there: a new tab, including the one a new tag opens, can land on the
-  sign-in page. Explorers and takes adopt the existing tab (tag it in place, with no page load) instead of opening
-  their own; when only one tab works, explorers take turns in it, one driving at a time, or each adopts a tab that
-  an in-app click opened from it. Probe once before planning exploration around separate tabs.
+  sign-in page. Set `"sso": true` in job.json, so no tag opens a new tab, and have explorers and takes adopt the
+  existing tab instead (`ADOPT=<part of its address>`, which tags it in place with no page load); when only one tab
+  works, explorers take turns in it, one driving at a time, or each adopts a tab that an in-app click opened from it.
+  Probe once before planning exploration around separate tabs.
 - Time windows: {{SCHEDULE: when takes that depend on a live system can run, with the time zone, e.g. "any time"
   or "Mon to Fri 9 AM to 5 PM America/Chicago"}}. Check the clock in that time zone before each such take (L40).
 {{OPTIONAL, only when the owner performs live actions during takes:

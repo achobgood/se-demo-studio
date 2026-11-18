@@ -1,6 +1,8 @@
 # Helpers for build/edit.py: read narration cues so every footage key is expressed in narration time.
 #   S('name') / E('name')  start / end of a segment on the final timeline
-#   W('word', 'segment', n=1, end=False)  time of the n-th word starting with 'word' inside a segment
+#   W('word', 'segment', n=1, end=False, exact=False)  time of the n-th word starting with 'word' inside a segment;
+#       exact=True matches the whole word, so 'No' never lands on 'Now'. A prefix match on a longer word prints a
+#       WARNING once per distinct call.
 import json, os, re
 from common import JOB
 C = json.load(open(os.path.join(JOB, 'build', 'cues.json')))
@@ -8,12 +10,18 @@ SEG = {s['name']: s for s in C['segments']}
 _norm = lambda s: re.sub(r'[^a-z0-9]', '', s.lower())
 def S(n): return SEG[n]['t0']
 def E(n): return SEG[n]['t1']
-def W(word, seg=None, n=1, end=False):
-    c = 0
+_warned = set()
+def W(word, seg=None, n=1, end=False, exact=False):
+    c, k = 0, _norm(word)
     for x in C['words']:
-        if (seg is None or x['seg'] == seg) and _norm(x['w']).startswith(_norm(word)):
+        v = _norm(x['w'])
+        if (seg is None or x['seg'] == seg) and (v == k if exact else v.startswith(k)):
             c += 1
-            if c == n: return x['e'] if end else x['t']
+            if c == n:
+                if len(v) > len(k) and (word, seg, n, end) not in _warned:
+                    _warned.add((word, seg, n, end))
+                    print("WARNING cue %r in %s matched %r at %.2f s; pass exact, or write the whole word" % (word, seg, x['w'], x['t']))
+                return x['e'] if end else x['t']
     raise KeyError('cue word not found: %r in segment %r (#%d)' % (word, seg, n))
 def mono(keys, clip=''):
     # drop keys that would run backwards in timeline time (an out-of-order pair snaps the picture for a frame),

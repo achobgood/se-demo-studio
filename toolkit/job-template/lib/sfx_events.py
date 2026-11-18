@@ -23,4 +23,13 @@ if os.path.exists('build/motion_cues.json'):
     for kind, t, g in json.load(open('build/motion_cues.json')):
         if kind in MOTION_CAP: ev.append([kind, round(t, 3), min(g, MOTION_CAP[kind])]); nm += 1
         else: print('skipped motion cue with unknown sound:', kind)
-ev.sort(key=lambda e: e[1]); json.dump(ev, open('build/sfx_events.json', 'w')); print(len(ev), 'events (%d from motion cues)' % nm)
+ev.sort(key=lambda e: e[1])
+# clicks and keys inside a jump cut in build/edit.py map to one timeline moment and would play stacked: drop a click
+# or key within 60 ms of the previous kept click or key (motion cues are always kept)
+kept, last, nd = [], None, 0
+for e in ev:
+    if e[0] in MOTION_CAP: kept.append(e); continue
+    if last is not None and e[1] - last < .06: nd += 1; continue
+    kept.append(e); last = e[1]
+ev = kept; json.dump(ev, open('build/sfx_events.json', 'w'))
+print(len(ev), 'events (%d from motion cues; %d stacked clicks or keys within 60 ms dropped)' % (nm, nd))

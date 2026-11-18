@@ -7,6 +7,7 @@
   "chrome_port": 9333,
   "app_url": "https://example.com/",
   "app_match": "example.com",
+  "sso": false,
   "theme": "light",
   "respell": {},
   "music": {"file": "", "level_db": -9, "windows": [["intro", "plan"], ["close", null]]}

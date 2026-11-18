@@ -193,12 +193,23 @@ if (new URLSearchParams(location.search).get('words') === '0') {
 // ---------- Cue helpers for story.js and scenes.js ----------
 const SG = n => { if (!(CUES.segments || []).length) throw new Error(NO_TAKE); const s = CUES.segments.find(s => s.name === n); if (!s) throw new Error('segment not found: ' + n); return s; };
 const S0 = n => SG(n).t0, S1 = n => SG(n).t1;
-// time of the n-th word starting with `w`, optionally inside one segment
-const W = (w, seg = null, n = 1, end = false) => {
+// time of the n-th word starting with `w` (lowercased, a-z0-9 only), optionally inside one segment.
+// W(w, seg, n, end, exact) or W(w, seg, { n, end, exact }); exact matches the whole word, so 'No' never lands on 'Now'.
+// A prefix match on a longer word warns once per distinct call (console.error, which render.js prints as CONSOLE).
+const W_WARNED = new Set();
+const W = (w, seg = null, n = 1, end = false, exact = false) => {
+  if (n && typeof n === 'object') ({ n = 1, end = false, exact = false } = n);
   const norm = s => s.toLowerCase().replace(/[^a-z0-9]/g, '');
   if (!(CUES.words || []).length) throw new Error(NO_TAKE);
-  let c = 0;
-  for (const x of CUES.words) if ((!seg || x.seg === seg) && norm(x.w).startsWith(norm(w)) && ++c === n) return end ? x.e : x.t;
+  const k = norm(w); let c = 0;
+  for (const x of CUES.words) {
+    const v = norm(x.w);
+    if ((!seg || x.seg === seg) && (exact ? v === k : v.startsWith(k)) && ++c === n) {
+      const id = [w, seg, n, end].join('|');
+      if (v.length > k.length && !W_WARNED.has(id)) { W_WARNED.add(id); console.error(`cue '${w}' in ${seg} matched '${x.w}' at ${x.t.toFixed(2)} s; pass exact, or write the whole word`); }
+      return end ? x.e : x.t;
+    }
+  }
   throw new Error('cue not found: ' + w + ' in ' + seg);
 };
 const TOTAL = CUES.total;

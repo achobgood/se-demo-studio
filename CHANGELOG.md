@@ -32,6 +32,21 @@ that `scripts/setup.sh` prints.
   `build/call.js`). Template files: `lib/mix.py` adds the call track when `build/call_place.json` exists and no
   longer assumes the music is input 2; `lib/deliver.py` merges the call's labelled lines into the captions;
   `build/engine.js` `Callout` takes a `gutter` for labels on the right.
+- Small capture and edit tools (PIPELINE.md lists each):
+  - `capture/dry.js` rehearses a take with no screencast (`DRY=1` in `capture/rec.js`), printing marks and writing
+    `capture/dry/<take>.json`; `click()` and `clickLoc()` take `{ mark: 'name' }` for a mark at the press; every
+    take ends by printing its marks in recording seconds.
+  - Single sign-on tabs: `ADOPT=<part of the address>` makes `C.tagged()` (so `tab.js`, `rec.js`, `park.js`) tag the
+    open signed-in tab with no page load; new job.json key `sso: true` refuses to open a new tab. New
+    `capture/closeuntagged.js` closes stray untagged tabs and keeps the untagged product tab unless `--all`.
+  - `W()` in `build/engine.js` and `lib/timeline.py` takes `exact`, and warns when a prefix match lands on a longer
+    word ("No" matched "Now").
+  - New `lib/fit_report.py` compares each key pair's recording span with its narration before `build_clips.py`,
+    flagging footage over 1.5x that no RAMPS label covers.
+  - `build/scenes.js` (**mixed**, merged three ways on upgrade): a clamped camera key prints the key to paste.
+  - `lib/sfx_events.py` drops click and key sounds within 60 ms of the previous one (stacked by jump cuts).
+  - New `lib/blur_copy.py` writes a blurred copy of a screenshot for the storyboard sheet (no PIL; stays inside
+    ffmpeg's blur limits for any box size).
 
 - Redoing a finished job: the record-demo skill makes a new job from the current template and treats the old job as
   input; continuing a job runs `scripts/upgrade-job.sh <slug> --check` before any newer template file goes in. The
