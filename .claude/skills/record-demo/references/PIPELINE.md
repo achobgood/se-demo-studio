@@ -165,6 +165,34 @@ in timeline seconds), not to word times: word-keyed moves drift onto the wrong c
 job.json `music`: `{"file": "audio/music/bed1.wav", "level_db": -9, "windows": [["intro", "plan"], ["close", null]]}`.
 Each window runs from the first segment's start to the second segment's end (`null` = to the end).
 
+### Recorded call (only when the video plays a call)
+
+A call recorded as two clean tracks (`audio/calls/<name>_agent.wav` and `<name>_caller.wav`, as `capture/caller.js`
+records them) plays on the timeline with a call card, speaker-labelled captions, and rings on the lines it matches.
+Each of the three parts stays off until its file exists, so a job without a call is unchanged.
+
+| Step | Command |
+|---|---|
+| Turns, silence-only cuts, mix | `python3 lib/call_prep.py <name> [--maxgap 99] [--stt]` -> `audio/calls/<name>_mix.wav`, `build/call_<name>.json` (`--maxgap 99` keeps every pause; `--stt` is the paid word-timing step) |
+| Fix misheard words | add `"text_fixed"` to a turn in `build/call_<name>.json` |
+| Place it and make caption lines | `python3 lib/call_lines.py <name> <after_segment> [lead] [gain_db] --agent '<label>' --caller '<label>'` -> `build/call_place.json`, `build/call_lines.json`, `build/call.js` |
+
+The call starts `lead` seconds (default 0.6) after `<after_segment>` ends; give that segment a `gap` in
+`script/segments.json` that covers the call, then rebuild the voice. Label the caller "simulated" when a model plays
+it. `lib/mix.py` adds the call when `build/call_place.json` exists, and `lib/deliver.py` adds its lines, with their
+speaker labels, to the captions when `build/call_lines.json` exists. On screen, set `STORY.call` in `build/story.js`
+(the card and rings are in `build/scenes.js`, styled by `.callcard` in `build/comp.html`):
+
+```js
+call: { from: CALL.t0 - 0.2, to: CALL.t1 + 3.2, ended: CALL.t1 + 0.6, names: CALL.names, lines: CALL.lines,
+        title: 'Live call', endTitle: 'Call ended', gutter: 1500,
+        src: [[CALL.t0 + 4.4, CALL.t0 + 9.0, { x: 620, y: 344, w: 520, h: 21 }, 'Greeting rule']] },
+```
+
+`src` rings use the take's CSS pixels; measure each box on the recorded frame. `gutter` is the x where every ring
+label starts, so the labels form one column beside the text and never sit on a neighbouring line; without it a
+label sits just right of its ring. After `ended` the card shrinks to its header.
+
 ## 6. Render and deliver
 
 | Step | Command |

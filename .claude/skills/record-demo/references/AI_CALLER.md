@@ -121,7 +121,8 @@ will call any number, and ChatGPT will talk to whoever answers.
    `[...document.querySelectorAll('[data-user-message-bubble], [data-markdown-text-style="assistant-message"]')]`
    in page order; a user bubble is what ChatGPT heard, an assistant message is what it said. Save it to
    `audio/calls/<name>_transcript.txt`. Voice turns can reach the page late, so the audio tracks, not the
-   transcript, decide whether the call was live.
+   transcript, decide whether the call was live. To play the call in the video, with a call card and captions,
+   follow PIPELINE.md, "Recorded call".
 
 ## After the job
 

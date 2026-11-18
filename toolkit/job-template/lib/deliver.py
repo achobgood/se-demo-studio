@@ -1,7 +1,7 @@
 # Captions and player: out/<name>.srt and .vtt from the final word timings (words corrected to the script text),
 # and player.html with chapter chips and a clickable narration list (chapters come from script/segments.json).
 # usage: python3 lib/deliver.py <video filename inside out/>
-import base64, difflib, html, json, re, sys
+import base64, difflib, html, json, os, re, sys
 from common import job_config
 from speech import paragraphs
 video = sys.argv[1]; base = video.rsplit('.', 1)[0]
@@ -25,9 +25,16 @@ for i, w in enumerate(stoks):
     cur.append(i); line = ' '.join(stoks[j] for j in cur)
     if re.search(r'[.?!]$', w) or len(line) > 74 or (len(line) > 40 and re.search(r'[,;:]$', w)): groups.append(cur); cur = []
 if cur: groups.append(cur)
+CUE = [(timed[g[0]][0], max(timed[g[-1]][1], timed[g[0]][0] + .8), ' '.join(stoks[j] for j in g)) for g in groups]
+# A recorded call (optional): its caption lines with speaker labels, from lib/call_lines.py (build/call_lines.json,
+# labels in build/call_place.json), merged in time order with the narration's.
+if os.path.exists('build/call_lines.json'):
+    lab = {'agent': 'AI Agent', 'caller': 'Caller'}
+    if os.path.exists('build/call_place.json'): lab.update(json.load(open('build/call_place.json')).get('labels') or {})
+    for t0, t1, spk, text in json.load(open('build/call_lines.json')): CUE.append((t0, max(t1, t0 + .8), '%s: %s' % (lab.get(spk, spk), text)))
+    CUE.sort()
 srt, vtt = [], ['WEBVTT', '']
-for k, g in enumerate(groups, 1):
-    t0 = timed[g[0]][0]; t1 = max(timed[g[-1]][1], t0 + .8); words = ' '.join(stoks[j] for j in g)
+for k, (t0, t1, words) in enumerate(CUE, 1):
     if len(words) > 42:
         cut = words.rfind(' ', 0, len(words) // 2 + 8); words = words[:cut] + '\n' + words[cut + 1:]
     srt.append('%d\n%s --> %s\n%s\n' % (k, fmt(t0), fmt(t1), words)); vtt += ['%s --> %s' % (fmt(t0, '.'), fmt(t1, '.')), words, '']
@@ -46,4 +53,4 @@ page = (open('lib/player_template.html').read().replace('{{TITLE}}', html.escape
         # captions inline: Chrome will not load a .vtt file next to a page opened from disk
         .replace('{{VTT}}', 'data:text/vtt;base64,' + base64.b64encode('\n'.join(vtt).encode()).decode())
         .replace('{{CHAPTERS}}', chap_html).replace('{{LIST}}', list_html))
-open('player.html', 'w').write(page); print('captions', len(groups), 'cues; player.html with', len(chaps), 'chapters')
+open('player.html', 'w').write(page); print('captions', len(CUE), 'cues; player.html with', len(chaps), 'chapters')

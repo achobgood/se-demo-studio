@@ -20,6 +20,14 @@ that `scripts/setup.sh` prints.
   - Takes sized to the narration, about 0.4 s a word between two cue words (PIPELINE.md, `capture/takes/example_take.js`).
   - `knowledge/README.md`: pages that show licensing or tenant-admin state get a Navigation line as well as a Trap.
   - SUPERVISING.md: when the owner sets a hold, ask which work it covers before acting on it.
+- Recorded calls in the job template, off unless a job sets them (PIPELINE.md, "Recorded call"): new
+  `lib/call_prep.py` (two tracks to turns, silence-only cuts, a mix, optional word times) and `lib/call_lines.py`
+  (places the call after a segment and writes caption lines with speaker labels), and a `build/call.js` stub. This
+  release changes two `mixed` files, three-way merged on upgrade: `build/scenes.js` (call card with speaker labels,
+  rings on matched lines with labels in a fixed `gutter` column) and `build/comp.html` (`.callcard` styles, loads
+  `build/call.js`). Template files: `lib/mix.py` adds the call track when `build/call_place.json` exists and no
+  longer assumes the music is input 2; `lib/deliver.py` merges the call's labelled lines into the captions;
+  `build/engine.js` `Callout` takes a `gutter` for labels on the right.
 
 - Redoing a finished job: the record-demo skill makes a new job from the current template and treats the old job as
   input; continuing a job runs `scripts/upgrade-job.sh <slug> --check` before any newer template file goes in. The

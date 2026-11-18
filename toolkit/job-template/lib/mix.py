@@ -22,13 +22,20 @@ fc = [f'[0:a]aresample={SR},highpass=f=70,equalizer=f=220:t=q:w=1:g=-1.5,equaliz
       f'acompressor=threshold=-21dB:ratio=2.5:attack=5:release=120:makeup=2.5dB,apad=whole_dur={TOT},atrim=0:{TOT},asplit=2[vo][sc]',
       f'[1:a]aresample={SR},volume=-6dB,apad=whole_dur={TOT},atrim=0:{TOT}[fx]']
 mix_in = ['[vo]', '[fx]']
+# A recorded call (optional): both sides, already trimmed, placed on the timeline by lib/call_lines.py, which writes
+# build/call_place.json {"file": "audio/calls/NAME_mix.wav", "t0": seconds, "gain_db": 0}. Not ducked by the voice.
+if os.path.exists('build/call_place.json'):
+    CP = json.load(open('build/call_place.json')); k = len(inputs) // 2; inputs += ['-i', CP['file']]; ms = int(CP['t0'] * 1000)
+    fc.append(f"[{k}:a]aresample={SR},highpass=f=90,volume={CP.get('gain_db', 0)}dB,adelay={ms}|{ms},"
+              f"apad=whole_dur={TOT},atrim=0:{TOT},aformat=channel_layouts=mono[call]")
+    mix_in.append('[call]')
 if M.get('file') and M.get('windows'):
-    inputs += ['-i', M['file']]; lvl = M.get('level_db', -9); parts = []
+    inputs += ['-i', M['file']]; mi = len(inputs) // 2 - 1; lvl = M.get('level_db', -9); parts = []
     for k, (a, b) in enumerate(M['windows']):
         t0 = 0.0 if k == 0 and a == C['segments'][0]['name'] else max(0, SEG[a]['t0'] - 1.0)
         t1 = TOT if b is None else min(TOT, SEG[b]['t1'] + 1.5)
         d = t1 - t0; fi = 0 if t0 == 0 else 1.2
-        fc.append(f"[2:a]aresample={SR},atrim=0:{d},asetpts=PTS-STARTPTS,afade=t=in:d={fi},afade=t=out:st={max(0, d - 2.2)}:d=2.2,"
+        fc.append(f"[{mi}:a]aresample={SR},atrim=0:{d},asetpts=PTS-STARTPTS,afade=t=in:d={fi},afade=t=out:st={max(0, d - 2.2)}:d=2.2,"
                   f"volume={lvl}dB,adelay={int(t0 * 1000)}|{int(t0 * 1000)},apad=whole_dur={TOT},atrim=0:{TOT}[m{k}]")
         parts.append(f'[m{k}]')
     fc.append(''.join(parts) + f'amix=inputs={len(parts)}:normalize=0,aformat=channel_layouts=mono[mus]')

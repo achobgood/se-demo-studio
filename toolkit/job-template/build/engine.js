@@ -149,7 +149,7 @@ class Callout {
       else if (side === 'below-right') { tx = x1; ty = y1 + g; tr = 'translateX(-100%)'; }
       else if (side === 'above') { tx = x0; ty = y0 - g; tr = 'translateY(-100%)'; }
       else if (side === 'above-right') { tx = x1; ty = y0 - g; tr = 'translate(-100%, -100%)'; }
-      else if (side === 'right') { tx = x1 + g; ty = (y0 + y1) / 2; tr = 'translateY(-50%)'; }
+      else if (side === 'right') { tx = this.o.gutter != null ? this.f.map(this.o.gutter, this.box.y)[0] : x1 + g; ty = (y0 + y1) / 2; tr = 'translateY(-50%)'; }
       else if (side === 'left') { tx = x0 - g; ty = (y0 + y1) / 2; tr = 'translate(-100%, -50%)'; }
       this.tag.style.left = tx + 'px'; this.tag.style.top = ty + 'px';
       this.tag.style.opacity = o;

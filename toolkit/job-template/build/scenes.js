@@ -125,3 +125,35 @@ scene(t => {
   const at = CLS.cta_at || CLS.from + 1.5; const c = ramp(t, at - .3, at + .4, E.out); set(clCta, c, `translateX(-50%) translateY(${lerp(14, 0, c)}px)`);
   set(clFine, ramp(t, CLS.from + 1.5, CLS.from + 2.3));
 });
+
+// ---------- 6. Recorded call (optional): call card with speaker-labelled captions, and rings on the lines it matches ----------
+// Off unless story.js sets STORY.call. lib/call_lines.py writes build/call.js (CALL: t0, t1, lines, names) from a
+// prepared call (lib/call_prep.py); PIPELINE.md, "Recorded call". In story.js:
+// call: { from, to, ended, title: 'Live call', endTitle: 'Call ended', names: CALL.names, lines: CALL.lines,
+//         gutter: 1500, src: [[t0, t1, { x, y, w, h }, 'label'], ...] }
+// lines: [t0, t1, 'agent' | 'caller', text] on the timeline. src rings use capture coordinates (CSS px of the take);
+// `gutter` (or a box's own `gutter`) is the capture x where every ring label starts, so labels line up in one column
+// beside the text they point at and never sit on a neighbouring line. Without it a label sits right of its ring.
+if (STORY.call) {
+  const CA = STORY.call, CC = el('div', 'callcard', FT);
+  const hd = el('div', 'hd', CC, `<span class="dot"></span><span class="tt">${CA.title || 'Live call'}</span>`);
+  const tt = hd.querySelector('.tt'), dot = hd.querySelector('.dot');
+  const spk = el('div', 'spk', CC, ''), ln = el('div', 'ln', CC, '');
+  const NAMES = Object.assign({ agent: 'AI Agent', caller: 'Caller' }, CA.names || {});
+  const rings = (CA.src || []).map(([a, b, box, label]) => [a, b, new Callout(F, label, box,
+    { side: box.side || 'right', pad: box.pad ?? 3, gutter: box.gutter ?? CA.gutter })]);
+  scene(t => {
+    const o = env(t, CA.from, CA.to, .5, .5); set(CC, o, `translateY(${lerp(16, 0, ramp(t, CA.from, CA.from + .6, E.out))}px)`);
+    if (o > 0) {
+      const ended = CA.ended != null && t >= CA.ended;
+      tt.textContent = ended ? (CA.endTitle || 'Call ended') : (CA.title || 'Live call'); dot.style.background = ended ? '#8b95a8' : '#34d399';
+      const cur = CA.lines.filter(l => t >= l[0] - .05).pop();
+      if (cur && !ended) {   // the line stays up until the next one; it dims a little once spoken
+        spk.className = 'spk ' + cur[2]; spk.textContent = NAMES[cur[2]] || cur[2]; ln.textContent = cur[3];
+        ln.style.opacity = t < cur[1] + 1.2 ? 1 - .2 * ramp(t, cur[1], cur[1] + 1.2) : .8;
+      } else { spk.textContent = ''; ln.textContent = ''; }
+      spk.style.display = ended ? 'none' : ''; ln.style.display = ended ? 'none' : '';   // an ended card is its header only
+    }
+    for (const [a, b, c] of rings) { if (t >= a - .3 && t < b + .3) c.draw(t, a, b); else c.draw(-99, 0, .1); }
+  });
+}
