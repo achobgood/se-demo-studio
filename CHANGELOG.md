@@ -5,6 +5,22 @@ that `scripts/setup.sh` prints.
 
 ## Unreleased
 
+- Lessons from the Contact Center AI agent redo (guidance only):
+  - MOTION.md: a fourth firm rule, read and relate: every drawn object can be named by a stranger with no label at
+    its smallest size on screen, and stands for something real in that demo. The concept card's question 3 gains a
+    prop line per object (what it stands for, the public-sign convention it follows, its smallest size); each object
+    gets an Object reading from a crop at that size; a misread is a failed drawing, at least P1, never polish.
+    `blind-reader` answers "What is this object?" for single-object stills. STAGE_ENGINE.md names the fourth rule.
+    Lesson L108.
+  - Redoing a finished job (SKILL.md Step 0, INTERVIEW.md "Redo of a finished job"): check what raw takes, clips,
+    call audio, and records the old video points to still exist before offering reuse, and write
+    `research/WHAT_CHANGED.md` for the new job.
+  - Single sign-on: only the original signed-in tab may work, so explorers and takes adopt it instead of opening a
+    new tab (builder prompt Signed-in capture, `demo-explorer`).
+  - Takes sized to the narration, about 0.4 s a word between two cue words (PIPELINE.md, `capture/takes/example_take.js`).
+  - `knowledge/README.md`: pages that show licensing or tenant-admin state get a Navigation line as well as a Trap.
+  - SUPERVISING.md: when the owner sets a hold, ask which work it covers before acting on it.
+
 - Redoing a finished job: the record-demo skill makes a new job from the current template and treats the old job as
   input; continuing a job runs `scripts/upgrade-job.sh <slug> --check` before any newer template file goes in. The
   storyboard now carries a "Motion decisions" list (each step the screens cannot show, yes or no on a motion

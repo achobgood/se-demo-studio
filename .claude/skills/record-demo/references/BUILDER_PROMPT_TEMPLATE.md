@@ -93,7 +93,8 @@ note. It sets positioning; it does not authorize a technical claim the sources d
    the AI assistant questions if there is one, open workflows, follow an incident from alert to resolution, and
    read existing threads, dashboards, and saved investigations: other demo users and the demo's authors show
    which questions the data answers well and how long answers take. Use subagents (the `demo-explorer` agent)
-   for parallel exploration, at most two driving the browser at once, each in its own tagged tab (L12), and
+   for parallel exploration, at most two driving the browser at once, each in its own tagged tab (L12; with single
+   sign-on, an adopted tab, see Signed-in capture), and
    only one at a time doing anything that changes state. You own the final flow. Zoom with the app's own zoom and
    pan controls when it has them, and with the edit's camera push-in and pan on dense pages that have none; click
    elements to open their settings panels (L38). Avoid browser zoom (it reflows the layout); captures are at
@@ -248,6 +249,10 @@ imitate a product screen.
   shows one, delete the raw files (not just edit copies), log it in `logs/state_changes.md`, and print "LOGIN
   NEEDED:". In apps with single sign-on, record in the long-lived signed-in tab, navigate by in-app clicks, and
   park the tab in each take's starting state beforehand with `capture/park.js`; no page loads mid-take (L49).
+  Only that original signed-in tab may work there: a new tab, including the one a new tag opens, can land on the
+  sign-in page. Explorers and takes adopt the existing tab (tag it in place, with no page load) instead of opening
+  their own; when only one tab works, explorers take turns in it, one driving at a time, or each adopts a tab that
+  an in-app click opened from it. Probe once before planning exploration around separate tabs.
 - Time windows: {{SCHEDULE: when takes that depend on a live system can run, with the time zone, e.g. "any time"
   or "Mon to Fri 9 AM to 5 PM America/Chicago"}}. Check the clock in that time zone before each such take (L40).
 {{OPTIONAL, only when the owner performs live actions during takes:

@@ -14,7 +14,9 @@ One folder per product, named with a short slug (`knowledge/cloud-control/`). Ea
 - `PLATFORM_MAP.md`: how to drive the product's demo environment. The header gives the last verified date, the
   environment, the identity and role used, and the source jobs. Then: Navigation; What lives where; Real, staged,
   or empty; Actions that change state; Agent probe results (dated); Slow steps; Traps; Evidence that is easy to
-  overstate; Not yet explored.
+  overstate; Not yet explored. A page that shows licensing, entitlement, or tenant-admin state (a license-overage
+  panel on an overview page, for example) gets a line under Navigation, where the next build plans its click path,
+  as well as under Traps: filmed by accident, it becomes a licensing claim on screen.
 - `ASK_ROUTING.md`: customer asks mapped to candidate demo paths, in a table with the columns Customer ask,
   Candidate path, Evidence we have, and Recheck and stopping point. Read it at interview Step 1.
 

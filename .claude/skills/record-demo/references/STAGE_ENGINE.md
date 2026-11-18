@@ -2,7 +2,7 @@
 
 The build reference for motion segments: the engines, their helpers and kinds, camera keys, sizes, flags, palette
 mechanics, and render commands. Read `MOTION.md` (same folder) first: it decides what the viewer should see happen,
-and its firm rules (honesty, legibility, determinism) and Critique apply to everything built here. Paths are relative
+and its firm rules (honesty, legibility, determinism, read and relate) and Critique apply to everything built here. Paths are relative
 to the job folder unless they start with the studio root. This text moved here from MOTION.md.
 
 ## Building them

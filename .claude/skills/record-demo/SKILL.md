@@ -36,7 +36,11 @@ idea. A missing key or the wrong effort found after an hour of planning costs a 
    the studio gained since it was made), make a new job from the current template (Step 2, a new slug such as
    `<old-slug>-v2`) and treat the old job as input, not as the place to work. Read its `INTERVIEW.md`,
    `research/`, `STORYBOARD_READY.md`, and `ORCHESTRATOR_NOTES.md`, run a short interview on what should change,
-   and re-check every fact live (L90, L103). Plan it with what the studio can do now, including illustrative motion
+   and re-check every fact live (L90, L103). Before you offer to reuse anything, check what still exists: raw takes
+   (`capture/rec/`), edit clips (`assets/clips/`), call audio (`audio/calls/`), and each record the old video points
+   to, opened live (a history or debug row can expire, some after about 30 days). Offer only what survives, and
+   write `research/WHAT_CHANGED.md` in the new job as soon as it exists (references/INTERVIEW.md, Redo of a
+   finished job). Plan it with what the studio can do now, including illustrative motion
    for steps the product cannot show (Step 1 asks which). Copy narration or footage across only when the person
    wants them kept; to keep working in the old folder instead, run `scripts/upgrade-job.sh <slug> --check` first.
 3. **Setup.** Run `scripts/setup.sh`. If it does not end with "SETUP OK", walk them through

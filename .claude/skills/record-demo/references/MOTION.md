@@ -11,10 +11,11 @@ result still read as grey boxes (L104). A blind test on another job reached a go
 box-and-arrow drafts (L107). Treat everything here except the firm rules as a hypothesis until a film built this way
 is approved, and write down where it helped or failed you in the job's notes.
 
-**Firm, and everything else a default.** Three things are firm and are marked (firm) where they appear: honesty
+**Firm, and everything else a default.** Four things are firm and are marked (firm) where they appear: honesty
 (the Illustrative line, example values marked, nothing a viewer could take for a product screen), legibility (every
-line a viewer must read can be read, at its size and for its time on screen), and determinism (every frame from its
-time alone). Everything else (counts, sizes, durations, kinds of shot or transition) is a starting point. Each
+line a viewer must read can be read, at its size and for its time on screen), determinism (every frame from its
+time alone), and read and relate (every drawn object can be named by a stranger with no label at its smallest size
+on screen, and stands for something real in that demo; L108). Everything else (counts, sizes, durations, kinds of shot or transition) is a starting point. Each
 video's plan can be its own: a segment may have no pull-back or several, one transition kind or many, one long shot
 or a quick run of them. When you depart from a default, write what you chose and why in `research/STYLE_GUIDE.md`.
 
@@ -46,7 +47,7 @@ an idea comes from.
   shows an illustration.
 - A segment the interview did not ask for is named in STORYBOARD_READY.md with the reason it helps, so the owner
   approves it at the storyboard.
-- The job's own PROMPT.md and INTERVIEW.md win over this file, except on the three firm rules. If they limit motion
+- The job's own PROMPT.md and INTERVIEW.md win over this file, except on the four firm rules. If they limit motion
   (for example to the cards only), you may still propose a segment at the storyboard with its reason; it is built only
   if the owner approves it (owner decision, 2026-11-17).
 
@@ -106,6 +107,10 @@ forgettable (L104). Before any shot list, answer these five questions in `resear
 3. **Picture of the verb.** If this happened somewhere physical and you could watch it, what would you see? Name real
    objects whose behaviour is the explanation, and what each does at the moment of change. If a shape needs a label to
    say what it is, it is the wrong shape; labels name parts, they never explain them.
+   Then a prop line for every object you will draw (read and relate, firm): the real thing in this demo it stands for
+   (a setting on the real screen, an event in the real story or call, a line the product actually holds), the
+   public-sign convention it follows (for example a bicycle as on a bike-lane sign: two wheels, frame, seat,
+   handlebar), and its smallest size on screen. An object with nothing real to stand for is cut, not kept as filler.
 4. **Traveller.** The one thing that moves through every step and visibly changes state (one real request, one call,
    one alert, one record). Say what it looks like at each step, and how its last state answers its first.
 5. **Honesty line.** What the sources say actually happens, and where the picture must stop.
@@ -173,6 +178,11 @@ any voice take exists:
    the story's subject and verb (synonyms count). A picture that only passes with its words on fails. If it fails,
    change the picture, not the labels. Then send the same reader (SendMessage) the words-on stills and ask the Words
    on question (does any word contradict the picture or do the picture's job); it adds that section to the same file.
+   Read and relate (firm): for each drawn object, crop it out of a words-off still taken where it is smallest on
+   screen, at that size and not enlarged (`ffmpeg -v error -i <still> -vf crop=w:h:x:y review/blind/s3_obj/obj_1.jpg`,
+   numbered files that name no object), and ask a reader the Object question ("What is this object?"). A reader who
+   names it wrongly, or says it could be something else, has found a failed drawing: at least P1, never polish.
+   Redraw it from its prop line, or cut it.
    The builder always runs the reader. A brief that forbids research agents does not forbid it. If a brief forbids
    all subagents, say so in STORYBOARD_READY.md and ask the supervisor to run it.
 4. Send the concept card, the picture check, both sets of stills, and the reader's answer file to the storyboard.
@@ -317,6 +327,10 @@ The firm checks first; any failure blocks the final:
   for three misses by name: text overlapping during a swap, a state label that contradicts the value beside it, and a
   status name a stranger reads as the opposite state.
 - **Determinism**: `lib/lint_timeline.py` and `render.js same` are clean inside every stage.
+- **Read and relate**: every drawn object has a prop line and passed its Object reading (Think 2, step 3) as drawn
+  now, and no reader note in any pass says an object could be something else. A misread object is a failed drawing,
+  ranked at least P1 and never polish; redraw or cut it before the final. Log every reader note with its disposition
+  in the README.
 
 Then the concept, judged blind by the `blind-reader` agent, with no concept card and none of your notes. One reading
 takes at most 20 images (above 20 the model shrinks every image, so the reader refuses the 21st and lists the rest as
@@ -360,7 +374,7 @@ concept; a line being read holds still on purpose.
 
 Write each problem as `t=… · where · problem → exact change · what stays`, ranked P0 (unreadable, wrong, broken,
 dishonest, or the words-off reader could not say what happened), P1 (weakens the film: a dead stretch, a soft payoff,
-a seam that jumps), P2 (polish). After your fixes, a new reviewer marks each earlier note FIXED, PARTLY, or STILL
+a seam that jumps, an object a reader misnamed), P2 (polish). After your fixes, a new reviewer marks each earlier note FIXED, PARTLY, or STILL
 PRESENT.
 
 ## What did not work (do not repeat without a new idea)

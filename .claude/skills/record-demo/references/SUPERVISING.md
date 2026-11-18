@@ -78,6 +78,13 @@ builder's terminal ("New entry in ORCHESTRATOR_NOTES.md, read it now."). `write`
 To stop a live sequence mid-way, ask the builder to stop it without its reset step when the allowed change must
 hold for a retry; killing the runner yourself can reset that change between cause and effect (L53).
 
+## Holds from the owner
+
+When the owner sets a hold ("don't record or render until I approve"), ask which work it covers before you act on
+it or pass it on, with a recommended answer: screenshots during exploration, sketch stills for the storyboard
+(those are renders too), voice auditions, and the builder launch itself. Write their answer, in their words, in
+`SUPERVISOR.md` and in the builder's notes, and say what still runs meanwhile.
+
 ## The storyboard checkpoint
 
 This is the cheapest moment to fix a claim or a story. Check that `STORYBOARD_READY.md` holds the claim checker's

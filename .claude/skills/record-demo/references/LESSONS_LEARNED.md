@@ -466,3 +466,15 @@ L107. **Test new guidance blind, on a different job, before trusting it.** After
     drafts were still boxes and arrows, and it copied a worked example that happened to match its topic. The guidance
     had also carried the original job's own answer as an example. When guidance changes, have a fresh session use it
     on a job it was not written from, and read where it struggled; keep worked examples on topics no real job uses.
+
+## Read and relate (November 2026, a Contact Center AI agent redo with motion segments)
+
+L108. **Every drawn object must be recognisable without a label and stand for something real in the demo.** A
+    queue of waiting calls was drawn as four thin side-view chairs; at their size on screen they read as the letter
+    "h". A blind reader said the chairs could also be letter-like shapes, and the builder filed that as polish and
+    rendered two cuts with them. The owner asked what the odd shapes were and why they were there: motion graphics
+    exist to make the demo clearer, so every element must make sense to a viewer and belong to this demo. The
+    caller's phone in another segment was too faint to see until it changed colour. For each object, write a prop
+    line in the concept card (the real thing it stands for, the public-sign convention it follows, its smallest size
+    on screen), crop it at that size for an Object reading, and treat a misread as a failed drawing (MOTION.md, read
+    and relate, firm).

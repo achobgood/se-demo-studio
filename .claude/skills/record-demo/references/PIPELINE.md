@@ -30,6 +30,11 @@ A take script (`capture/takes/example_take.js`) receives `page, C, mv, click, cl
 sleep, dtext`. `mark('name')` drops a labeled timestamp into `log.json` that you can find later. Output:
 `capture/rec/<take>/NNNNN.jpg` plus `log.json` (frame times, pointer track, clicks, keys).
 
+Size each take to the draft narration before recording it: the actions and waits between two cue words must fit
+the time those words take to say, about 0.4 s a word as a starting point (a 20-word paragraph is about 8 s of
+clicks). A take that runs much longer than its words gets squeezed by the edit (keys dropped, or a speed-up the
+narration never mentions) and usually has to be recorded again. Plan any long wait as a labelled speed-up.
+
 A link inside an embedded product page can open a new tab and break the single screen share: set `target=_self`
 on the anchor before clicking (see `examples/cloud-control-se-demo/code/take_example.js`) (L17).
 

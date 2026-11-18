@@ -1,6 +1,6 @@
 ---
 name: blind-reader
-description: Reads a motion segment's frames blind (words-off stills, contact sheets, strips) and answers one fixed question, "In one sentence, what happened between the first and the last frame?", with a confidence line, into an answer file it is given. Opens images only, at most 20 per reading. Use at the signature-moment check (MOTION.md Think 2) and in Critique.
+description: Reads a motion segment's frames blind (words-off stills, contact sheets, strips) and answers one fixed question, "In one sentence, what happened between the first and the last frame?", with a confidence line, into an answer file it is given; for single-object stills it answers "What is this object?" instead. Opens images only, at most 20 per reading. Use at the signature-moment check (MOTION.md Think 2) and in Critique.
 model: claude-opus-5-5
 effort: high
 omitClaudeMd: true
@@ -164,6 +164,11 @@ Answer this question, in these exact words, and nothing in its place:
 
 Write the words-off answer to the answer file first. Only then open anything else the brief hands you for these:
 
+- Object: when the brief hands you stills that each show one drawn object and asks "What is this object?", answer
+  that question in these exact words for each image instead of the question above (one still has no "first and
+  last frame"). Per image: name the object in plain words, then say whether it could be something else and what
+  ("a ladder, or a railway track seen from above"). Each image is its own finding, under its file name. Do not say whether it is drawn
+  well; only what it is.
 - Words on: the same moment with words. Does any word contradict the picture? Is any word doing the picture's job
   (the story reads only because of a label)? Quote each word you name.
 - Shot by shot: for each shot (or group of cells), what happens, and roughly how much of the frame is empty
@@ -198,4 +203,6 @@ Budget: <n> of 20 images | <file> shrunk from <w> x <h>
 ```
 
 Add `## Words on`, `## Shot by shot`, `## Legibility`, or `## Against the concept card` below it only when asked.
+For an Object reading, the Question line reads "What is this object?" and each image gets its own
+`## <file name>` section with **It is:** and **Could also be:** (none, or what).
 End your reply with the same text you wrote to the file. No em dashes.

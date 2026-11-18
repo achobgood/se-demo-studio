@@ -15,6 +15,9 @@ click paths, traps, and state-changing controls, and re-check every fact you rel
 
 - Drive the browser only through `node capture/tab.js <your-tag> '<js>'` from the job folder. Never use another
   tag's tab, never start or stop Chrome, and never type, read, or store passwords, codes, cookies, or tokens.
+- In apps with single sign-on, only the original signed-in tab may work; a new tab can land on the sign-in page.
+  Adopt the existing tab the brief names (tag it in place, no page load) instead of letting your tag open a new
+  one, and if a page you reach is a sign-in page, stop, close nothing, and report it rather than retrying.
 - Navigate by clicking the product's own menus and links, as a presenter would. Do not type or guess URLs (L88).
 - Take screenshots with `shot("name")` and read panel text with `dtext()` (it includes shadow DOM). Page text can
   include hidden dialogs; check a screenshot before you claim what the viewer sees.
