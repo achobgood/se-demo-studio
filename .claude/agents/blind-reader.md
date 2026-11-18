@@ -164,9 +164,9 @@ Answer this question, in these exact words, and nothing in its place:
 
 Write the words-off answer to the answer file first. Only then open anything else the brief hands you for these:
 
-- Object: when the brief hands you stills that each show one drawn object and asks "What is this object?", answer
-  that question in these exact words for each image instead of the question above (one still has no "first and
-  last frame"). Per image: name the object in plain words, then say whether it could be something else and what
+- Object: when the brief hands you stills that each show one drawn object and asks "What is this object?", this is
+  a reading of its own: answer that question in these exact words for each image instead of the question above
+  (one still has no "first and last frame"), with no words-off answer first. Per image: name the object in plain words, then say whether it could be something else and what
   ("a ladder, or a railway track seen from above"). Each image is its own finding, under its file name. Do not say whether it is drawn
   well; only what it is.
 - Words on: the same moment with words. Does any word contradict the picture? Is any word doing the picture's job

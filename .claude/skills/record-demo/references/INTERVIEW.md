@@ -117,20 +117,27 @@ Ask this round right after round 2 when the environment is their own or the stor
 
 ## Redo of a finished job (ask only for a redo)
 
-Before any question that offers reuse ("keep the old takes?", "reuse the call?"), check what survives and say it
-in the question: raw takes in `capture/rec/`, edit clips in `assets/clips/`, call audio in `audio/calls/`, and each
-record the old video ends on or points to, opened live in the environment (a history or debug row can expire, some
-after about 30 days). Raw footage is often deleted after sign-off; when only the finished video survives, reuse
-means re-cutting that video, not new edits of old takes.
+Order: ask what should change and where the old video's environment is; create the new job early, as for the
+person's own environment, so every live look happens in its Chrome; check what survives; only then ask the reuse
+questions; write `WHAT_CHANGED.md` after the read-back.
 
-Once the new job exists, write `research/WHAT_CHANGED.md`, short, with these headings. The builder reads it first,
-instead of the old job's full README and script.
+Before any question that offers reuse ("keep the old takes?", "reuse the call?"), check what survives and say it in
+the question: raw takes in `capture/rec/`, edit clips in `assets/clips/`, call audio in `audio/calls/` (if the old
+video played a call), and each record the old video ends on or points to, opened live in the environment (a history
+or debug row can expire, some after about 30 days). Raw footage is often deleted after sign-off; when only the
+finished video survives, reuse means re-cutting that video, not new edits of old takes. When the old job's notes are
+missing, list those records from its `script/speech.txt`, `job.json`, and newest video in `out/`. Kept narration
+still goes through the claim rules and the claim checker like new text.
+
+After the read-back, write `research/WHAT_CHANGED.md` in the new job, short, with these headings. The builder reads
+it first, instead of the old job's full README and script.
 - **Old job**: its slug, date, and length.
 - **What survives**: each kind of file above, present or gone.
 - **Records checked live**: each record the old video relies on, still there or gone, with the date checked.
 - **What the owner wants changed**: in their words.
-- **Old files that differ from the template only by known blocks**: for example "`lib/mix.py`: the template plus the
-  call block" (from `diff` against `toolkit/job-template/`), so the builder does not diff them again.
+- **Old files that differ from the template only by known blocks** (only when old code will be carried over): for
+  example "`lib/mix.py`: the template plus the call block" (from `diff` against `toolkit/job-template/`), so the
+  builder does not diff them again.
 - **Facts to re-check**: anything the old video said that the new one may repeat.
 
 ## After the interview

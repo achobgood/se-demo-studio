@@ -110,7 +110,10 @@ forgettable (L104). Before any shot list, answer these five questions in `resear
    Then a prop line for every object you will draw (read and relate, firm): the real thing in this demo it stands for
    (a setting on the real screen, an event in the real story or call, a line the product actually holds), the
    public-sign convention it follows (for example a bicycle as on a bike-lane sign: two wheels, frame, seat,
-   handlebar), and its smallest size on screen. An object with nothing real to stand for is cut, not kept as filler.
+   handlebar), and its smallest size on screen (planned now; Critique re-checks it at the size the film shows). An
+   object with nothing real to stand for is cut, not kept as filler. An object with no public sign (equipment most
+   strangers never see) passes when a stranger names its kind ("a Wi-Fi box on the ceiling"), drawn with its most
+   familiar feature; a part label may then name it, never stand in for a drawing that does not read.
 4. **Traveller.** The one thing that moves through every step and visibly changes state (one real request, one call,
    one alert, one record). Say what it looks like at each step, and how its last state answers its first.
 5. **Honesty line.** What the sources say actually happens, and where the picture must stop.
@@ -179,10 +182,13 @@ any voice take exists:
    change the picture, not the labels. Then send the same reader (SendMessage) the words-on stills and ask the Words
    on question (does any word contradict the picture or do the picture's job); it adds that section to the same file.
    Read and relate (firm): for each drawn object, crop it out of a words-off still taken where it is smallest on
-   screen, at that size and not enlarged (`ffmpeg -v error -i <still> -vf crop=w:h:x:y review/blind/s3_obj/obj_1.jpg`,
-   numbered files that name no object), and ask a reader the Object question ("What is this object?"). A reader who
-   names it wrongly, or says it could be something else, has found a failed drawing: at least P1, never polish.
-   Redraw it from its prop line, or cut it.
+   screen, at that size and not enlarged
+   (`../../toolkit/node_modules/ffmpeg-static/ffmpeg -v error -i <still> -vf crop=w:h:x:y review/blind/s3_obj/obj_1.jpg`,
+   numbered files that name no object). Give all of a segment's crops to one new reader, one that has not seen the
+   segment's frames, in one reading (up to 20 images; another new reader only for more, or after a redraw), and ask
+   only the Object question ("What is this object?"), answered per image. A reader who names an object wrongly, or
+   says it could be something else, has found a failed drawing: at least P1, never polish, and it blocks the final
+   like every firm check. Redraw it from its prop line, or cut it, and send only the redrawn crops to a new reader.
    The builder always runs the reader. A brief that forbids research agents does not forbid it. If a brief forbids
    all subagents, say so in STORYBOARD_READY.md and ask the supervisor to run it.
 4. Send the concept card, the picture check, both sets of stills, and the reader's answer file to the storyboard.
@@ -374,7 +380,7 @@ concept; a line being read holds still on purpose.
 
 Write each problem as `t=… · where · problem → exact change · what stays`, ranked P0 (unreadable, wrong, broken,
 dishonest, or the words-off reader could not say what happened), P1 (weakens the film: a dead stretch, a soft payoff,
-a seam that jumps, an object a reader misnamed), P2 (polish). After your fixes, a new reviewer marks each earlier note FIXED, PARTLY, or STILL
+a seam that jumps; an object a reader misnamed, which also blocks the final), P2 (polish). After your fixes, a new reviewer marks each earlier note FIXED, PARTLY, or STILL
 PRESENT.
 
 ## What did not work (do not repeat without a new idea)

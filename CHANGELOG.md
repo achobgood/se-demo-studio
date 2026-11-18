@@ -20,6 +20,10 @@ that `scripts/setup.sh` prints.
   - Takes sized to the narration, about 0.4 s a word between two cue words (PIPELINE.md, `capture/takes/example_take.js`).
   - `knowledge/README.md`: pages that show licensing or tenant-admin state get a Navigation line as well as a Trap.
   - SUPERVISING.md: when the owner sets a hold, ask which work it covers before acting on it.
+  - After a blind test on another job: one new reader takes all of a segment's object crops in one reading; objects
+    with no public sign pass when a stranger names their kind; a misread object blocks the final; the redo interview
+    gives its order (new job early, survival check, then reuse questions), a fallback when the old job's notes are
+    missing, and re-checks kept narration.
 - Recorded calls in the job template, off unless a job sets them (PIPELINE.md, "Recorded call"): new
   `lib/call_prep.py` (two tracks to turns, silence-only cuts, a mix, optional word times) and `lib/call_lines.py`
   (places the call after a segment and writes caption lines with speaker labels), and a `build/call.js` stub. This
