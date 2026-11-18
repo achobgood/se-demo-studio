@@ -126,15 +126,23 @@ note. It sets positioning; it does not authorize a technical claim the sources d
 4. Write `research/STORYBOARD.md`: shot by shot, each shot with the click or typing, the value point it proves,
    the draft talk-track line over it, and the source for that line. Mark which requests or takes depend on which;
    independent ones run in parallel, two or three at a time (L69). Looking good never outranks being true.
+   Then add a "Motion decisions" list: every step the real screens cannot show clearly (an event off screen, work
+   done in another system, a hand-off between systems, an AI's reasoning, a waiting period), including those
+   INTERVIEW.md names. For each, decide yes or no on an illustrative motion segment, with one line on why. No is a
+   good answer when a real screen, a cut, or one spoken line carries the step. Each yes goes through MOTION.md.
 5. **Storyboard checkpoint (required).** Write `STORYBOARD_READY.md` with: the story in three sentences, the
    shot list with timings, the full draft talk track, what the demo deliberately leaves out, every state change
-   you plan to make, what the screen shows while each live event happens off screen (L61), the concrete list of
+   you plan to make, what the screen shows while each live event happens off screen (L61), the Motion decisions
+   list from step 4, the concrete list of
    identifiers that will be visible with a proposed blur for each (L58), and open questions. Before you write it,
    run the `claim-checker` agent on the draft talk track and on-screen text, fix what it finds, and put its
    summary in the file (L77). Add a contact sheet of the key screens from exploration, one per shot where you
    have one (`python3 lib/grid.py review/storyboard_sheet.jpg 3 capture/explore/<files>`), and check those frames
    for anything the Footage rules ban, so the owner sees the picture before any take (L78). If the job has motion
-   segments or a style guide, add them as `.claude/skills/record-demo/references/MOTION.md` (studio root) describes (Storyboard: state list). Then print a message
+   segments or a style guide, add them as `.claude/skills/record-demo/references/MOTION.md` (studio root) describes (Storyboard): for
+   each segment its concept card and picture check, its signature moment's stills rendered with `--sketch` (with and
+   without words), the `blind-reader` agent's answer file, and one line per remaining shot; the full shot table comes after
+   approval (L104). Then print a message
    that starts with "STORYBOARD READY:" and **stop and wait**. Do not record final takes until `ORCHESTRATOR_NOTES.md` contains an entry that says
    "STORYBOARD APPROVED" (possibly with changes you must apply). Check the notes file every few minutes while
    you wait, and keep doing non-recording work (voice auditions, music beds, sources) in the meantime. When the
@@ -285,20 +293,25 @@ imitate a product screen.
 ## Visual style
 
 Take the palette and feel from the real product UI you capture, so the cards and the footage read as one piece:
-clean, generous negative space, precise type, one or two accent colors. The template uses Inter and IBM Plex Mono
+clean, generous negative space, precise type, one accent color (motion segments give it to the traveller alone). The template uses Inter and IBM Plex Mono
 (bundled in `build/fonts/`). Output 1920x1080 at 30 fps. The picture is a deterministic HTML/JS timeline:
-edit `build/story.js` (words on screen, chapters, camera) and `build/edit.py` (which take plays when); `scenes.js`
-and `engine.js` rarely need changes. Every frame is drawn from its time alone: never `Math.random`, `Date.now`,
+edit `build/story.js` (words on screen, chapters, camera), `build/edit.py` (which take plays when), and, for motion
+segments, `build/sketch.js` before the takes and `build/stages.js` after; `scenes.js`, `engine.js`, and `stage.js`
+rarely need changes. Every frame is drawn from its time alone: never `Math.random`, `Date.now`,
 timers, `requestAnimationFrame`, or CSS transitions and animations in `build/`. Before the rough cut,
 `python3 lib/lint_timeline.py` must print no warnings, and `node build/render.js same review/same <times>`, with
-two or three times inside motion segments and camera moves, must print SAME for each. On DIFFERENT, open the two
-PNGs it wrote (`t_<time>.png` and `t_<time>_again.png`): if an element is visibly misplaced, fix it and run
-`same` again; otherwise note the time and pixel count in the README's evidence boundary and continue.
+two or three times inside motion segments and camera moves, must print SAME or RASTER NOISE for each (RASTER NOISE:
+the page state was identical and only a few edge pixels differ; look at the crop it names). DIFFERENT names the
+element and property that changed: fix it and run `same` again. A DIFFERENT with identical page state in the screen
+share only (an image still decoding) goes in the README's evidence boundary with its time and pixel count. A state
+difference inside a motion segment or stage is a determinism bug: fix it.
 
-Motion segments (L92). When INTERVIEW.md lists steps the environment cannot show, or you judge that an abstract
-scene would clearly make the demo clearer, read `.claude/skills/record-demo/references/MOTION.md` (studio root)
-before the storyboard and follow it: when to use motion, the style guide, look, springs, swaps, camera scaling,
-motion sounds, and the motion critique. Otherwise skip it; a demo that can show everything on real screens uses no
+Motion segments (L92). When INTERVIEW.md lists steps the environment cannot show, your Motion decisions list (step 4)
+has a yes, or you judge that an abstract scene would clearly make the demo clearer, read `.claude/skills/record-demo/references/MOTION.md` (studio root)
+before the storyboard and follow it in order: first think (the concept card, the signature moment built and
+approved first, shots not a wallboard), then build (the stage engine, style guide, look, motion by role, springs,
+swaps, transitions, camera scaling, motion sounds, and the motion critique). Meeting every rule is the floor, not
+the finish (L105). Otherwise skip it; a demo that can show everything on real screens uses no
 motion segments. Every segment is labeled illustrative, draws no mock product screen or logo, and cuts to the real
 screen that backs it up. A segment a viewer could mistake for a product screen fails honesty.
 {{OPTIONAL, delete when the owner gave no style reference:
@@ -327,7 +340,7 @@ before building any cards or segments, even if the job has no motion segments.}}
   change from the resulting word timestamps, and make sure what the SE says matches what is on screen then (L5).
 - Music: two or three beds, judged by a model (L26), under the title and close only. Master to -16 LUFS
   (`lib/mix.py`). Export captions with `lib/deliver.py`; do not burn them in.
-- Motion sounds, when the job has motion segments: follow `.claude/skills/record-demo/references/MOTION.md` (studio root), Sound.
+- Motion sounds, when the job has motion segments: follow `.claude/skills/record-demo/references/STAGE_ENGINE.md` (studio root), Sound.
 
 ## Pacing
 
@@ -390,8 +403,9 @@ Shell: macOS has no `timeout` command; run long takes in the background and wait
 takes, clips, and render chunks with `python3 lib/clean.py`; anything else with absolute paths and no globs (the
 command safety check blocks `rm` after a `cd` or with a glob), and write re-runs to a fresh folder (L60).
 
-Subagents: use the studio's agents (`demo-explorer`, `demo-researcher`, `claim-checker`) or general subagents
-however helps. They run on Opus 5.5 at high effort, set in the studio settings; do not override the model.
+Subagents: use the studio's agents (`demo-explorer`, `demo-researcher`, `claim-checker`, and `blind-reader` for the
+words-off and Critique readings of motion segments; it opens images only, one reading per question set) or general
+subagents however helps. They run on Opus 5.5 at high effort, set in the studio settings; do not override the model.
 
 ## Status markers
 

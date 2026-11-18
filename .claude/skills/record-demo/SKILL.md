@@ -1,6 +1,6 @@
 ---
 name: record-demo
-description: Plan, record, and produce a narrated virtual SE product demo video (or a short product ad) from a live, signed-in product in Chrome, with AI voice, captions, and a player page. Use when the person says "help me record a demo", "make a demo video", "build a virtual SE demo", asks you to come up with a demo idea or scenario for a video in their product or environment, asks to continue a demo job in jobs/, or says "do a test run" (a short first video that proves the setup, with no demo environment or sign-in).
+description: Plan, record, and produce a narrated virtual SE product demo video (or a short product ad) from a live, signed-in product in Chrome, with AI voice, captions, and a player page. Use when the person says "help me record a demo", "make a demo video", "build a virtual SE demo", asks you to come up with a demo idea or scenario for a video in their product or environment, asks to continue, redo, or remake a demo job in jobs/, or says "do a test run" (a short first video that proves the setup, with no demo environment or sign-in).
 model: claude-opus-5-5
 effort: high
 ---
@@ -30,7 +30,15 @@ idea. A missing key or the wrong effort found after an hour of planning costs a 
    override them.
 2. **Continuing a job?** If the person names an existing job, or `jobs/*/SUPERVISOR.md` shows a builder still
    running, read that job's `SUPERVISOR.md`, `ORCHESTRATOR_NOTES.md`, and newest files, tell them where it
-   stands, and resume supervising (references/SUPERVISING.md). Skip the interview.
+   stands, and resume supervising (references/SUPERVISING.md). Skip the interview. Before that job's builder takes
+   any newer template file, run `scripts/upgrade-job.sh <slug> --check` and tell the person what it would change.
+   **Redoing a finished job?** If the person asks to redo or remake a finished video (for example to use features
+   the studio gained since it was made), make a new job from the current template (Step 2, a new slug such as
+   `<old-slug>-v2`) and treat the old job as input, not as the place to work. Read its `INTERVIEW.md`,
+   `research/`, `STORYBOARD_READY.md`, and `ORCHESTRATOR_NOTES.md`, run a short interview on what should change,
+   and re-check every fact live (L90, L103). Plan it with what the studio can do now, including illustrative motion
+   for steps the product cannot show (Step 1 asks which). Copy narration or footage across only when the person
+   wants them kept; to keep working in the old folder instead, run `scripts/upgrade-job.sh <slug> --check` first.
 3. **Setup.** Run `scripts/setup.sh`. If it does not end with "SETUP OK", walk them through
    references/SETUP.md one failing line at a time, including OpenRouter. Never ask for the key in chat and never
    read `.env`.
@@ -155,6 +163,8 @@ decision back; check the rough cut; give the final report.
 - references/PIPELINE.md: every toolkit command in order.
 - references/MOTION.md: rules for illustrative motion segments and the style guide; read it only when the job has
   steps the environment cannot show, an abstract scene would clearly help, or the owner gave a style reference.
+- references/STAGE_ENGINE.md: the stage engine's helpers, palette, sound, and render commands for motion segments;
+  MOTION.md says when to read it.
 - references/LESSONS_LEARNED.md: the history behind each rule's (L7) citation; not required reading.
 - references/CISCO_CLAIM_RULES.md: sourcing, wording, and branding for Cisco products.
 - references/MODELS.md: which OpenRouter models worked.

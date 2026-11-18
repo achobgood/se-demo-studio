@@ -90,12 +90,19 @@ builder window (L76). Present, in chat:
 - every claim that is not simply describing the screen, with its source;
 - the state changes the builder plans to make in the demo environment;
 - what the screen shows while each live event happens off screen (never polling or an idle wait, L50 and L61);
+- the Motion decisions list: each step the real screens cannot show clearly, with the builder's yes or no on an
+  illustrative segment and why; if it is missing, ask for it, and question a no that leaves a step unexplained;
 - the concrete list of identifiers that will be visible, with the proposed blur for each, so the person sets the
   redaction scope against real items (L58);
 - the contact sheet (open it for them, for example with `open review/storyboard_sheet.jpg` in the job folder) and
   the claim checker's summary;
-- when the job has them, the style guide (`research/STYLE_GUIDE.md`) and each motion segment's state list (cue
-  word, what is on screen, on-screen text, evidence label); the motionsheet comes later, with the rough cut;
+- when the job has them, the style guide (`research/STYLE_GUIDE.md`) and each motion segment's concept card and
+  picture check, its signature stills with and without words (open them), the blind reader's sentence, and the
+  one-line outline of the remaining shots; if any is missing, ask the builder for it; the motionsheet comes later,
+  with the rough cut. Before approving, read the blind reader's answer file for each segment's signature moment, and
+  the folder it read (its "Opened" line). A sentence with the story's subject and verb passes; a "Not blind" line or
+  a missing file does not. You may run a second `blind-reader` yourself on the same folder. If the builder's brief
+  forbade all subagents, STORYBOARD_READY.md says so and you run the reader;
 - your own concerns: anything that reads as an unsupported cause (L3), a number, a beta feature, or marketing
   voice.
 Ask for approval or changes. Then append `STORYBOARD APPROVED` (with any changes, quoted) to
@@ -105,6 +112,14 @@ Ask for approval or changes. Then append `STORYBOARD APPROVED` (with any changes
 
 - After the rough cut: render a contact sheet (`python3 lib/grid.py` over stills from
   `node build/render.js stills ...`) and read `script/speech.txt` against `research/CLAIMS.md`.
+- When the job has motion segments, the review package holds, per segment, the blind reader's answer files (story
+  pass, event pass, Legibility) and the `render.js events` folder they came from, rendered with `--words-off` or
+  `--blind` so the sheets show times only (MOTION.md, Critique). Check each answer's "Budget" line (no image shrunk, nothing left unopened) and that none has a "Not
+  blind" line.
+- When checking a palette, ask for the `lib/sample_colors.py --against` output for the colours the drawings use,
+  against `ground` and `panel`, and for how the builder answered any contrast warning from stage.js.
+- Before a builder adopts a newer engine in an existing job, have it run `scripts/upgrade-job.sh <slug> --check` and
+  a dry run, and settle any conflict it prints instead of copying template files.
 - Pull full-size frames of any shot with account names, emails, or third-party data if redaction applies.
 - Sum the cost log (`python3 lib/spend.py`).
 

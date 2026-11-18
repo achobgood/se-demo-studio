@@ -390,7 +390,7 @@ L91. **Know the studio's own tools before proposing a format.** The session prop
 L92. **Cover what cannot be shown; do not shrink the video to fit.** The session proposed 25 seconds, then 90; the
     owner wanted the full 5 minutes, with motion graphics and on-screen text standing in for the parts the
     environment could not demonstrate. Keep the default length and bridge each missing step with an abstract
-    motion-graphics scene (`build/motion.js`) and on-screen text labeled illustrative: no mock product screens, no
+    motion-graphics scene (now built as a stage, MOTION.md) and on-screen text labeled illustrative: no mock product screens, no
     logos, no timing claims, and a cut back to the real screen that backs it up.
 L93. **Read a shared reference for what it changes in the build.** A video about motion-graphics technique was
     judged unrelated because it was not about the product; the owner meant it as input on technique. Ask what a
@@ -443,3 +443,26 @@ L103. **Notes help only if the next session can find them at launch.** Lessons, 
     studio CLAUDE.md, which every session reads at launch, and a helper that finds prior notes for a product, so
     the first step of a new job is reading what earlier jobs learned.
 
+## Concept before mechanics (November 2026, Splunk and Cloud Control motion redo)
+
+L104. **Find the picture of the outcome before designing any motion.** The first redo of this job's motion
+    segments followed every motion rule (a camera on a world, one request that changed shape, drawn connectors,
+    easing by role, sampled colours) and still read as grey boxes, lines, and a sliding pill. The owner's verdict was
+    "That was it?" The rules said how things should move, never what the viewer should see happen. The better plan
+    started from the story's verb (what changes in the world when the product acts) and asked what that would look
+    like if you could watch it happen. Before any shot list, name the one change the segment exists to show and draw
+    it as a physical event a stranger would recognise with the words covered; build that moment first (MOTION.md,
+    Think 1 and 2).
+L105. **A clean checklist is a floor, not the finish.** The same draft stopped at 47 of its 150 minutes because no
+    P0 was open. Passing the rules proved it was not broken, not that it was good. Before stopping, look at the
+    middle frames and ask whether anyone would remember them; spend the time left on the signature moment.
+L106. **Put what research taught into the studio's own files.** The ideas behind L104, the stage engine, and the
+    numbers in MOTION.md came from articles and repositories read during one job. A later session never reads those
+    sites, only this project. When outside research changes how the studio works, write the rule, its numbers, and
+    a worked example into the reference file a session will read (MOTION.md, PIPELINE.md, the job template), not a
+    link and not a job's research folder.
+L107. **Test new guidance blind, on a different job, before trusting it.** After the motion guidance was rewritten, a
+    fresh session given only the studio files and another job's script found its own concept, but two of its first
+    drafts were still boxes and arrows, and it copied a worked example that happened to match its topic. The guidance
+    had also carried the original job's own answer as an example. When guidance changes, have a fresh session use it
+    on a job it was not written from, and read where it struggled; keep worked examples on topics no real job uses.

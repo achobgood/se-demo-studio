@@ -3,6 +3,92 @@
 What changed in each studio version, newest first. Your version is in the `VERSION` file and on the first line
 that `scripts/setup.sh` prints.
 
+## Unreleased
+
+- Redoing a finished job: the record-demo skill makes a new job from the current template and treats the old job as
+  input; continuing a job runs `scripts/upgrade-job.sh <slug> --check` before any newer template file goes in. The
+  storyboard now carries a "Motion decisions" list (each step the screens cannot show, yes or no on a motion
+  segment, and why), and the supervisor checks it. SKILL.md lists STAGE_ENGINE.md.
+- Fifteen motion guidance gaps from the Splunk and Cloud Control motion remake, closed in code and guidance:
+  - Template upgrades: `scripts/new-job.sh` records `template_version` and `template_commit` in `job.json` (and
+    copies uncommitted template files to `review/upgrade/base/`); new `scripts/upgrade-job.sh <slug> [files] [--apply]
+    [--base <tag>]` merges newer template files into a job three ways, keeping the job's own edits, guesses the base
+    for older jobs and makes you confirm it, and `--check` names a file missing a function another needs;
+    `toolkit/job-template/TEMPLATE_FILES.json` lists every template file as `template`, `mixed` or `job`, with its
+    `needs`; `scripts/check-repo.sh` checks the manifest. This release changes all three `mixed` files (template
+    files jobs edit, always merged three ways): `build/comp.html`, `build/scenes.js`, `build/motion.js`.
+  - `stage.js`: one console line, and no stage drawn, when `engine.js` lacks `springAt` or `track`; `ghosts` (copies
+    left `'here'`, `'born'` or at a point, any number) and `art()` `leave`, with an art state copied as its own drawing
+    (`ghost` still works); `z` on every helper (a number or timed steps), wires with `z` in their own layer, and
+    `art()` `front` for a drawing both behind and in front; a corner-line and title-under-chip check after fonts load;
+    optional palette key `draw` for drawings and a 3:1 contrast warning with the nearest colour (never a correction);
+    positions as functions of t, `follow`, and `at(t)` on every helper; `join` between stages (`'cut'`, `'push'`, or a
+    function written for the concept), `stage.toFrame` and `stage.toWorld`, and `sections`; `window.stageEvents()`
+    and `st.ev()`. `stage_demo.js` shows them, and `demoJoins` shows joins and sections.
+  - `render.js`: `--sketch` loads `build/cues.json` when it exists, so `W()` works in sketches (and `sketch.js` now
+    loads before `engine.js`); `--words-off` hides every word in `#stage` and prints `WORDS LEFT` for any that still
+    shows; new `events` mode (frames before, at and after every stage event, sheets under 2,576 px); `same` compares
+    page state too, with verdicts SAME, RASTER NOISE (exit 0, with a crop) and DIFFERENT (naming the element and
+    property); new `state` mode.
+  - `render.js --blind` (on by itself with `--words-off`): `motionsheet`, `strip` and `events` sheets show times only,
+    and `events` sheets are named `sheet_NN.jpg`, so a blind reader's sheets name no segment, shot or event; every
+    contact sheet stays at or under 2,576 px on its long edge.
+  - `lib/sample_colors.py` prints the image size first, explains an out-of-bounds point with the 1920 to 2560 scale,
+    and takes `--against '#hex'` for WCAG contrast.
+  - New agent `blind-reader` (`.claude/agents/blind-reader.md`): opens images only, at most 20 per reading, answers
+    the one words-off question into an answer file; the builder runs it, and the supervisor reads its answer.
+  - MOTION.md: the sketch uses take cues when a take exists, one stage and folder per segment; words-off and WORDS
+    LEFT; the blind reader at Think 2 and Critique; a story pass and an event pass with a 20-image budget in place of
+    "every 0.1 to 0.25 s"; status names as questions, and a third named legibility miss; corner-line fixes as
+    options; transitions between stages as a choice; the three `same` verdicts. STAGE_ENGINE.md documents every new
+    option, adopting stages in an older job, depth, moving with something else, one stage to the next, the palette
+    at 2560 px with `draw` and `--against`, and the `events` and `state` modes. SUPERVISING.md and the builder prompt
+    name the blind reader, the review package and the upgrade script.
+- The drawn traveller (`kind: 'art'`) draws whole and in place, takes the accent as its stroke by default, and
+  crossfades at each change to or from a drawing instead of vanishing for 6 frames.
+- With stages on a light palette, the template's title, agenda, close, call-to-action, and chapter chips take their
+  text colours from the palette, so they stay readable.
+- `--words-off` also hides SVG text on stages and any element with class `st-words`; MOTION.md says words drawn on
+  an object count as words.
+- MOTION.md: the palette is sampled (or marked provisional) before the sketch, and `sketch.js` holds it; the honesty
+  bans are marked firm; three lines that restated one job's plan are gone. SUPERVISING.md asks for the concept card,
+  picture check, signature stills, and reader's sentence instead of a state list.
+- MOTION.md is split: the method, firm checks, and critique stay; the engine reference (helpers, kinds, camera keys,
+  sizes, flags, palette, curves, transitions, sound, render commands) moves to `STAGE_ENGINE.md`.
+- After an adversarial review (60 notes, 7 P0): MOTION.md is restructured around an order of work, marks its three
+  firm rules (honesty, legibility, determinism) and calls everything else a default, says plainly that the method is
+  under test (its numbers come from outside reading applied in one job), and gives firm checks: a crop test for
+  product look-alikes, a read-aloud legibility test, and a P0 when a reader with the words off cannot say what
+  happened. The signature moment can now be rendered before any voice take (`render.js ... --sketch`, with
+  `build/sketch.js`, `build/sketch.html`) and with every word hidden (`--words-off`). The stage engine: a stage
+  without `pushOut` no longer hides the footage after it ends; boxes, travellers, and drawings hide with `display`, so
+  a frame no longer depends on the frame rendered before; the Illustrative line defaults on; `name` and `cam` default;
+  a drawn traveller (`kind: 'art'`); dashed shapes keep their dashes; palette and key checks; the template background
+  gives way to the stage ground when a job has stages. `stage_demo.js` is a story-free demo of every helper.
+  `frozen_time.py` counts changed pixels (a moving dot now counts), lists stretches inside the ranges only, and
+  rejects a range past the end; `sample_colors.py` checks bounds and has `min`; `grab.py` reports a time past the end.
+  To use stages in a job made before this release, run `scripts/upgrade-job.sh <slug> build/stage.js
+  build/comp.html build/scenes.js` (STAGE_ENGINE.md, Adopting stages in an older job) instead of copying files.
+- After a blind test on another job: MOTION.md says where a segment can earn its place, that the job's prompt wins
+  (a segment it does not allow can be proposed at the storyboard), how to show that something did not happen, that
+  faceless figures and hands may appear as props, and what palette to use with no product footage. Its examples are
+  now patterns on topics no job uses, and the template's worked example is a door and a badge instead of boxes and a
+  pill. `art()` parts can turn about a pivot and slide, and SVG may use the palette names. Lesson L107.
+- MOTION.md numbers are starting points, not quotas: each video's plan can be its own (pull-backs, transition
+  kinds, shot counts, sizes, durations), with departures noted in the style guide. Only honesty, legibility, and
+  determinism are firm.
+- Motion: MOTION.md now teaches how to think before how to build. A concept card per segment (story, verb, picture
+  of the verb, traveller, honesty line), the signature moment built and approved first, and shots instead of a
+  wallboard; then motion by role with numbers, transitions with a cause, look rules in numbers, three extra critique
+  questions, and what did not work (subframe motion blur, a light ground for a dark product). Lessons L104 to L106.
+- New optional stage engine in the job template: `build/stage.js` (camera on a world with arrival-time keys, a
+  traveller that morphs between card, code, token, and dot states, line art that draws on, drawn connectors with a
+  pulse, receivers that react, a push between screen share and stage, per-word title reveals) and `build/stages.js`
+  with a worked example. Jobs without stages are unchanged. `lib/sample_colors.py` samples the palette from footage;
+  `lib/grab.py` pulls frames from a rendered video; `lib/frozen_time.py` measures how much of each motion segment
+  is frozen. MOTION.md also gains a fresh-reviewer rule, "every action visibly produces a result", and a shot table
+  column for what survives each cut.
+
 ## 0.4.1 (2026-11-17)
 
 - Motion rules moved out of the builder prompt into `references/MOTION.md`, read only when a job needs motion: steps

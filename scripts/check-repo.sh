@@ -112,6 +112,33 @@ for row in subprocess.check_output(["git", "ls-files", "-s"], text=True).splitli
 PY
 report studio "$TMP/studio"
 
+# Template manifest: every tracked file in toolkit/job-template is listed in TEMPLATE_FILES.json with a kind, every
+# listed file exists, and each file a 'needs' entry names defines the names listed (scripts/upgrade-job.sh reads it).
+python3 - > "$TMP/template" <<'PY'
+import json, os, subprocess
+T = "toolkit/job-template"; M = T + "/TEMPLATE_FILES.json"
+try:
+    files = json.load(open(M, encoding="utf-8"))["files"]
+except (OSError, ValueError, KeyError) as e:
+    print(f"{M}: cannot read its 'files': {e}"); raise SystemExit
+for f in subprocess.check_output(["git", "ls-files", "-z", T], text=True).split("\0"):
+    p = f[len(T) + 1:]
+    if f and p != "TEMPLATE_FILES.json" and p not in files:
+        print(f"{f}: not in {M} (add it with kind template, mixed or job)")
+for p, e in files.items():
+    if e.get("kind") not in ("template", "mixed", "job"):
+        print(f"{M}: {p} has kind {e.get('kind')!r}, not template, mixed or job")
+    if not os.path.isfile(os.path.join(T, p)):
+        print(f"{M}: lists {p}, which is not in {T}")
+    for q in (e.get("needs") or {}):
+        if q not in files:
+            print(f"{M}: {p} needs {q}, which is not listed")
+PY
+if [ ! -s "$TMP/template" ]; then
+  scripts/upgrade-job.sh "toolkit/job-template" --check | grep '^MISSING' | sed "s|^MISSING  |toolkit/job-template: |" >> "$TMP/template"
+fi
+report template "$TMP/template"
+
 # Smoke: a fresh copy of the committed HEAD can create a job.
 : > "$TMP/smoke"
 mkdir "$TMP/copy" && git archive HEAD | tar -x -C "$TMP/copy"
@@ -127,6 +154,19 @@ try:
 except (OSError, ValueError) as e:
     print(f"new job has no readable job.json: {e}")
 PY
+  # once the committed copy has the upgrade path: the new job records its base, and an upgrade finds nothing to change
+  if [ -f "$TMP/copy/toolkit/job-template/TEMPLATE_FILES.json" ]; then
+    python3 - "$TMP/copy" >> "$TMP/smoke" <<'PY'
+import json, os, sys
+d = json.load(open(os.path.join(sys.argv[1], "jobs/ci-smoke/job.json")))
+v = open(os.path.join(sys.argv[1], "VERSION")).read().strip()
+if d.get("template_version") != v:
+    print(f"new job's job.json has template_version {d.get('template_version')!r}, not VERSION {v!r}")
+PY
+    (cd "$TMP/copy" && scripts/upgrade-job.sh ci-smoke) > "$TMP/err" 2>&1 || true
+    grep -q '^Nothing to change' "$TMP/err" ||
+      echo "scripts/upgrade-job.sh ci-smoke on a new job found changes or failed: $(grep -v '^ ' "$TMP/err" | tail -1)" >> "$TMP/smoke"
+  fi
 fi
 report smoke "$TMP/smoke"
 

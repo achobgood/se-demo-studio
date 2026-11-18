@@ -78,6 +78,9 @@ function camAt(t) {
 }
 scene(t => {
   const o = env(t, FR.in, FR.out, .7, .7) * (1 - (window.motionCover ? window.motionCover(t) : 0)); FT.style.opacity = o; if (o <= 0) return;
+  // stages (build/stage.js) push the frame out and back in: null while a stage covers it, else an x offset in px
+  const push = window.framePush ? framePush(t) : 0; if (push === null) { FT.style.opacity = 0; return; }
+  FT.style.transform = push ? `translateX(${push.toFixed(2)}px)` : '';
   const shot = FR.shots.find(s => t >= s[0] && t < s[1]) || FR.shots[FR.shots.length - 1];
   const url = (FR.urls.filter(u => t >= u[0]).pop() || FR.urls[0])[1]; if (F._url !== url) { F.setUrl(url); F._url = url; }
   F.only(shot[2]); F.play(shot[2], t, true);
@@ -110,7 +113,7 @@ if (VAL) {
 const CL = layer();
 const clH = el('div', 'abs t-h', CL, CLS.heading); clH.style.cssText += 'left:0;width:1920px;text-align:center;top:330px;font-size:112px;';
 const clSub = el('div', 'abs t-sub', CL, CLS.sub); clSub.style.cssText += 'left:0;width:1920px;text-align:center;top:488px;';
-const clCta = el('div', 'abs', CL, CLS.cta || '');
+const clCta = el('div', 'abs cta', CL, CLS.cta || '');
 clCta.style.cssText += 'left:960px;top:590px;padding:16px 32px;border-radius:999px;border:1.5px solid rgba(96,165,250,.6);background:rgba(59,130,246,.10);font:500 30px var(--sans);color:#d6e6ff;white-space:nowrap;';
 if (!CLS.cta) clCta.style.display = 'none';
 const clFine = el('div', 'abs disc', CL, CLS.fine || '');

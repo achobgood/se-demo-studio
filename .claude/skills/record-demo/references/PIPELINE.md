@@ -120,9 +120,14 @@ raw PCM; take.py converts it.
 | Blur redaction regions | `python3 lib/redact.py [clip ...]` (regions in `build/edit.py` REDACT; rerun after every `build_clips.py`, which rebuilds clips from the raw frames) |
 | Add cursor, clicks, keys | `python3 lib/cursor_tracks.py` -> `build/footage.js`, `build/cues.js` |
 | Words and camera | edit `build/story.js` (title, agenda, frame shots/urls/chapters/camera, value, close) |
-| Illustrative motion segments | add `STORY.motion` (and `STORY.motionLabel`, `STORY.tags`) in `build/story.js`; `build/motion.js` draws them and fades the screen share out under each one (example at the end of `story.js`); when to use them, element fields, and rules are in references/MOTION.md |
+| Signature moment before any take | build it in `build/sketch.js` with literal times, then `node build/render.js stills review/sig 2 4.5 7 --sketch` and the same with `--words-off` (no voice take or footage needed; references/MOTION.md, Think 2) |
+| Illustrative motion segments (stages) | define each segment as a `new Stage({...})` in `build/stages.js` with narration times: a camera on a world, a traveller that changes shape, line drawings, connectors, the push to and from the screen share; `build/stage.js` draws them; `node build/render.js stills review/demo 2 5 7 10 --sketch` shows every helper in a story-free demo; how to think is in references/MOTION.md, the helpers in references/STAGE_ENGINE.md |
+| Palette from the product | `python3 lib/sample_colors.py <frame.jpg> x,y,r [x,y,r,max ...] [--against '#<ground>']` (prints the image size first, `image 2560x1440` for clips: read points off that size, whole pixels; box average; `max` or `min` adds the brightest or darkest and the most saturated pixel; a point outside the image stops with the size and the 1.333 scale from a 1920 px preview; `--against`, repeatable, adds each colour's WCAG contrast and flags under 3:1 or 4.5:1, a warning only) -> set `STORY.stagePalette` in `build/story.js` |
+| How static the picture is | `python3 lib/frozen_time.py out/<video>.mp4 --range 56.5-86.0 ...` (still stretches of 3 s or more inside the ranges, and still seconds per 30 s in each: a list to look at, never a score; references/MOTION.md, Critique) |
+| Frames from a rendered video | `python3 lib/grab.py out/<video>.mp4 review/grab 12.5 80.2` -> `review/grab/v_<t>.jpg` (checks the file, not the page) |
+| Simple diagram segments | add `STORY.motion` (and `STORY.motionLabel`, `STORY.tags`) in `build/story.js`; `build/motion.js` draws them and fades the screen share out under each one (example at the end of `story.js`); when to use them, element fields, and rules are in references/MOTION.md |
 | Check frames | `node build/render.js stills review/stills 3 42.5 118` then look at them (`python3 lib/grid.py`) |
-| One still per motion state | `node build/render.js motionsheet review/motion` -> `review/motion/<segment index>.jpg` (each element's entry plus 0.6 s, each swap, each `moves` key) |
+| One still per motion state | `node build/render.js motionsheet review/motion` -> `review/motion/<segment index>.jpg` (`STORY.motion`: each element's entry plus 0.6 s, each swap, each `moves` key; stages: each shot in `shots` just after it starts and at its middle) |
 | Frames around a fast moment | `node build/render.js strip review/strip 84.3 [n=12] [fps=30]` -> `review/strip/strip_<t>.jpg` (n consecutive frames centered on t; catches overlaps during swaps) |
 | Determinism checks (before the rough cut) | `python3 lib/lint_timeline.py` (flags `Math.random`, `Date.now`, `performance.now`, timers, `requestAnimationFrame`, CSS transitions or animations, `will-change` in `build/`; exit 1 on any) and `node build/render.js same review/same 12.5 80.2` (renders each time twice, prints SAME or DIFFERENT; exit 1 on any DIFFERENT) |
 
@@ -130,7 +135,8 @@ At every cut, look at the incoming clip's first frames (`python3 lib/frameat.py 
 "Loading" is still up, move that clip's first key later, to where the screencast stops sending frames (L21).
 
 Motion segments (L92) are used only where the environment cannot show a step or an abstract scene clearly helps.
-Their element fields (`spring`, `swap`, `sfx`), `moves` timing, and rules are in references/MOTION.md.
+How to find the concept first and the rules are in references/MOTION.md; the stage engine's helpers, the
+`STORY.motion` element fields (`spring`, `swap`, `sfx`), and `moves` timing are in references/STAGE_ENGINE.md.
 
 Rerun `lib/cursor_tracks.py` after any change to cues or clips; the page reads `footage.js` and `cues.js`.
 

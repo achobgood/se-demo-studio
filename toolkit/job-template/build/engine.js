@@ -57,8 +57,11 @@ function track(t, keys, preset = 'base') {
 // so two texts in the same box never overlap (use -Infinity / Infinity for an open end)
 const swapAlpha = (t, tIn, tOut) => Math.min(clamp((t - tIn - .08) / .12), clamp((tOut - .1 - t) / .1));
 const WORDS = CUES.words;
+// a sketch before the first voice take has no word timings: say so instead of "cue not found"
+const NO_TAKE = 'no voice take yet: use literal times in the sketch (W, S0 and S1 need build/cues.json, which lib/cursor_tracks.py writes after the take; render.js --sketch then loads it)';
 function at(w, n = 1, end = false) {
   const norm = s => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+  if (!(WORDS || []).length) throw new Error(NO_TAKE);
   let c = 0;
   for (const x of WORDS) if (norm(x.w) === norm(w) && ++c === n) return end ? x.e : x.t;
   throw new Error('cue not found: ' + w + ' #' + n);
@@ -177,13 +180,23 @@ window.ready = async () => {
   return true;
 };
 const q = new URLSearchParams(location.search).get('t'); if (q) window.ready().then(() => renderAt(+q));
+// ?words=0 (render.js --words-off, the words-off check in MOTION.md): every word in #stage stops painting, page-wide,
+// so a text class added later cannot leak. Glyphs only: a border or stroke drawn in currentColor keeps its colour.
+// render.js lists any text that still paints after each frame as WORDS LEFT.
+if (new URLSearchParams(location.search).get('words') === '0') {
+  document.body.classList.add('words-off');
+  el('style', '', document.head, `body.words-off #stage, body.words-off #stage *, body.words-off #stage *::before, body.words-off #stage *::after, body.words-off #stage *::marker {
+    -webkit-text-fill-color: transparent !important; -webkit-text-stroke-color: transparent !important; text-shadow: none !important; text-decoration-color: transparent !important; }
+  body.words-off #stage text, body.words-off #stage tspan, body.words-off #stage textPath { fill-opacity: 0 !important; stroke-opacity: 0 !important; }`);
+}
 
 // ---------- Cue helpers for story.js and scenes.js ----------
-const SG = n => { const s = CUES.segments.find(s => s.name === n); if (!s) throw new Error('segment not found: ' + n); return s; };
+const SG = n => { if (!(CUES.segments || []).length) throw new Error(NO_TAKE); const s = CUES.segments.find(s => s.name === n); if (!s) throw new Error('segment not found: ' + n); return s; };
 const S0 = n => SG(n).t0, S1 = n => SG(n).t1;
 // time of the n-th word starting with `w`, optionally inside one segment
 const W = (w, seg = null, n = 1, end = false) => {
   const norm = s => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+  if (!(CUES.words || []).length) throw new Error(NO_TAKE);
   let c = 0;
   for (const x of CUES.words) if ((!seg || x.seg === seg) && norm(x.w).startsWith(norm(w)) && ++c === n) return end ? x.e : x.t;
   throw new Error('cue not found: ' + w + ' in ' + seg);

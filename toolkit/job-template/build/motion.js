@@ -12,8 +12,8 @@
 // No will-change and no CSS transitions on anything here: every frame is set from t alone.
 // Classes in comp.html: mg-lane, mg-lane-h, mg-card (with <small> kicker), mg-req (request or code block),
 // mg-chip (ok, fail, noop, ev), mg-arrow, mg-group, mg-group-h, mg-token, mg-note, mg-list.
-// Abstract shapes only: lanes, cards, tokens and chips with plain-text product names. Never a product window, a
-// logo, or a mock screen. Every segment shows a label (STORY.motionLabel, or the segment's own label) saying it is
+// The older engine; prefer stages (build/stage.js) and read references/MOTION.md first. Lanes, cards, tokens and
+// chips with plain-text product names. Never a product window, a logo, or a mock screen. Every segment shows a label (STORY.motionLabel, or the segment's own label) saying it is
 // illustrative. While a segment is up, the screen-share frame fades out (scenes.js reads motionCover(t)).
 // STORY.tags: [[from, to, text], ...] small chips at top right, for example "Customer question 1 of 3".
 const MOT = (STORY.motion || []);

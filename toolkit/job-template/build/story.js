@@ -47,8 +47,14 @@ const STORY = {
   },
 };
 
-// ---------- Illustrative motion segments (build/motion.js), optional ----------
-// Use only for steps the owner agreed cannot be shown in the environment (L92). Abstract lanes, cards, tokens and
+// ---------- Stage palette (build/stage.js), only when the job has stages ----------
+// Sample every value from the captured product UI with lib/sample_colors.py (references/STAGE_ENGINE.md, Palette):
+// STORY.stagePalette = { ground: '#24282d', panel: '#30353d', deep: '#131b22', line: '#737981', ink: '#f5f7fa',
+//   ink2: '#9fa3af', acc: '#3d9ef2', ok: '#4cc38a', fail: '#ef6b5f', tokink: '#0b0f14' };   (Cloud Control's, as a format)
+// Optional draw: '#......' is the stroke of drawings (art()); without it they take line. stage.js warns when it is under
+// 3:1 on ground and names the nearest colour of the same hue that reaches 3:1; you decide what to change.
+// ---------- Simple illustrative segments (build/motion.js), optional; prefer stages (references/MOTION.md) ----------
+// Use only for steps the owner agreed cannot be shown in the environment (L92); read references/MOTION.md first. Lanes, cards, tokens and
 // chips with plain-text product names; never a mock product screen, a logo, or a timing claim. Cut back to the
 // real screen that backs each segment. Example (times come from the narration, like everything else):
 // const card = (x, y, w, small, text, at, o = {}) => Object.assign({ cls: 'mg-card', html: `<small>${small}</small>${text}`, x, y, w, at }, o);

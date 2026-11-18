@@ -23,6 +23,36 @@ cp -R toolkit/job-template "$DIR"
 python3 - "$DIR/job.json" "$SLUG" "$PORT" <<'PY'
 import json,sys; f,slug,port=sys.argv[1:4]; d=json.load(open(f)); d['slug']=slug; d['chrome_port']=int(port); json.dump(d,open(f,'w'),indent=2)
 PY
+# Record the template this job starts from, so scripts/upgrade-job.sh can later merge newer template files into it
+# without losing the job's edits: VERSION and the git commit go in job.json, and a copy of every file listed in
+# toolkit/job-template/TEMPLATE_FILES.json that git cannot give back from that commit, because it was edited or not
+# yet committed, goes in review/upgrade/base/.
+rm -f "$DIR/TEMPLATE_FILES.json"
+python3 - "$DIR" <<'PY'
+import json, os, shutil, subprocess, sys
+job, T = sys.argv[1], 'toolkit/job-template'
+def git(*a, inp=None):
+    r = subprocess.run(['git', *a], input=inp, capture_output=True, text=True)
+    return r.stdout.strip() if r.returncode == 0 else ''
+top = git('rev-parse', '--show-toplevel')
+commit = git('rev-parse', 'HEAD') if top and os.path.realpath(top) == os.path.realpath('.') else ''
+files = [p for p in json.load(open(T + '/TEMPLATE_FILES.json'))['files'] if os.path.isfile(os.path.join(T, p))]
+keep = files
+if commit:
+    at = {}
+    for row in git('ls-tree', '-r', 'HEAD', '--', T + '/').splitlines():
+        meta, path = row.split('\t', 1); at[path[len(T) + 1:]] = meta.split()[2]
+    now = git('hash-object', '--stdin-paths', inp='\n'.join(os.path.join(T, p) for p in files)).split()
+    keep = [p for p, h in zip(files, now) if at.get(p) != h]
+for p in keep:
+    os.makedirs(os.path.dirname(os.path.join(job, 'review/upgrade/base', p)), exist_ok=True)
+    shutil.copy2(os.path.join(T, p), os.path.join(job, 'review/upgrade/base', p))
+f = os.path.join(job, 'job.json'); d = json.load(open(f))
+d['template_version'] = open('VERSION').read().strip(); d['template_commit'] = commit or None
+json.dump(d, open(f, 'w'), indent=2)
+print(f"Template base: VERSION {d['template_version']}, " + (f'commit {commit[:7]}' if commit else 'no git commit') +
+      (f'; {len(keep)} files git cannot give back are copied in review/upgrade/base/' if keep else ''))
+PY
 : > "$DIR/logs/costs.jsonl"; : > "$DIR/ORCHESTRATOR_NOTES.md"
 printf '# State changes made in the demo environment\n\n| When | What | Where | Why |\n|---|---|---|---|\n' > "$DIR/logs/state_changes.md"
 if [ $TEST = 1 ]; then

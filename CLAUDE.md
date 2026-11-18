@@ -3,7 +3,7 @@
 This folder is a studio for recording narrated virtual SE product demos from a live, signed-in product.
 
 - When someone asks to record, make, or build a demo (for example "help me record a demo"), to come up with a
-  demo idea or scenario for a video, or to continue a job in `jobs/`, use the `record-demo` skill. It interviews
+  demo idea or scenario for a video, or to continue or redo a job in `jobs/`, use the `record-demo` skill. It interviews
   them, sets up the job, launches the builder, and stops for their approval at the storyboard.
 - Start sessions from this folder: the studio's agents in `.claude/agents` only register here.
 - Run on Opus 5.5 at high effort (`claude-opus-5-5`, set in `.claude/settings.json`). If the session is on
@@ -29,5 +29,6 @@ This folder is a studio for recording narrated virtual SE product demos from a l
 - Lessons from past jobs are in `.claude/skills/record-demo/references/LESSONS_LEARNED.md`. Read a lesson before
   you depart from a rule that cites it.
 - Motion segments are used only where the environment cannot show a step or an abstract scene clearly helps, never
-  as decoration. Their rules are in `.claude/skills/record-demo/references/MOTION.md`; read it only for such a job.
+  as decoration. Their rules are in `.claude/skills/record-demo/references/MOTION.md`; read it only for such a job
+  or when the owner gave a style reference, and start with its concept card: decide what the viewer should see happen before any motion rule (L104).
 - Learner- and customer-facing copy: no em dashes, no slogan stacks, plain and specific.

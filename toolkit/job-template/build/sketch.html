@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Stage sketch</title>
+<link href="fonts/fonts.css" rel="stylesheet" />
+<style>
+  :root { --sans: "Inter", system-ui, sans-serif; --mono: "IBM Plex Mono", ui-monospace, monospace; }
+  html, body { margin: 0; padding: 0; background: #000; }
+  #stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; font-family: var(--sans); }
+</style>
+</head>
+<body>
+<!-- Sketch page (render.js --sketch): stages with no footage or cards. Before the voice take, literal times only. Once
+     build/cues.json exists, render.js hands it to the page as window.CUES_TAKE, so W(), S0() and S1() work here too.
+     sketch.js loads before engine.js so that its CUES.total sets the timeline length (engine.js reads it into TOTAL). -->
+<div id="stage"></div>
+<script>const CUES = window.CUES_TAKE || { total: 20, words: [], segments: [] }; const FOOT = {};</script>
+<script src="sketch.js"></script>
+<script src="engine.js"></script>
+<script src="stage.js"></script>
+<script src="stage_demo.js"></script>
+<script>sketch(); document.getElementById('stage').style.background = PAL.ground;</script>
+</body>
+</html>
