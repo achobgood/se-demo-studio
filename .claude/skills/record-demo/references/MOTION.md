@@ -353,7 +353,7 @@ not opened); a new question set that needs more images is a new reader.
   or out carries the product's words as pixels, which words-off cannot hide: leave it out, or expect a Not blind line.
   Ask its question, then Shot by shot (what happens, how much of the frame is empty).
 - Event pass: the before, at, and after frames of each fast event (a turn, a 0.3 s reaction, a swap), as stills or a
-  blind strip (`node build/render.js strip review/blind/s3_ev <t> --blind`).
+  blind strip (`node build/render.js strip review/blind/s3_ev <t> --words-off`; `--blind` alone leaves the words on).
 - Only after its answer is written, paste the concept card into a message to the same reader (it never opens a card
   file) and ask what is missing.
 - For the Legibility check, a separate reading of full-size words-on stills, one per shot.

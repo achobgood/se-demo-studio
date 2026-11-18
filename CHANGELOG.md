@@ -24,6 +24,7 @@ that `scripts/setup.sh` prints.
     with no public sign pass when a stranger names their kind; a misread object blocks the final; the redo interview
     gives its order (new job early, survival check, then reuse questions), a fallback when the old job's notes are
     missing, and re-checks kept narration.
+  - MOTION.md: the event-pass strip for a blind reader uses `--words-off` (`--blind` alone left the words on).
 - Recorded calls in the job template, off unless a job sets them (PIPELINE.md, "Recorded call"): new
   `lib/call_prep.py` (two tracks to turns, silence-only cuts, a mix, optional word times) and `lib/call_lines.py`
   (places the call after a segment and writes caption lines with speaker labels), and a `build/call.js` stub. This
