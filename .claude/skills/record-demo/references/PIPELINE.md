@@ -22,7 +22,7 @@ written form, e.g. `{"S D WAN": "SD-WAN"}`), and `music` (see step 5).
 | Rehearse a take (nothing recorded) | `TAG=rec node capture/dry.js <take> capture/takes/<script>.js` -> `MARK` lines and `capture/dry/<take>.json` |
 | Park a tab in a take's starting state (not recorded) | `node capture/park.js <name>` (states listed in its `PARK`) |
 | Record a take | `TAG=rec node capture/rec.js <take> capture/takes/<script>.js` |
-| Contact sheet of a take | `python3 lib/recsheet.py <take> 5 20 35 ...` (recording seconds) -> `review/sheet_<take>.jpg` |
+| Contact sheet of a take | `python3 lib/recsheet.py <take> 5 20 35 ... [--small]` (recording seconds) -> `review/sheet_<take>.jpg`; `--small` (`sheet_<take>_small.jpg`, 4 columns of 480x270) for routine checks, full size where text must be read |
 | Frame at a recording time | `python3 lib/frameat.py <take> <seconds>` |
 
 If the DevTools endpoint hangs (L12, L13): kill hung `node capture/...` processes, close runaway tabs with
@@ -222,7 +222,8 @@ label sits just right of its ring. After `ended` the card shrinks to its header.
 - `lib/blur_copy.py IN OUT x y w h [...] [--css]`: a copy of an image with boxes pixelated and blurred (for the
   storyboard sheet; `--css` for 1920-wide coordinates on a device-scale-2 screenshot; PNG output leaves the rest
   of the image exactly as it was).
-- The `claim-checker` agent: checks the talk track and on-screen text against `research/SOURCES.md`.
+- The `claim-checker` agent: checks the talk track and on-screen text against `research/SOURCES.md`; the storyboard
+  pass writes `review/claim_table.md`, and the final pass re-checks only what changed.
 - Style reference frames and downloads for `research/STYLE_GUIDE.md`: references/MOTION.md, Style guide.
 
 ## Tested

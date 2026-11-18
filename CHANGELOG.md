@@ -47,6 +47,14 @@ that `scripts/setup.sh` prints.
   - `lib/sfx_events.py` drops click and key sounds within 60 ms of the previous one (stacked by jump cuts).
   - New `lib/blur_copy.py` writes a blurred copy of a screenshot for the storyboard sheet (no PIL; stays inside
     ffmpeg's blur limits for any box size).
+- Fewer tokens per job:
+  - `claim-checker`: the storyboard pass writes `review/claim_table.md` (one row per sentence and on-screen text,
+    with ids and source ids); the final pass starts from it and re-checks only new or changed text, screen
+    descriptions against the recorded frames, and rows whose source changed. The builder prompt names the pass.
+  - `lib/recsheet.py --small`: `review/sheet_<take>_small.jpg`, 4 columns of 480x270, for routine checks; the builder
+    prompt keeps full size for frames whose text must be read.
+  - A redo's builder reads `research/WHAT_CHANGED.md` first (builder prompt, Read first) and opens the old job's
+    README and script only for what it points to.
 
 - Redoing a finished job: the record-demo skill makes a new job from the current template and treats the old job as
   input; continuing a job runs `scripts/upgrade-job.sh <slug> --check` before any newer template file goes in. The

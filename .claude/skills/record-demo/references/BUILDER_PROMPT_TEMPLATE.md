@@ -37,6 +37,9 @@ content to keep off screen, branding, budget, deadline, story constraints.}}
    comes from it or from a source you fetch and add to `research/SOURCES_ADDENDUM.md` with a verbatim quote.
 3. `research/PRODUCT_UNDERSTANDING.md`: the problem, how the product works, the real workflow with exact
    surface names, where the value comes from, what must not be claimed, and the moments worth filming.
+{{OPTIONAL, delete unless this job redoes a finished one: 3a. `research/WHAT_CHANGED.md`: what survives of the old
+   job, what the owner wants changed, and what to re-check. Read it before the old job's files, and open its README
+   and script only for what it points to.}}
 4. `.claude/skills/record-demo/references/LESSONS_LEARNED.md` (studio root) is the history behind the rules
    below, which cite it as (L1), (L2). You do not need to read it. Before you depart from a rule because it seems
    not to fit this job, read the lesson it cites.
@@ -136,10 +139,13 @@ note. It sets positioning; it does not authorize a technical claim the sources d
    you plan to make, what the screen shows while each live event happens off screen (L61), the Motion decisions
    list from step 4, the concrete list of
    identifiers that will be visible with a proposed blur for each (L58), and open questions. Before you write it,
-   run the `claim-checker` agent on the draft talk track and on-screen text, fix what it finds, and put its
-   summary in the file (L77). Add a contact sheet of the key screens from exploration, one per shot where you
-   have one (`python3 lib/grid.py review/storyboard_sheet.jpg 3 capture/explore/<files>`), and check those frames
-   for anything the Footage rules ban, so the owner sees the picture before any take (L78). If the job has motion
+   run the `claim-checker` agent (brief: the job folder and "storyboard pass") on the draft talk track and on-screen
+   text, fix what it finds, and put its summary in the file (L77); it writes `review/claim_table.md`, which the final
+   pass starts from.
+   Add a contact sheet of the key screens from exploration, one per shot where you have one (`python3 lib/grid.py
+   review/storyboard_sheet.jpg 3 capture/explore/<files>`), blurring identifiers first (`lib/blur_copy.py`), and
+   check those frames for anything the Footage rules ban, so the owner sees the picture before any take (L78).
+   If the job has motion
    segments or a style guide, add them as `.claude/skills/record-demo/references/MOTION.md` (studio root) describes (Storyboard): for
    each segment its concept card and picture check, its signature moment's stills rendered with `--sketch` (with and
    without words), the `blind-reader` agent's answer file, and one line per remaining shot; the full shot table comes after
@@ -224,6 +230,9 @@ imitate a product screen.
   tool headers (version, plan, folder path), tokens and credentials, error and refusal wording, and anything the
   owner excluded. Also look for clipped lines. Read the visible text at every shot in the take script (`dtext()`)
   and check the contact sheets; fix what you find while filming, by framing, a cut, or a new take (L73).
+- Contact sheets for routine checks (signed in, the right view, no dialog) use `lib/recsheet.py ... --small`; open
+  full-size frames only where text must be read. A small sheet's cells have a quarter of the pixels, and image
+  tokens grow with pixels.
 
 ## Signed-in capture
 
@@ -364,8 +373,10 @@ the claim list, the state-change log, and the mix. Send it to a model different 
 script, and a different one again for round 2 (see references/MODELS.md). Ask each reviewer: does this feel like a
 real SE running a real demo (pace, naturalness, words matching the screen, could a customer follow it), and is
 every claim supported? Also check timing drift, legibility, visual consistency, and redaction misses. In addition,
-run the `claim-checker` agent over the final talk track and on-screen text against the sources. Verify each
-finding before acting (L35). Log every finding with its disposition in the README. At most two rounds.
+run the `claim-checker` agent (brief: the job folder and "final pass") over the final talk track and on-screen text;
+it starts from `review/claim_table.md` and re-checks only new or changed text, screen descriptions against the
+rendered video's frames in the review package, and rows whose source changed. Verify each finding before acting
+(L35). Log every finding with its disposition in the README. At most two rounds.
 
 When the job has motion segments, also critique each one in every round as `.claude/skills/record-demo/references/MOTION.md` (studio root), Critique,
 describes. A segment a viewer could mistake for a product screen fails honesty, and an honesty or legibility
