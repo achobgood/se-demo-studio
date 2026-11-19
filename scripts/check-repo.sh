@@ -1,7 +1,7 @@
 #!/bin/bash
 # Checks for a broken or leaky push. Runs before every push (.githooks/pre-push) and on GitHub
 # after every push (.github/workflows/checks.yml). Only tracked files are checked.
-# usage: scripts/check-repo.sh    Prints "ok" or "FAIL" per check; exits 1 if anything failed.
+# usage: scripts/check-repo.sh    Prints "ok" or "FAIL" per check, plus one "info" line; exits 1 if anything failed.
 set -uo pipefail
 cd "$(git rev-parse --show-toplevel)" || exit 1
 TMP=$(mktemp -d); trap 'rm -rf "$TMP"' EXIT
@@ -81,9 +81,10 @@ while IFS= read -r -d '' f; do
 done < <(git ls-files -z)
 report syntax "$TMP/syntax"
 
-# Studio consistency: lesson citations, the builder prompt template, the studio marker, executable bits.
-python3 - > "$TMP/studio" <<'PY'
-import os, re, subprocess
+# Studio consistency: lesson citations, the builder prompt template, the studio marker, executable bits, and section
+# pointers in the guidance. Like the rest of this check, it reads the working tree of tracked files.
+python3 - "$TMP" > "$TMP/studio" <<'PY'
+import os, re, subprocess, sys
 REFS = ".claude/skills/record-demo/references/"
 lessons = set(re.findall(r"^\s*(L\d+)\.", open(REFS + "LESSONS_LEARNED.md").read(), re.M))
 for f in subprocess.check_output(["git", "ls-files", "-z", "*.md"], text=True).split("\0"):
@@ -109,8 +110,53 @@ for row in subprocess.check_output(["git", "ls-files", "-s"], text=True).splitli
         "toolkit/job-template/build/render_par.sh", ".githooks/pre-push")
     if must_run and mode != "100755":
         print(f"{path}: not executable in git (fix: git update-index --chmod=+x {path})")
+# Pointers such as "MOTION.md § Think 1" must name a guidance file and the start of a heading in it, so a renamed
+# heading cannot silently break a map. A heading is "#" to "######" and a space, outside ``` fences.
+guide = [f for f in subprocess.check_output(["git", "ls-files", "-z", "CLAUDE.md", "RELEASING.md",
+         ".claude/skills/record-demo/SKILL.md", REFS + "*.md", ".claude/agents/*.md"], text=True).split("\0")
+         if f and os.path.isfile(f)]
+tracked = set(subprocess.check_output(["git", "ls-files", "-z"], text=True).split("\0"))
+open(os.path.join(sys.argv[1], "guidance"), "w").write("".join(f + "\0" for f in guide))
+def headings(f):
+    fenced, out = False, []
+    for line in open(f, encoding="utf-8"):
+        if line.lstrip().startswith("```"):
+            fenced = not fenced
+        elif not fenced and re.match(r"#{1,6} ", line):
+            out.append(line.split(" ", 1)[1].strip())
+    return out
+by_name, heads = {}, {}
+for f in guide:
+    by_name.setdefault(os.path.basename(f), []).append(f)
+    heads[f] = headings(f)
+# A pointer with a folder (knowledge/README.md § Upkeep) names a tracked file from the studio root.
+POINTER = re.compile(r"(?<![\w.-])((?:[\w.-]+/)*[A-Z0-9_]+\.md) § ([^;,()|\n]*)")
+for f in guide:
+    for n, line in enumerate(open(f, encoding="utf-8"), 1):
+        found = POINTER.findall(line)
+        for name, want in found:
+            want = want.strip()
+            want = want[:-1].rstrip() if want.endswith(".") else want
+            if "/" in name:
+                where = [name] if name in tracked else []
+                if where and name not in heads:
+                    heads[name] = headings(name)
+            else:
+                where = by_name.get(name, [])
+            if len(where) != 1:
+                why = "more than one guidance file has that name" if where else "no guidance file has that name"
+            elif not want or not any(h.startswith(want) for h in heads[where[0]]):
+                why = "no heading in " + where[0] + " starts with that text"
+            else:
+                continue
+            print(f"{f}:{n}: {name} § {want}: {why}")
+        if line.count("§") > len(found):
+            print(f"{f}:{n}: a § that is not part of a pointer (the form is MOTION.md § Think 1)")
 PY
 report studio "$TMP/studio"
+# For information only, never a failure: the size of the guidance files the pointer check read.
+[ -f "$TMP/guidance" ] && echo "info  guidance words: $(xargs -0 cat < "$TMP/guidance" | wc -w | tr -d ' ')" \
+  "in $(tr -cd '\0' < "$TMP/guidance" | wc -c | tr -d ' ') files (CLAUDE.md, RELEASING.md, record-demo SKILL.md and references, agents)"
 
 # Template manifest: every tracked file in toolkit/job-template is listed in TEMPLATE_FILES.json with a kind, every
 # listed file exists, and each file a 'needs' entry names defines the names listed (scripts/upgrade-job.sh reads it).

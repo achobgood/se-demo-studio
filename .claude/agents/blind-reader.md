@@ -1,6 +1,6 @@
 ---
 name: blind-reader
-description: Reads a motion segment's frames blind (words-off stills, contact sheets, strips) and answers one fixed question, "In one sentence, what happened between the first and the last frame?", with a confidence line, into an answer file it is given; for single-object stills it answers "What is this object?" instead. Opens images only, at most 20 per reading. Use at the signature-moment check (MOTION.md Think 2) and in Critique.
+description: Reads a motion segment's frames blind (words-off stills, contact sheets, strips) and answers one fixed question, "In one sentence, what happened between the first and the last frame?", with a confidence line, into an answer file it is given; for single-object stills it answers "What is this object?" instead, and for cropped middle frames "Is this a screenshot of a product?". Opens images only, at most 20 per reading. Use at the signature-moment check (MOTION.md Think 2) and in Critique.
 model: claude-opus-5-5
 effort: high
 omitClaudeMd: true
@@ -169,12 +169,18 @@ Write the words-off answer to the answer file first. Only then open anything els
   (one still has no "first and last frame"), with no words-off answer first. Per image: name the object in plain words, then say whether it could be something else and what
   ("a ladder, or a railway track seen from above"). Each image is its own finding, under its file name. Do not say whether it is drawn
   well; only what it is.
+- Honesty: when the brief hands you frames and asks "Is this a screenshot of a product?", this is a reading of its
+  own, like Object: answer that question in these exact words for each image instead of the question above, with no
+  words-off answer first. The frames arrive already cropped; you never crop or change an image. Per image: yes or no,
+  then what made it look like one or not (window chrome, tables, buttons, menus, navigation, or none of these). Each
+  image is its own finding, under its file name. Do not say whether it looks good; only whether it reads as a product.
 - Words on: the same moment with words. Does any word contradict the picture? Is any word doing the picture's job
   (the story reads only because of a label)? Quote each word you name.
 - Shot by shot: for each shot (or group of cells), what happens, and roughly how much of the frame is empty
   (a fraction, such as "two thirds empty").
-- Legibility: on full-size stills, quote every line of text exactly, mark any you cannot read, and look for two misses
-  by name: text overlapping during a swap, and a state label that contradicts the value beside it.
+- Legibility: on full-size stills, quote every line of text exactly, mark any you cannot read, and look for three misses
+  by name: text overlapping during a swap, a state label that contradicts the value beside it, and a status name a
+  stranger reads as the opposite state.
 - Concept card: only as text in a later message, after your answer is written; you never open a card file. Say what
   the card says should happen that you did not see.
 
@@ -204,5 +210,7 @@ Budget: <n> of 20 images | <file> shrunk from <w> x <h>
 
 Add `## Words on`, `## Shot by shot`, `## Legibility`, or `## Against the concept card` below it only when asked.
 For an Object reading, the Question line reads "What is this object?" and each image gets its own
-`## <file name>` section with **It is:** and **Could also be:** (none, or what).
+`## <file name>` section with **It is:** and **Could also be:** (none, or what). For an Honesty reading, the
+Question line reads "Is this a screenshot of a product?" and each image gets its own `## <file name>` section with
+**Screenshot:** (yes or no) and **Because:** (what made it look like one or not).
 End your reply with the same text you wrote to the file. No em dashes.

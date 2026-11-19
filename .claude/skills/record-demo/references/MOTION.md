@@ -26,16 +26,29 @@ an idea comes from.
 ## Order of work
 
 1. Find the candidate moments (When to use motion at all, below).
+   Read: MOTION.md § When to use motion at all; MOTION.md § What a segment may show (about 640 words).
 2. For each segment, answer the concept card (Think 1) and run the picture check.
+   Read: MOTION.md § Think 1 (about 790 words).
 3. Sample the palette from an exploration capture (`capture/explore/`) into `build/sketch.js`, or mark it provisional
    (Style guide).
+   Read: MOTION.md § Style guide; STAGE_ENGINE.md § Palette (about 790 words).
 4. Sketch each segment's signature moment, render it with words on and words off, and have the `blind-reader` agent
    say what happened (Think 2). This needs no footage, and no voice take (`--sketch`).
+   Read: MOTION.md § Think 2; MOTION.md § Engine choice; MOTION.md § Look; STAGE_ENGINE.md § Files and sketches;
+   STAGE_ENGINE.md § Times from the narration; STAGE_ENGINE.md § Setting up a stage;
+   STAGE_ENGINE.md § Drawings on the world; STAGE_ENGINE.md § The traveller; STAGE_ENGINE.md § Other things on the world;
+   STAGE_ENGINE.md § Text sizes and colours (about 2,890 words). Look is read here because the sketch's stills go
+   to the reader and the storyboard as the film will look.
 5. Storyboard: for each segment send the concept card, the signature stills, and a one-line outline per remaining shot
    (Storyboard, below). Wait for approval.
+   Read: MOTION.md § Storyboard (about 70 words).
 6. After approval and the takes: resample the palette from the clips into `story.js` (Style guide), write the shot
    table, build in `build/stages.js`.
+   Read: MOTION.md § Think 3; MOTION.md § Look; MOTION.md § Determinism; MOTION.md § What did not work;
+   MOTION.md § Building them; STAGE_ENGINE.md § Which part you need (about 1,890 words), then only the STAGE_ENGINE.md
+   parts that map names for the task at hand.
 7. Critique: the firm checks, a blind fresh reviewer, the frozen-time list (Critique), then fix.
+   Read: MOTION.md § Critique; MOTION.md § Determinism; STAGE_ENGINE.md § Review renders (about 1,510 words).
 
 ## When to use motion at all
 
@@ -161,7 +174,11 @@ any voice take exists:
 1. Write it as numbered beats: what moves, from where to where, on which cue word of the script, what text appears.
 2. Build it in `build/sketch.js` (the file explains how; the helpers are in `STAGE_ENGINE.md`), one stage per segment
    at its own times, and render each segment into its own folders: stills before, at, and after the change, once
-   with words and once without, plus a strip across the change. For a segment numbered 3:
+   with words and once without, plus a strip across the change. A segment's number is the one
+   `node build/render.js motionsheet` gives it (its sheet `review/motion/<n>.jpg`, titled "Segment <n>"): counted from 0,
+   the `STORY.motion` entries first, then each stage in the order it is created, one number per section for a stage
+   with `sections` (a sketch loads no `STORY.motion`, so use the number the segment will have in the film). For a
+   segment numbered 3:
    `node build/render.js stills review/sig_s3 2 4.5 7 --sketch`,
    `node build/render.js stills review/blind/s3_sig 2 4.5 7 --sketch --words-off`, and
    `node build/render.js strip review/sig_s3 4.5 --sketch`.
@@ -329,6 +346,10 @@ The firm checks first; any failure blocks the final:
 - **Honesty**: the Illustrative line is visible for the whole segment; example values are marked; with the Illustrative
   line cropped off, a fresh reader does not take a middle frame for a product screenshot; every picture of product
   behaviour has a source in the shot table, and no frame shows more than the concept card's honesty line allows.
+  The crop: take a shot's middle still from `review/stills` (words on, 1920 x 1080 px) and cut off the bottom 110 px
+  (Look), `mkdir -p review/blind/s3_hon && ../../toolkit/node_modules/ffmpeg-static/ffmpeg -v error -i <still> -vf crop=iw:ih-110:0:0 review/blind/s3_hon/frame_1.jpg`,
+  then give the frames to the `blind-reader` agent's Honesty reading ("Is this a screenshot of a product?"), answered
+  by one new reader, one that has not seen the segment's frames.
 - **Legibility**: a fresh reader reads every line aloud from a full-size still within the time it is on screen. Ask
   for three misses by name: text overlapping during a swap, a state label that contradicts the value beside it, and a
   status name a stranger reads as the opposite state.

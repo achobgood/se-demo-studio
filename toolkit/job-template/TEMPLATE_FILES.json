@@ -49,6 +49,7 @@
     "lib/grab.py":                    { "kind": "template", "needs": { "lib/common.py": ["run_ff"] } },
     "lib/grid.py":                    { "kind": "template", "needs": { "lib/common.py": ["run_ff"] } },
     "lib/img.py":                     { "kind": "template", "needs": { "lib/common.py": ["post", "log_cost", "check_budget"] } },
+    "lib/lint_copy.py":               { "kind": "template" },
     "lib/lint_timeline.py":           { "kind": "template" },
     "lib/mix.py":                     { "kind": "template", "needs": { "lib/common.py": ["run_ff", "job_config", "JOB"] } },
     "lib/models.py":                  { "kind": "template", "needs": { "lib/common.py": ["API"] } },

@@ -15,6 +15,10 @@ Teammates only run `git pull` on `main`, so `main` must only ever hold tested, r
    If the release changes guidance a session follows (a reference file, the builder prompt, the job template),
    blind-test it first (L107): give a fresh session only the studio files and the script of a job the guidance was
    not written from, and read where it struggled.
+   If the release adds or moves guidance, give the guidance word count before and after (`scripts/check-repo.sh`
+   prints it). Where you can, merge a new rule into an old one or replace the old one, rather than add it beside it.
+   Maps point into a file as MOTION.md § Think 1 (a file name, then the start of one of its headings);
+   `scripts/check-repo.sh` fails on a pointer that leads nowhere, so rename a heading only together with its pointers.
    If the release changes a file of kind `mixed` in `toolkit/job-template/TEMPLATE_FILES.json` (a template file jobs
    edit, such as `build/comp.html` or `build/scenes.js`), say so in CHANGELOG with the file name: a job that takes the
    change with `scripts/upgrade-job.sh` gets it three-way merged and may have conflicts to settle. A new file in the

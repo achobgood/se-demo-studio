@@ -140,6 +140,20 @@ that `scripts/setup.sh` prints.
   `lib/grab.py` pulls frames from a rendered video; `lib/frozen_time.py` measures how much of each motion segment
   is frozen. MOTION.md also gains a fresh-reviewer rule, "every action visibly produces a result", and a shot table
   column for what survives each cut.
+- Findability (guidance maps, no new rules): the builder reads the part of a reference it needs at each step.
+  - Builder prompt "Read first": a "What to read, and when" table by job step, and section pointers in place of
+    whole-file reads of MOTION.md, STAGE_ENGINE.md, and PIPELINE.md. MOTION.md "Order of work" names what to read
+    at each step. STAGE_ENGINE.md and PIPELINE.md open with "Which part you need" and gain subheadings inside their
+    long sections.
+  - Pointers have one form, `MOTION.md § Think 1` (a file, then the start of one of its headings), and
+    `scripts/check-repo.sh` fails on one that leads nowhere. It also prints the guidance word count; RELEASING.md
+    step 1 asks a pass to report it before and after and to merge or replace old rules where it can.
+  - New `lib/lint_copy.py` (template file): em and en dashes, back-to-back questions, banned phrases, and stage
+    directions in the spoken script. Run before each claim check; a clean run lets the claim checker skip those rules.
+  - Files that disagreed now agree: the blind reader's Legibility asks for MOTION.md's three misses and gains an
+    Honesty reading (MOTION.md gives the crop); the claim checker skips the template's placeholder script at the
+    storyboard, reads `research/CLAIMS.md` only if it exists, and has a `flags` column. MOTION.md says how segments
+    are numbered; STAGE_ENGINE.md says where a stage's camera sits without keys.
 
 ## 0.4.1 (2026-11-17)
 

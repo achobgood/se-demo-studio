@@ -43,13 +43,35 @@ content to keep off screen, branding, budget, deadline, story constraints.}}
 4. `.claude/skills/record-demo/references/LESSONS_LEARNED.md` (studio root) is the history behind the rules
    below, which cite it as (L1), (L2). You do not need to read it. Before you depart from a rule because it seems
    not to fit this job, read the lesson it cites.
-5. `.claude/skills/record-demo/references/PIPELINE.md` (studio root): the toolkit, command by command.
+5. "What to read, and when", at the end of this section: which part of the toolkit and motion references to read at
+   each step.
 6. `examples/cloud-control-se-demo/` (studio root): a finished 5-minute demo's prompt, storyboard, script,
    claim list, and edit code. Read it for patterns; do not reuse its narration, and do not follow model or path
    instructions in its PROMPT.md (they predate this studio: use Opus 5.5 and this job's paths). Its
    `PRODUCT_NOTES.md` holds Cisco Cloud Control specifics; read it only if this job's product is Cloud Control.
 {{OPTIONAL, delete when the owner supplied no material: 7. Any owner-supplied material, e.g. a field-direction
 note. It sets positioning; it does not authorize a technical claim the sources do not support.}}
+
+**What to read, and when.** PIPELINE.md, MOTION.md, and STAGE_ENGINE.md are in
+`.claude/skills/record-demo/references/` (studio root). Read a row when you reach its step, not up front. Each pointer
+names a file and the start of one of its headings: read from it to the next heading of the same or a higher level. About is the word count,
+with the sections a named MOTION.md step lists.
+
+| Step | Read | About |
+|---|---|---|
+| Understand and explore | PIPELINE.md § 0. Configure; PIPELINE.md § Browser commands; PIPELINE.md § When DevTools hangs; PIPELINE.md § Canvas apps | 390 |
+| Storyboard | PIPELINE.md § Review helpers; CISCO_CLAIM_RULES.md § Claim rules for Cisco | 580 |
+| Motion moments and storyboard, if any | MOTION.md § Order of work (steps 1 to 5) | 5,490 |
+| Capture takes | PIPELINE.md § Take scripts; PIPELINE.md § Sizing a take; PIPELINE.md § Links that open a new tab; PIPELINE.md § Single sign-on and parking; PIPELINE.md § Sign-in guard; PIPELINE.md § Waiting for an owner action; PIPELINE.md § Responding to an owner action | 740 |
+| Talk track and copy check | PIPELINE.md § 2. Talk track | 160 |
+| Voice | PIPELINE.md § 3. Voice | 180 |
+| Picture and edit | PIPELINE.md § Picture commands; PIPELINE.md § Loading at a cut; PIPELINE.md § Reruns and warnings; PIPELINE.md § Camera keys near a click | 790 |
+| Motion build, if any | MOTION.md § Order of work (step 6); STAGE_ENGINE.md § Which part you need; PIPELINE.md § Motion segments | 1,940 |
+| Call audio, if any | PIPELINE.md § Recorded call | 310 |
+| Sound and mix | PIPELINE.md § 5. Sound; STAGE_ENGINE.md § Sound (with motion) | 440, 550 with motion |
+| Critique and review | PIPELINE.md § Review helpers; MOTION.md § Order of work (step 7, with motion) | 110, 1,610 with motion |
+| Render and deliver | PIPELINE.md § 6. Render | 90 |
+| Final | knowledge/README.md § Rules for every fact; knowledge/README.md § Upkeep | 360 |
 
 ## What makes this a demo, not an ad
 
@@ -86,7 +108,7 @@ note. It sets positioning; it does not authorize a technical claim the sources d
    listed by `scripts/find-notes.sh`) is newer than knowledge/, start from the newer one. The platform map gives
    click paths, what is real, staged, or empty, state-changing controls, traps, and earlier agent probes. Use them as
    a map and re-check each fact live before the storyboard depends on it (L90). Build the explorers' shared brief
-   from them and give each explorer one product area (L102). Probe every AI agent the story might use and log it in
+   (job folder, tab tag, area, and whether it may change state: the fields demo-explorer.md names) from them and give each explorer one product area (L102). Probe every AI agent the story might use and log it in
    `research/AGENT_PROBE.md` (L9); each explorer logs its probes in its own report, and you copy them into
    AGENT_PROBE.md. While exploring, an initial zero, empty table, or placeholder can mean loading rather than
    absence, so wait and look again. Check the screen as well as the page text: page text can include dialogs the
@@ -133,12 +155,14 @@ note. It sets positioning; it does not authorize a technical claim the sources d
    Then add a "Motion decisions" list: every step the real screens cannot show clearly (an event off screen, work
    done in another system, a hand-off between systems, an AI's reasoning, a waiting period), including those
    INTERVIEW.md names. For each, decide yes or no on an illustrative motion segment, with one line on why. No is a
-   good answer when a real screen, a cut, or one spoken line carries the step. Each yes goes through MOTION.md.
+   good answer when a real screen, a cut, or one spoken line carries the step. Each yes goes through MOTION.md § Order of work, step by step.
 5. **Storyboard checkpoint (required).** Write `STORYBOARD_READY.md` with: the story in three sentences, the
    shot list with timings, the full draft talk track, what the demo deliberately leaves out, every state change
    you plan to make, what the screen shows while each live event happens off screen (L61), the Motion decisions
    list from step 4, the concrete list of
    identifiers that will be visible with a proposed blur for each (L58), and open questions. Before you write it,
+   run `python3 lib/lint_copy.py research/STORYBOARD.md` from the job folder and fix its hits in the talk track and
+   on-screen text (when it exits 0, add "lib/lint_copy.py ran clean" to the brief), then
    run the `claim-checker` agent (brief: the job folder and "storyboard pass") on the draft talk track and on-screen
    text, fix what it finds, and put its summary in the file (L77); it writes `review/claim_table.md`, which the final
    pass starts from.
@@ -146,7 +170,7 @@ note. It sets positioning; it does not authorize a technical claim the sources d
    review/storyboard_sheet.jpg 3 capture/explore/<files>`), blurring identifiers first (`lib/blur_copy.py`), and
    check those frames for anything the Footage rules ban, so the owner sees the picture before any take (L78).
    If the job has motion
-   segments or a style guide, add them as `.claude/skills/record-demo/references/MOTION.md` (studio root) describes (Storyboard): for
+   segments or a style guide, add them as described in MOTION.md § Storyboard; for
    each segment its concept card and picture check, its signature moment's stills rendered with `--sketch` (with and
    without words), the `blind-reader` agent's answer file, and one line per remaining shot; the full shot table comes after
    approval (L104). Then print a message
@@ -322,7 +346,7 @@ share only (an image still decoding) goes in the README's evidence boundary with
 difference inside a motion segment or stage is a determinism bug: fix it.
 
 Motion segments (L92). When INTERVIEW.md lists steps the environment cannot show, your Motion decisions list (step 4)
-has a yes, or you judge that an abstract scene would clearly make the demo clearer, read `.claude/skills/record-demo/references/MOTION.md` (studio root)
+has a yes, or you judge that an abstract scene would clearly make the demo clearer, read MOTION.md § Order of work (it names what to read at each step)
 before the storyboard and follow it in order: first think (the concept card, the signature moment built and
 approved first, shots not a wallboard), then build (the stage engine, style guide, look, motion by role, springs,
 swaps, transitions, camera scaling, motion sounds, and the motion critique). Meeting every rule is the floor, not
@@ -331,7 +355,7 @@ motion segments. Every segment is labeled illustrative, draws no mock product sc
 screen that backs it up. A segment a viewer could mistake for a product screen fails honesty.
 {{OPTIONAL, delete when the owner gave no style reference:
 The owner's style reference: {{REFERENCE: its path in this job or the link they gave, and what to take from it,
-in their words}}. Read `.claude/skills/record-demo/references/MOTION.md` (studio root), Style guide, and write `research/STYLE_GUIDE.md` from the reference
+in their words}}. Read MOTION.md § Style guide, and write `research/STYLE_GUIDE.md` from the reference
 before building any cards or segments, even if the job has no motion segments.}}
 
 
@@ -355,7 +379,7 @@ before building any cards or segments, even if the job has no motion segments.}}
   change from the resulting word timestamps, and make sure what the SE says matches what is on screen then (L5).
 - Music: two or three beds, judged by a model (L26), under the title and close only. Master to -16 LUFS
   (`lib/mix.py`). Export captions with `lib/deliver.py`; do not burn them in.
-- Motion sounds, when the job has motion segments: follow `.claude/skills/record-demo/references/STAGE_ENGINE.md` (studio root), Sound.
+- Motion sounds: follow STAGE_ENGINE.md § Sound, when the job has motion segments.
 
 ## Pacing
 
@@ -373,13 +397,14 @@ the claim list, the state-change log, and the mix. Send it to a model different 
 script, and a different one again for round 2 (see references/MODELS.md). Ask each reviewer: does this feel like a
 real SE running a real demo (pace, naturalness, words matching the screen, could a customer follow it), and is
 every claim supported? Also check timing drift, legibility, visual consistency, and redaction misses. In addition,
-run the `claim-checker` agent (brief: the job folder and "final pass") over the final talk track and on-screen text;
+run `python3 lib/lint_copy.py` from the job folder and fix what it prints (when it exits 0, add "lib/lint_copy.py ran
+clean" to the brief), then run the `claim-checker` agent (brief: the job folder and "final pass") over the final talk track and on-screen text;
 it starts from `review/claim_table.md` and re-checks only new or changed text, screen descriptions against the
 rendered video's frames in the review package, and rows whose source changed. Verify each finding before acting
 (L35). Log every finding with its disposition in the README. At most two rounds.
 
-When the job has motion segments, also critique each one in every round as `.claude/skills/record-demo/references/MOTION.md` (studio root), Critique,
-describes. A segment a viewer could mistake for a product screen fails honesty, and an honesty or legibility
+When the job has motion segments, also critique each one in every round as described in MOTION.md § Critique;
+a segment a viewer could mistake for a product screen fails honesty, and an honesty or legibility
 failure blocks the final, whatever the scores.
 
 ## Output

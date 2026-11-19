@@ -5,12 +5,32 @@ mechanics, and render commands. Read `MOTION.md` (same folder) first: it decides
 and its firm rules (honesty, legibility, determinism, read and relate) and Critique apply to everything built here. Paths are relative
 to the job folder unless they start with the studio root. This text moved here from MOTION.md.
 
+## Which part you need
+
+- Choosing an engine, or reading all of the build part: STAGE_ENGINE.md § Building them (about 2760 words); STAGE_ENGINE.md § Stages (about 2570 words).
+- Setting up the stage files and sketches: STAGE_ENGINE.md § Files and sketches (about 170 words); STAGE_ENGINE.md § The ground and the template cards (about 120 words).
+- Adding stages to a job made before them: STAGE_ENGINE.md § Adding stages to an older job (about 220 words).
+- Timing keys to the narration: STAGE_ENGINE.md § Times from the narration (about 150 words).
+- Building a stage (name, push, camera keys, titles, bottom lines, shots, sections, join): STAGE_ENGINE.md § Setting up a stage (about 410 words).
+- Placing drawings, the traveller, boxes, wires, and labels: STAGE_ENGINE.md § Drawings on the world (about 270 words); STAGE_ENGINE.md § The traveller (about 320 words); STAGE_ENGINE.md § Other things on the world (about 200 words).
+- Depth, what draws in front: STAGE_ENGINE.md § Depth (about 160 words).
+- Moving one object with another: STAGE_ENGINE.md § Moving with something else (about 440 words).
+- Text sizes and colours: STAGE_ENGINE.md § Text sizes and colours (about 120 words); STAGE_ENGINE.md § Palette (about 490 words).
+- The older engine: STAGE_ENGINE.md § The simple engine (about 150 words).
+- Easing and timing by role, springs, and text swaps: STAGE_ENGINE.md § Motion by role (about 220 words); STAGE_ENGINE.md § Springs (about 60 words); STAGE_ENGINE.md § Swaps (about 50 words).
+- Transitions, and joining one stage to the next: STAGE_ENGINE.md § Transitions (about 470 words); STAGE_ENGINE.md § One stage to the next (about 360 words).
+- Review renders: STAGE_ENGINE.md § Review renders (about 190 words).
+- Camera keys and camera scaling: STAGE_ENGINE.md § Setting up a stage (about 410 words); STAGE_ENGINE.md § Camera scaling (about 30 words).
+- Sounds: STAGE_ENGINE.md § Sound (about 110 words).
+
 ## Building them
 
 There are two engines. Use **stages** for any segment with a concept card: a camera on a world, a traveller that
 changes shape, drawn objects. The **simple engine** (`STORY.motion`) predates MOTION.md; see its note below.
 
 ### Stages
+
+#### Files and sketches
 
 Files in `build/`: `stage.js` (the engine; do not edit per job), `stages.js` (this job's segments, with narration
 times), `sketch.js` and `sketch.html` (sketches rendered with `--sketch`), and `stage_demo.js` (a story-free demo of
@@ -24,12 +44,16 @@ without it, it prints `sketch: no voice take yet` and `W()` stops with `no voice
 sketch`. `sketch.js` loads before `engine.js`: define `STORY` and functions at the top, and call engine helpers only
 inside `sketch()`. `CUES.total` in `sketch.js` sets the sketch's length when there is no take.
 
+#### The ground and the template cards
+
 When a job has stages, the template's background (gradient, grid, glows, vignette) gives way to the stage ground for
 the whole film, so the screen share and the stages sit on one ground. The template's title, agenda, and close cards
 keep their own look (kicker, numbered rows), with their text (and the screen share's chapter chips) recoloured from
 the palette (ink, ink2, accent) so they stay readable on a light ground; to bring them into the stage look, build them as stages with `card: true`.
 The template card still draws underneath such a stage, which covers it only while the stage runs: make the stage
 span the card's whole time.
+
+#### Adding stages to an older job
 
 **Adopting stages in an older job.** A job made before stages has older copies of the template files, and its
 `comp.html` and `scenes.js` usually carry the job's own card edits. Do not copy template files over them. From the
@@ -46,6 +70,8 @@ function is not defined after copying a file by hand, `--check` names the file t
 `job.json`, and copies of any uncommitted template files in `review/upgrade/base/`); leave them, they are what
 `scripts/upgrade-job.sh` merges from.
 
+#### Times from the narration
+
 Times come from the narration: `W('word', 'segment', n)` is the start of the n-th word in that segment that starts
 with `word` (`n` picks between repeats; `W(..., ..., n, true)` is its end), `S0('segment')` and `S1('segment')` are a
 segment's start and end, and `TOTAL` is the film's length. How keys behave, by helper:
@@ -55,12 +81,14 @@ segment's start and end, and `TOTAL` is the film's length. How keys behave, by h
 - With `pushIn`, the first 0.9 s of the stage is the push; with `pushOut`, the last 0.6 s. Content timed there is
   half off screen.
 
+#### Setting up a stage (`new Stage`)
+
 `new Stage({...})`, one segment:
 - `name` (shown on the shot sheet; defaults to "Stage n"), `from`, `to`.
 - `pushIn`, `pushOut`: the screen share leaves left as the stage arrives from the right, and the reverse on the way out.
   A stage without `pushOut` ends at `to` and the screen share is back at once.
-- `cam: [[t, x, y, zoom], ...]` in world pixels (zoom 1 is one world pixel per screen pixel); defaults to the centre
-  at zoom 1. Each move starts 0.9 to 1.6 s before its key (longer for longer moves), eases both ways, and zooms in log
+- `cam: [[t, x, y, zoom], ...]` in world pixels (zoom 1 is one world pixel per screen pixel); without keys the camera sits
+  on world point 960, 540 at zoom 1, so the frame shows the world's top-left 1920 by 1080 (the world is 8000 by 6000). Each move starts 0.9 to 1.6 s before its key (longer for longer moves), eases both ways, and zooms in log
   space. Put a key just before the line the viewer must read. Keys must be in time order (checked at load).
 - `titles: [[from, to, text]]`: 64 px, fixed on screen (the camera never scales it), per-word reveal, word-by-word
   blur-out after `to` (0.2 s plus 0.04 s a word: start the next title after that). A `|` with a space on each side is
@@ -80,6 +108,8 @@ segment's start and end, and `TOTAL` is the film's length. How keys behave, by h
   has no section name).
 - `join: { stage, how, dur, ease }`: this stage takes over from an earlier one (One stage to the next, below).
 
+#### Drawings on the world (`art`)
+
 Things on the world (positions in world pixels):
 - `art(st, {x, y, w, h, svg, at, dur, stagger, react, dim, out, parts, name, z, front, frontZ, leave, follow})`: a
   line drawing, SVG markup in a `w` by `h`
@@ -94,6 +124,9 @@ Things on the world (positions in world pixels):
   is at `t` (parts posed at `t`, every stroke drawn), in the line colour, behind it, at `'here'` (default, its own x,
   y) or `[x, y]`; it fades in over 0.5 s to `level` (0.5), and stays after the drawing's `out` until its own `out`
   (a 0.3 s fade). `front`, `frontZ`, `z` and `follow`: Depth and Moving with something else, below.
+
+#### The traveller (`request`)
+
 - `request(st, {born, enter, pos, path, states, seq, moves, type, hi, ghost, ghosts, out, z, follow})`: the
   traveller, the one accent object.
   `enter` is `'settle'` (from 104%), `'left'` (slides in from the left), or anything else for none. `pos` is its
@@ -110,6 +143,9 @@ Things on the world (positions in world pixels):
   the traveller. An art state's copy is its own drawing in the line colour; any other kind is its rounded box.
   `ghost: [t, state]` still works: one copy where it was born, shown only while the traveller is on screen.
   `out: t` fades the traveller out. Give it the same look where one segment ends and the next begins.
+
+#### Other things on the world (`box`, `wire`, `wtext`, `st.on`)
+
 - `box(st, {x, y, w, h, name, nameCls: 'small', sub, subAt, lines: [[t, text, cls]], at, enter: 'settle', react, dim,
   nameOut, css, z, follow})`: a named place with a border that draws on, its name revealed per word, the sub-line and
   outcome lines rising from a mask. It is a box: use it for a place whose name is the point, not as the picture.
@@ -121,6 +157,8 @@ Things on the world (positions in world pixels):
 - Anything else: `st.on(t => { ... })` with your own per-frame code, still a function of t alone. `st.ev(t, 'what')`
   adds an entry to the event list (`render.js events`) for something your own code does.
 
+#### Depth
+
 **Depth.** Creation order is depth, so whatever is created later draws in front, and wires without `z` are all in one
 layer under everything on the stage. Every helper takes `z`: a number, or steps `[[t, z], ...]` that switch at `t`
 (0 before the first step). Higher is in front; equal z keeps creation order; a negative z goes under the wires.
@@ -129,6 +167,8 @@ own layer where it is created, so it can sit over a box. For a drawing that is b
 (a fence, a pocket, a door frame), `art()` takes `front: ['id', ...]`: written once, those parts draw in a second
 copy one z above the drawing (or at `frontZ`). That copy is above everything at z 0, including things created later;
 give anything that must stay in front `z: 2`.
+
+#### Moving with something else
 
 **Moving with something else.** Any position can be a function of t instead of a number: `x` and `y` of `box`, `wtext`
 and `art`; a part's `shift` (`t => [dx, dy]`), `turn` (`t => degrees`) and `o` (`t => level`); a point of a `wire`
@@ -151,6 +191,8 @@ on t alone; `render.js same` catches one that does not.
   (each move can be any length), then key it up again from where it stopped. `render.js events` lists when a follow
   starts and stops.
 - The engine ships no stock hook, claw or crane. The demo's hook shows `follow`; draw what your concept card names.
+
+#### Text sizes and colours
 
 Text sizes in the world, and the smallest zoom at which each still reads at 28 px: box names 52 px (0.54), sub-lines,
 outcome lines, world labels, card lines, and tokens 40 px (0.7), the card's main line 44 px (0.64), code 34 px (0.83).

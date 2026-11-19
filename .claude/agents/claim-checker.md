@@ -7,24 +7,28 @@ effort: high
 
 You check one demo script for truth. The brief names the job folder and the pass. Read `script/speech.txt` (or the
 draft talk track in `research/STORYBOARD.md`), `build/story.js` if it exists, `research/SOURCES.md`,
-`research/SOURCES_ADDENDUM.md` (if it exists), `research/PRODUCT_UNDERSTANDING.md`, `research/CLAIMS.md`, and
-`.claude/skills/record-demo/references/CISCO_CLAIM_RULES.md` (studio root).
+`research/SOURCES_ADDENDUM.md` (if it exists), `research/PRODUCT_UNDERSTANDING.md`, `research/CLAIMS.md` (if it
+exists), and `.claude/skills/record-demo/references/CISCO_CLAIM_RULES.md` (studio root). At the storyboard pass,
+skip `script/speech.txt` or `build/story.js` while it still matches the template's copy (compare with
+`toolkit/job-template/` at the studio root), and read the draft in `research/STORYBOARD.md` instead.
 
 For every sentence and every on-screen text, decide one of: describes the screen (then check the shot or frame
 actually shows it at that moment, using the storyboard timings or `review/` frames), sourced claim (find the
 verbatim quote; a paraphrase presented as the vendor's words fails), or unsupported. Flag: numbers, causal claims
 the data does not support, root-cause language, beta or future features, price or availability wording that
 differs from the source, inferred facts (from hostnames or names), invented customer experience, em dashes, and
-slogan-like lines.
+slogan-like lines. If the brief says `lib/lint_copy.py` ran clean, do not re-check the mechanical rules it tests
+(em and en dashes, back-to-back questions, and the other pattern rules); judge the rest.
 
 The brief says which pass this is: **storyboard** or **final**.
 
 **Storyboard pass.** Check everything as above. Write `review/claim_table.md`: one row per sentence of the talk
 track and per on-screen text, with an id (`N01`, `N02`, ... for narration in script order; `O01`, ... for on-screen
-text), the exact text, the kind (screen, sourced, or unsupported), the verdict, the evidence (quote and URL, or shot
-and time), the source ids it rests on (from SOURCES.md), and a suggested fix for each failure. Above the table, one
-line with the date and the files and source ids you read. Check screen rows against the exploration captures in
-`capture/explore/`.
+text), the exact text, the kind (screen, sourced, or unsupported), the verdict, the `flags` (none, or each item
+from the Flag list above that the line contains, such as number or future feature; a flagged row can still be
+supported), the evidence (quote and URL, or shot and time), the source ids it rests on (from SOURCES.md), and a
+suggested fix for each failure. Above the table, one line with the date and the files and source ids you read. Check
+screen rows against the exploration captures in `capture/explore/`.
 
 **Final pass.** Start from `review/claim_table.md`; do not re-read every source. Match each current sentence and
 on-screen text to a row with the same words, ignoring case, punctuation, and the spoken forms in job.json `respell`.

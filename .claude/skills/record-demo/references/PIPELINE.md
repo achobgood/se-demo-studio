@@ -4,6 +4,20 @@ Every job folder (`jobs/<slug>/`) is a copy of `toolkit/job-template/`. Run comm
 a path starts with `scripts/` (studio root). Every paid call checks the job's cap first and logs its billed cost
 to `logs/costs.jsonl`. This order was tested end to end on 2026-09-28.
 
+## Which part you need
+
+- Configure the job: PIPELINE.md § 0. Configure (about 60 words).
+- Explore the product: PIPELINE.md § Browser commands (about 200 words); PIPELINE.md § When DevTools hangs (about 50 words); PIPELINE.md § Canvas apps (about 70 words).
+- Capture takes: PIPELINE.md § Take scripts (about 80 words); PIPELINE.md § Sizing a take (about 100 words); PIPELINE.md § Links that open a new tab (about 40 words); PIPELINE.md § Single sign-on and parking (about 170 words); PIPELINE.md § Sign-in guard (about 130 words); PIPELINE.md § Waiting for an owner action (about 110 words); PIPELINE.md § Responding to an owner action (about 120 words).
+- Write the talk track and check its copy: PIPELINE.md § 2. Talk track (about 160 words).
+- Make the voice: PIPELINE.md § 3. Voice (about 180 words).
+- Picture and edit: PIPELINE.md § Picture commands (about 570 words); PIPELINE.md § Loading at a cut (about 40 words); PIPELINE.md § Reruns and warnings (about 140 words); PIPELINE.md § Camera keys near a click (about 40 words).
+- Motion segments, if any: PIPELINE.md § Motion segments (about 50 words); PIPELINE.md § Picture commands (about 570 words).
+- Call audio, if any: PIPELINE.md § Recorded call (about 310 words).
+- Sound and mix: PIPELINE.md § 5. Sound (about 440 words).
+- Render and deliver: PIPELINE.md § 6. Render (about 90 words).
+- Review: PIPELINE.md § Review helpers (about 110 words).
+
 ## 0. Configure the job
 
 `job.json`: `title`, `disclosure` (player page), `budget_usd`, `hours`, `chrome_port` (assigned by new-job.sh),
@@ -12,6 +26,8 @@ sign-on app: no new tabs, adopt the signed-in one), `theme` (`light`, `dark`, or
 written form, e.g. `{"S D WAN": "SD-WAN"}`), and `music` (see step 5).
 
 ## 1. Browser, exploration, capture
+
+### Browser commands
 
 | Step | Command |
 |---|---|
@@ -25,10 +41,14 @@ written form, e.g. `{"S D WAN": "SD-WAN"}`), and `music` (see step 5).
 | Contact sheet of a take | `python3 lib/recsheet.py <take> 5 20 35 ... [--small]` (recording seconds) -> `review/sheet_<take>.jpg`; `--small` (`sheet_<take>_small.jpg`, 4 columns of 480x270) for routine checks, full size where text must be read |
 | Frame at a recording time | `python3 lib/frameat.py <take> <seconds>` |
 
+### When DevTools hangs
+
 If the DevTools endpoint hangs (L12, L13): kill hung `node capture/...` processes, close runaway tabs with
 `curl -s http://127.0.0.1:<port>/json/close/<id>`, and if it still does not answer (Chrome may have updated itself
 while running), restart this job's Chrome with `scripts/chrome.sh <slug> --stop`, then `scripts/chrome.sh <slug>`.
 The signed-in session survives a restart.
+
+### Take scripts
 
 A take script (`capture/takes/example_take.js`) receives `page, C, mv, click, clickLoc, type, typed, wheel, mark,
 sleep, dtext`. `mark('name')` drops a labeled timestamp into `log.json` that you can find later, and `click(x, y, ms,
@@ -36,19 +56,27 @@ sleep, dtext`. `mark('name')` drops a labeled timestamp into `log.json` that you
 printing its marks in recording seconds, the clock `build/edit.py` and `lib/frameat.py` use. Output:
 `capture/rec/<take>/NNNNN.jpg` plus `log.json` (frame times, pointer track, clicks, keys).
 
+### Sizing a take
+
 Size each take to the draft narration before recording it: the actions and waits between two cue words must fit
 the time those words take to say, about 0.4 s a word as a starting point (a 20-word paragraph is about 8 s of
 clicks). A take that runs much longer than its words gets squeezed by the edit (keys dropped, or a speed-up the
 narration never mentions) and usually has to be recorded again. Plan any long wait as a labelled speed-up. Rehearse
 with `capture/dry.js` and compare its MARK times with the words, then check the edit with `lib/fit_report.py`.
 
+### Links that open a new tab
+
 A link inside an embedded product page can open a new tab and break the single screen share: set `target=_self`
 on the anchor before clicking (see `examples/cloud-control-se-demo/code/take_example.js`) (L17).
+
+### Canvas apps
 
 Canvas apps (L38, L54): start a drag pan on empty canvas (check `document.elementFromPoint(x, y)` is the
 background before pressing); after a click, confirm the element you meant is the one selected; measure label
 height at each app zoom step before choosing app zoom plus a push-in; the app's own search (type a name, press
 Enter) is the most reliable way to bring an element on screen.
+
+### Single sign-on and parking
 
 In apps with single sign-on, record in the long-lived signed-in tab (`TAG` = that tab's tag) and navigate by
 in-app clicks: a `page.goto` or a brand-new tab can pass through the sign-in page and the guard ends the take
@@ -60,6 +88,8 @@ runs several takes starts a take only after `PARKED`. The take checks the same e
 `const { atStart } = require('../park'); if (!(await atStart(page, '<name>'))) { mark('wrong_view'); return; }`.
 Parking helps in any app whose takes need a prepared view, not only with single sign-on.
 
+### Sign-in guard
+
 Sign-in guard (L47; in jobs whose `capture/cdp.js` has `signInReason`): `rec.js` exits with code 2 and records
 nothing if the page looks like a sign-in, SSO, password, or one-time-code page. It checks the address (common
 sign-in and identity-provider patterns), a visible password or code field, a page whose only input asks for a
@@ -68,6 +98,8 @@ every take's contact sheet. If one appears mid-take it stops,
 deletes that take's raw frames, adds a row to `logs/state_changes.md`, prints "LOGIN NEEDED:", and exits with code
 3. `shot()` returns null instead of saving such a page. `SIGNIN_GUARD=off` is only for an owner-approved page with a
 masked secret field that is not a sign-in.
+
+### Waiting for an owner action
 
 Waiting for an owner action inside a take (L39). Print the marker before the take reaches this point, then:
 
@@ -80,6 +112,8 @@ mark('owner_done');
 Cut the span between the two marks out of the edit; the result shot starts at the first frame where the result
 is listed, and the time in between shows something that follows the narration (L50). If the page needs a refresh
 to show the result, refresh every 15 seconds or more and record at `JPGQ=75` (L32).
+
+### Responding to an owner action
 
 When the demo must respond to the action (L48), use the locator that matched the real event in the rehearsal
 (role and name, a `page.frameLocator(...)` chain, or whatever the rehearsal proved; Playwright locators reach open
@@ -108,6 +142,12 @@ mark('owner_done');
   silence after it, room for typing, loading, reading), `chapter` (player chapter label). Also `intro_seconds`
   (silence before the first word, under the title) and `tail_seconds` (after the last word).
 
+| Step | Command |
+|---|---|
+| Copy rules a pattern can check | `python3 lib/lint_copy.py [files...]` (default `script/speech.txt` and `build/story.js`; checks only the mechanical copy rules: em and en dashes, back-to-back questions, and the other rules from references/CISCO_CLAIM_RULES.md or CLAUDE.md that a pattern can test without judgment; prints `file:line: rule: text` per hit; exit 1 on any hit; no paid calls) |
+
+Run `lib/lint_copy.py` before each claim check and fix what it prints; when it exits 0, say "lib/lint_copy.py ran clean" in the claim checker's brief, and the checker does not re-check those rules.
+
 ## 3. Voice
 
 | Step | Command |
@@ -124,6 +164,8 @@ Use `--extra '{"instructions": "..."}'` only for a model whose style field you h
 raw PCM; take.py converts it.
 
 ## 4. Picture
+
+### Picture commands
 
 | Step | Command |
 |---|---|
@@ -144,12 +186,18 @@ raw PCM; take.py converts it.
 | Frames around a fast moment | `node build/render.js strip review/strip 84.3 [n=12] [fps=30]` -> `review/strip/strip_<t>.jpg` (n consecutive frames centered on t; catches overlaps during swaps) |
 | Determinism checks (before the rough cut) | `python3 lib/lint_timeline.py` (flags `Math.random`, `Date.now`, `performance.now`, timers, `requestAnimationFrame`, CSS transitions or animations, `will-change` in `build/`; exit 1 on any) and `node build/render.js same review/same 12.5 80.2` (renders each time twice, prints SAME or DIFFERENT; exit 1 on any DIFFERENT) |
 
+### Loading at a cut
+
 At every cut, look at the incoming clip's first frames (`python3 lib/frameat.py <take> <seconds>`); if a spinner or
 "Loading" is still up, move that clip's first key later, to where the screencast stops sending frames (L21).
+
+### Motion segments
 
 Motion segments (L92) are used only where the environment cannot show a step or an abstract scene clearly helps.
 How to find the concept first and the rules are in references/MOTION.md; the stage engine's helpers, the
 `STORY.motion` element fields (`spring`, `swap`, `sfx`), and `moves` timing are in references/STAGE_ENGINE.md.
+
+### Reruns and warnings
 
 Rerun `lib/cursor_tracks.py` after any change to cues or clips; the page reads `footage.js` and `cues.js`.
 
@@ -160,6 +208,8 @@ its zoom prints `camera key <i> ... is clamped ... Paste [t, x, y, zoom]` on any
 Treat these printed warnings as errors (L57): `WARNING <clip>: key ... dropped` (a cue word matched too early),
 `WARNING shots: ... gap` and `WARNING shots: ... holds still` (from `build_clips.py`). A RAMPS label names what was
 compressed ("about 80 seconds of waiting"); a duration stated as fact comes from the system's timestamps (L51).
+
+### Camera keys near a click
 
 Key camera moves near a click to that take's recorded click times (`FOOT.<take>.clicks`, readable in `build/story.js`,
 in timeline seconds), not to word times: word-keyed moves drift onto the wrong click when a take is re-recorded (L28).
@@ -224,7 +274,7 @@ label sits just right of its ring. After `ended` the card shrinks to its header.
   of the image exactly as it was).
 - The `claim-checker` agent: checks the talk track and on-screen text against `research/SOURCES.md`; the storyboard
   pass writes `review/claim_table.md`, and the final pass re-checks only what changed.
-- Style reference frames and downloads for `research/STYLE_GUIDE.md`: references/MOTION.md, Style guide.
+- Style reference frames and downloads for `research/STYLE_GUIDE.md`: MOTION.md § Style guide.
 
 ## Tested
 
