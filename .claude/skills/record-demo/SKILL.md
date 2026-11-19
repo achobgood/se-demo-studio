@@ -127,7 +127,10 @@ this step runs only the researcher and your own look, so no more than two agents
 Copy the prompt from references/BUILDER_PROMPT_TEMPLATE.md into `jobs/<slug>/PROMPT.md` and fill every slot from
 the interview and the research (for Cisco products also apply references/CISCO_CLAIM_RULES.md). Replace each slot
 by its full `{{...}}` text, never by a key prefix: a script that matches `{{PRODUCT` also hits any longer slot that
-starts with the same word. Check that no `{{` remains (`grep -n '{{' jobs/<slug>/PROMPT.md`). Tell the person in three or four lines what the builder will
+starts with the same word. Check that no `{{` remains (`grep -n '{{' jobs/<slug>/PROMPT.md`). Then run
+`scripts/split-prompt.sh <slug>` from the studio root: it moves everything after the `===== AFTER STORYBOARD =====`
+line into `jobs/<slug>/PROMPT_AFTER_STORYBOARD.md`, so PROMPT.md holds what the builder needs up to the storyboard
+and the new file what it reads once the storyboard is approved; it stops if either file still holds `{{`. Tell the person in three or four lines what the builder will
 do and that it will stop for their approval at the storyboard.
 
 ## Step 5: launch and supervise
@@ -154,7 +157,9 @@ decision back; check the rough cut; give the final report.
 - Look in open tabs, other jobs' `job.json`, and research notes before asking the person for a link or an
   identifier (L96). When they share a reference, ask what it changes in how the video is built, not only whether
   its topic matches (L93).
-- From the first hour, keep a resume prompt and a friction log in the job (L97).
+- From the first hour, keep a resume prompt and a friction log in the job (L97). Once `STORYBOARD APPROVED` is in
+  `ORCHESTRATOR_NOTES.md`, the resume prompt has the builder read `PROMPT_AFTER_STORYBOARD.md` in full as well as
+  PROMPT.md.
 - Keep "the video is done" separate from "the video is approved for customers". No brand, legal, SME, or human
   listening review happens here unless the person does it.
 

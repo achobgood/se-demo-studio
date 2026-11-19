@@ -98,10 +98,20 @@ marks = [i for i, l in enumerate(lines) if l.strip() == "====="]
 if len(marks) != 2:
     print(f"{template}: needs exactly one pair of ===== lines, found {len(marks)} such lines")
 else:  # the text between the ===== lines is what gets copied into a job's PROMPT.md
-    body = "\n".join(lines[marks[0] + 1:marks[1]])
-    opened, closed = body.count("{{"), body.count("}}")
+    body = lines[marks[0] + 1:marks[1]]
+    opened, closed = "\n".join(body).count("{{"), "\n".join(body).count("}}")
     if opened != closed:
         print(template + ": %d '{{' but %d '}}' between the ===== lines" % (opened, closed))
+    # scripts/split-prompt.sh cuts a filled prompt at this line, so a slot must not span it
+    AFTER = "===== AFTER STORYBOARD ====="
+    cut = [i for i, l in enumerate(body) if l.rstrip("\r\n") == AFTER]   # exact, as split-prompt.sh matches it
+    if len(cut) != 1:
+        print(f"{template}: needs exactly one '{AFTER}' line between the ===== lines, found {len(cut)}")
+    else:
+        for side, part in (("before", body[:cut[0]]), ("after", body[cut[0] + 1:])):
+            opened, closed = "\n".join(part).count("{{"), "\n".join(part).count("}}")
+            if opened != closed:
+                print(template + ": %d '{{' but %d '}}' %s the '%s' line" % (opened, closed, side, AFTER))
 if not os.path.exists(".demo-studio"):
     print(".demo-studio: marker file is missing")
 for row in subprocess.check_output(["git", "ls-files", "-s"], text=True).splitlines():

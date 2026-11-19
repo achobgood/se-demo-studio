@@ -18,7 +18,8 @@ verbatim quote; a paraphrase presented as the vendor's words fails), or unsuppor
 the data does not support, root-cause language, beta or future features, price or availability wording that
 differs from the source, inferred facts (from hostnames or names), invented customer experience, em dashes, and
 slogan-like lines. If the brief says `lib/lint_copy.py` ran clean, do not re-check the mechanical rules it tests
-(em and en dashes, back-to-back questions, and the other pattern rules); judge the rest.
+(em and en dashes, back-to-back questions, the banned phrases, stage directions in the spoken script); judge the
+rest, including mirrored pairs, "not X but Y" lines, and slogans, which it does not test.
 
 The brief says which pass this is: **storyboard** or **final**.
 
@@ -26,8 +27,10 @@ The brief says which pass this is: **storyboard** or **final**.
 track and per on-screen text, with an id (`N01`, `N02`, ... for narration in script order; `O01`, ... for on-screen
 text), the exact text, the kind (screen, sourced, or unsupported), the verdict, the `flags` (none, or each item
 from the Flag list above that the line contains, such as number or future feature; a flagged row can still be
-supported), the evidence (quote and URL, or shot and time), the source ids it rests on (from SOURCES.md), and a
-suggested fix for each failure. Above the table, one line with the date and the files and source ids you read. Check
+supported), the evidence (quote and URL, or shot and time), the source ids it rests on (from SOURCES.md; where the
+sentence rests on a `research/CLAIMS.md` entry, add `CLAIMS:` and that entry's first words), and a suggested fix for
+each failure. CLAIMS.md is the builder's running list of claims and their sources, an input you check; this table
+is the verdict. Above the table, one line with the date and the files and source ids you read. Check
 screen rows against the exploration captures in `capture/explore/`.
 
 **Final pass.** Start from `review/claim_table.md`; do not re-read every source. Match each current sentence and

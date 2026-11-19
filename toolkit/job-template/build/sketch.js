@@ -1,10 +1,11 @@
-// SKETCH (optional): build a motion segment's signature moment here with literal times in seconds, before any voice
-// take or footage exists, so it can go to the owner at the storyboard (references/MOTION.md, Think 2). When a take
-// exists (build/cues.json), render.js --sketch loads its word timings, so W('word', 'segment'), S0() and S1() work here.
+// SKETCH (optional): build a motion segment's signature moment here, before any footage exists, so it can go to the
+// owner at the storyboard (references/MOTION.md, Think 2).
+// Times with and without a voice take: see STAGE_ENGINE.md, Files and sketches.
 // This file loads before engine.js: define STORY and functions here; call engine helpers only inside sketch().
-//   node build/render.js stills review/sig 2 4.5 7 --sketch               the stills
-//   node build/render.js stills review/sig_nowords 4.5 --sketch --words-off   the same moment with every word hidden
-//   node build/render.js strip review/sig 4.5 --sketch                    frames across the change
+// For segment 3 (its number from MOTION.md, Think 2):
+//   node build/render.js stills review/sig_s3 2 4.5 7 --sketch                     the stills
+//   node build/render.js stills review/blind/s3_sig 2 4.5 7 --sketch --words-off   the same stills with every word hidden
+//   node build/render.js strip review/sig_s3 4.5 --sketch                          frames across the change
 // Once the take exists, move the stage into build/stages.js and swap the literal times for W(), S0(), S1().
 if (!CUES.words.length) CUES.total = 12;   // length of the sketch timeline in seconds when there is no take (with one, the film's)
 const STORY = {

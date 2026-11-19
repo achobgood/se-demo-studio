@@ -7,6 +7,9 @@ person, and makes the cheap checks. It does not build the video itself.
 
 1. Write `jobs/<slug>/LAUNCH.txt`, one line:
    `Read jobs/<slug>/PROMPT.md in full and execute it. You are the builder for this job; the supervisor is the session that launched you.`
+   To launch a new builder session after `STORYBOARD APPROVED` is in `ORCHESTRATOR_NOTES.md`, add to that line:
+   `The storyboard is approved: also read jobs/<slug>/PROMPT_AFTER_STORYBOARD.md in full.` (Jobs made before the
+   split have only PROMPT.md; leave the line as it is for them.)
 2. Dry-run, then launch from the studio root so the studio settings (Opus 5.5, high effort) apply:
    ```sh
    NT="$HOME/Library/Application Support/node-terminal/canvas-control/nodeterm.sh"
@@ -35,7 +38,8 @@ the test write still asks, ask the person to approve it now, not mid-take (L66).
 their organization's. A builder that hits its context limit with auto-compact off stops; after it compacts it
 waits at an empty prompt. After any
 quiet stretch, read its terminal (`get-linked-context`), and if it is idle with work pending, append a resume note
-to `ORCHESTRATOR_NOTES.md` and nudge it to continue from its pending tasks (L71).
+to `ORCHESTRATOR_NOTES.md` and nudge it to continue from its pending tasks (L71); past `STORYBOARD APPROVED`, the
+note also has it re-read `PROMPT_AFTER_STORYBOARD.md`, which a compacted session may only have in summary.
 
 **Without NodeTerm:** ask the person to open a second Terminal window, `cd` to the studio root, run
 `claude --model claude-opus-5-5`, and paste the line from LAUNCH.txt (write it as in step 1). If the job uses the AI caller and
@@ -54,7 +58,7 @@ The builder appends every marker line to `jobs/<slug>/STATUS.md` with a timestam
 | `LOGIN NEEDED:` | Tell the person to sign in in the job's Chrome window (`scripts/chrome.sh <slug>` if it is closed). Sign-in is off camera; no take or screenshot runs while a sign-in page is up. |
 | `STORYBOARD READY:` | Read `STORYBOARD_READY.md`, then present it to the person (below). |
 | `OWNER DECISION NEEDED:` | Put the question to the person in plain words with a recommendation. For "ready for <action>": ask the person when they can do it, then append "OWNER READY FOR <action>" to `ORCHESTRATOR_NOTES.md` and nudge the builder; never let a cue reach someone who is away (L62). |
-| `OWNER ACTION NEEDED:` | Relay it at once with the exact steps, word for word: a take is waiting and will time out. If the demo must respond to the action, relay only a line that says the responder is armed; otherwise ask the builder to arm one first (L48). Do not run a second responder of your own in that tab. If the builder reports it could not respond, tell the person what to do now (for example hang up and wait for a new cue) instead of trying fixes while they wait. A job's PROMPT.md may name its own marker for this; treat it the same. |
+| `OWNER ACTION NEEDED:` | Relay it at once with the exact steps, word for word: a take is waiting and will time out. If the demo must respond to the action, relay only a line that says the responder is armed; otherwise ask the builder to arm one first (L48). Do not run a second responder of your own in that tab. If the builder reports it could not respond, tell the person what to do now (for example hang up and wait for a new cue) instead of trying fixes while they wait. A job's PROMPT.md or PROMPT_AFTER_STORYBOARD.md may name its own marker for this; treat it the same. |
 | `TOOL REQUEST:` | Relay it; nothing gets installed without their yes. |
 | `ROUGH CUT READY:` | Look at it (below) and tell the person where it is. |
 | `FINAL READY:` | Final checks (below), then report. |
@@ -113,7 +117,10 @@ builder window (L76). Present, in chat:
 - your own concerns: anything that reads as an unsupported cause (L3), a number, a beta feature, or marketing
   voice.
 Ask for approval or changes. Then append `STORYBOARD APPROVED` (with any changes, quoted) to
-`ORCHESTRATOR_NOTES.md` and nudge the builder.
+`ORCHESTRATOR_NOTES.md` and nudge the builder. The note and the nudge both tell it to read
+`PROMPT_AFTER_STORYBOARD.md` in full now ("Storyboard approved: read ORCHESTRATOR_NOTES.md, then
+PROMPT_AFTER_STORYBOARD.md in full, now."); a job made before the split has no such file, and its builder already
+read everything in PROMPT.md.
 
 ## Checks worth doing yourself
 

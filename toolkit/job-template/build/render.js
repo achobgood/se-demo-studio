@@ -15,7 +15,7 @@
 // every word in #stage (the words-off check) and prints WORDS LEFT for any text that still shows; --blind (on with
 // --words-off) labels contact sheets with times only (no segment, shot or event names, events sheets named sheet_NN.jpg),
 // so a sheet can go to a blind reader. Every contact sheet keeps its long edge at or under 2,576 px.
-//        node build/render.js stills review/sig 1 2.5 4 --sketch      node build/render.js stills review/sig_nowords 2.5 --sketch --words-off
+//        node build/render.js stills review/sig_s3 1 2.5 4 --sketch      node build/render.js stills review/blind/s3_sig 1 2.5 4 --sketch --words-off
 const path = require('path'); const fs = require('fs');
 function studio() { let d = path.resolve(__dirname, '..'); while (d !== path.dirname(d)) { if (fs.existsSync(path.join(d, '.demo-studio'))) return d; d = path.dirname(d); } throw new Error('studio root not found'); }
 const NM = path.join(studio(), 'toolkit', 'node_modules');

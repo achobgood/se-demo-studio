@@ -26,7 +26,7 @@ an idea comes from.
 ## Order of work
 
 1. Find the candidate moments (When to use motion at all, below).
-   Read: MOTION.md § When to use motion at all; MOTION.md § What a segment may show (about 640 words).
+   Read: MOTION.md § When to use motion at all; MOTION.md § What a segment may show (about 670 words).
 2. For each segment, answer the concept card (Think 1) and run the picture check.
    Read: MOTION.md § Think 1 (about 790 words).
 3. Sample the palette from an exploration capture (`capture/explore/`) into `build/sketch.js`, or mark it provisional
@@ -37,18 +37,19 @@ an idea comes from.
    Read: MOTION.md § Think 2; MOTION.md § Engine choice; MOTION.md § Look; STAGE_ENGINE.md § Files and sketches;
    STAGE_ENGINE.md § Times from the narration; STAGE_ENGINE.md § Setting up a stage;
    STAGE_ENGINE.md § Drawings on the world; STAGE_ENGINE.md § The traveller; STAGE_ENGINE.md § Other things on the world;
-   STAGE_ENGINE.md § Text sizes and colours (about 2,890 words). Look is read here because the sketch's stills go
+   STAGE_ENGINE.md § Text sizes and colours (about 2,890 words); when one object rides on another, also
+   STAGE_ENGINE.md § Moving with something else (about 440 words). Look is read here because the sketch's stills go
    to the reader and the storyboard as the film will look.
 5. Storyboard: for each segment send the concept card, the signature stills, and a one-line outline per remaining shot
-   (Storyboard, below). Wait for approval.
-   Read: MOTION.md § Storyboard (about 70 words).
+   of that segment (Storyboard, below). Wait for approval.
+   Read: MOTION.md § Storyboard (about 80 words).
 6. After approval and the takes: resample the palette from the clips into `story.js` (Style guide), write the shot
    table, build in `build/stages.js`.
    Read: MOTION.md § Think 3; MOTION.md § Look; MOTION.md § Determinism; MOTION.md § What did not work;
    MOTION.md § Building them; STAGE_ENGINE.md § Which part you need (about 1,890 words), then only the STAGE_ENGINE.md
    parts that map names for the task at hand.
 7. Critique: the firm checks, a blind fresh reviewer, the frozen-time list (Critique), then fix.
-   Read: MOTION.md § Critique; MOTION.md § Determinism; STAGE_ENGINE.md § Review renders (about 1,510 words).
+   Read: MOTION.md § Critique; MOTION.md § Determinism; STAGE_ENGINE.md § Review renders (about 1,550 words).
 
 ## When to use motion at all
 
@@ -60,7 +61,9 @@ an idea comes from.
   shows an illustration.
 - A segment the interview did not ask for is named in STORYBOARD_READY.md with the reason it helps, so the owner
   approves it at the storyboard.
-- The job's own PROMPT.md and INTERVIEW.md win over this file, except on the four firm rules. If they limit motion
+- The job's own PROMPT.md and INTERVIEW.md win over this file, except on the four firm rules (the top of this file).
+  A step the owner listed for motion in the interview gets motion, and you may recommend "no" for it in STORYBOARD_READY.md with the
+  reason, never drop it silently. If they limit motion
   (for example to the cards only), you may still propose a segment at the storyboard with its reason; it is built only
   if the owner approves it (owner decision, 2026-11-17).
 
@@ -182,10 +185,9 @@ any voice take exists:
    `node build/render.js stills review/sig_s3 2 4.5 7 --sketch`,
    `node build/render.js stills review/blind/s3_sig 2 4.5 7 --sketch --words-off`, and
    `node build/render.js strip review/sig_s3 4.5 --sketch`.
-   Before the voice take, times are literal seconds. When the take already exists (a remake, or a segment added
-   late), write them as cues, `W('word', 'segment')`, `S0()` and `S1()`: `--sketch` then loads `build/cues.json` and
-   prints `sketch: word timings from the voice take`, so nothing needs converting later. Without a take, `W()` stops
-   with `no voice take yet: use literal times in the sketch`.
+   Times with and without a voice take: STAGE_ENGINE.md § Files and sketches; when the take already exists (a
+   remake, or a segment added late), write them as cues, `W('word', 'segment')`, `S0()` and `S1()`, so nothing needs
+   converting later.
    `--words-off` hides every word in `#stage` (stages, cards, chips, words drawn on an object, anything added later),
    keeps every shape, and prints `WORDS LEFT: <text> at <t>` for any text that still shows. A WORDS LEFT line means
    the words-off stills are not blind yet: fix the leak before a reader sees them. Words inside images (footage,
@@ -202,13 +204,14 @@ any voice take exists:
    screen, at that size and not enlarged
    (`../../toolkit/node_modules/ffmpeg-static/ffmpeg -v error -i <still> -vf crop=w:h:x:y review/blind/s3_obj/obj_1.jpg`,
    numbered files that name no object). Give all of a segment's crops to one new reader, one that has not seen the
-   segment's frames, in one reading (up to 20 images; another new reader only for more, or after a redraw), and ask
-   only the Object question ("What is this object?"), answered per image. A reader who names an object wrongly, or
+   segment's frames, in one reading (up to 20 images; another new reader only for more, or after a redraw), with the
+   answer path `review/blind/s3_obj.md`, and ask only the Object question ("What is this object?"), answered per image. A reader who names an object wrongly, or
    says it could be something else, has found a failed drawing: at least P1, never polish, and it blocks the final
    like every firm check. Redraw it from its prop line, or cut it, and send only the redrawn crops to a new reader.
    The builder always runs the reader. A brief that forbids research agents does not forbid it. If a brief forbids
    all subagents, say so in STORYBOARD_READY.md and ask the supervisor to run it.
-4. Send the concept card, the picture check, both sets of stills, and the reader's answer file to the storyboard.
+4. Send the concept card, the picture check, both sets of stills, and both answer files (`s3_sig.md`, `s3_obj.md`)
+   to the storyboard.
 
 Then build the rest of the segment to lead into and out of it, held to its standard.
 
@@ -330,8 +333,9 @@ Check a few frames on either side of every push and every join for a single blac
 ## Storyboard
 
 Add `research/STYLE_GUIDE.md` to STORYBOARD_READY.md. For each motion segment, put first: the concept card and its
-picture check (Think 1); the signature moment's stills, with and without words, and the blind reader's answer file
-(Think 2); and one line per remaining shot. Write the full shot table (Think 3) after the owner approves; if the owner
+picture check (Think 1); the signature moment's stills, with and without words, and the blind readers' answer files,
+both required before the storyboard (`review/blind/s<N>_sig.md` and the Object reading's `review/blind/s<N>_obj.md`,
+Think 2); and one line per remaining shot of that segment. Write the full shot table (Think 3) after the owner approves; if the owner
 rejects the concept, go back to Think 1, not to the shot list.
 
 ## Critique
@@ -350,7 +354,9 @@ The firm checks first; any failure blocks the final:
   (Look), `mkdir -p review/blind/s3_hon && ../../toolkit/node_modules/ffmpeg-static/ffmpeg -v error -i <still> -vf crop=iw:ih-110:0:0 review/blind/s3_hon/frame_1.jpg`,
   then give the frames to the `blind-reader` agent's Honesty reading ("Is this a screenshot of a product?"), answered
   by one new reader, one that has not seen the segment's frames.
-- **Legibility**: a fresh reader reads every line aloud from a full-size still within the time it is on screen. Ask
+- **Legibility**: a fresh reader gets one full-size still per shot, and the brief lists beside each still every
+  line's on-screen seconds from the timeline, naming each line by where it sits, never by its words; the reader says
+  per line whether it can be read aloud in that time (Think 3's starting point: 0.5 s plus 0.3 s a word). Ask
   for three misses by name: text overlapping during a swap, a state label that contradicts the value beside it, and a
   status name a stranger reads as the opposite state.
 - **Determinism**: `lib/lint_timeline.py` and `render.js same` are clean inside every stage.

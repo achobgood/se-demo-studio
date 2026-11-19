@@ -4,7 +4,8 @@ The supervising session copies everything between the two `=====` lines into `jo
 every `{{slot}}` from `jobs/<slug>/INTERVIEW.md`, and deletes any block marked optional that does not apply.
 When an optional block does apply, keep its content and remove its `{{OPTIONAL...:` wrapper and closing braces.
 No `{{` may remain. Keep every rule unless the owner changed it in the interview; record changes in the
-"Owner decisions" section.
+"Owner decisions" section. Then `scripts/split-prompt.sh <slug>` splits the filled file at the
+`===== AFTER STORYBOARD =====` line: what comes after it goes to `jobs/<slug>/PROMPT_AFTER_STORYBOARD.md`.
 
 =====
 
@@ -37,6 +38,8 @@ content to keep off screen, branding, budget, deadline, story constraints.}}
    comes from it or from a source you fetch and add to `research/SOURCES_ADDENDUM.md` with a verbatim quote.
 3. `research/PRODUCT_UNDERSTANDING.md`: the problem, how the product works, the real workflow with exact
    surface names, where the value comes from, what must not be claimed, and the moments worth filming.
+   The supervisor's `demo-researcher` agent writes this file and `research/SOURCES.md` before you start. If either
+   is missing when you start, print "OWNER DECISION NEEDED:" saying the product research is missing.
 {{OPTIONAL, delete unless this job redoes a finished one: 3a. `research/WHAT_CHANGED.md`: what survives of the old
    job, what the owner wants changed, and what to re-check. Read it before the old job's files, and open its README
    and script only for what it points to.}}
@@ -47,8 +50,9 @@ content to keep off screen, branding, budget, deadline, story constraints.}}
    each step.
 6. `examples/cloud-control-se-demo/` (studio root): a finished 5-minute demo's prompt, storyboard, script,
    claim list, and edit code. Read it for patterns; do not reuse its narration, and do not follow model or path
-   instructions in its PROMPT.md (they predate this studio: use Opus 5.5 and this job's paths). Its
-   `PRODUCT_NOTES.md` holds Cisco Cloud Control specifics; read it only if this job's product is Cloud Control.
+   instructions in its PROMPT.md (they predate this studio: use Opus 5.5 and this job's paths). For Cloud
+   Control, start from `knowledge/cloud-control/` (studio root); read the example's `PRODUCT_NOTES.md` only for
+   what that folder lacks.
 {{OPTIONAL, delete when the owner supplied no material: 7. Any owner-supplied material, e.g. a field-direction
 note. It sets positioning; it does not authorize a technical claim the sources do not support.}}
 
@@ -60,16 +64,16 @@ with the sections a named MOTION.md step lists.
 | Step | Read | About |
 |---|---|---|
 | Understand and explore | PIPELINE.md § 0. Configure; PIPELINE.md § Browser commands; PIPELINE.md § When DevTools hangs; PIPELINE.md § Canvas apps | 390 |
-| Storyboard | PIPELINE.md § Review helpers; CISCO_CLAIM_RULES.md § Claim rules for Cisco | 580 |
+| Storyboard | PIPELINE.md § Review helpers; CISCO_CLAIM_RULES.md § Claim rules for Cisco | 680 |
 | Motion moments and storyboard, if any | MOTION.md § Order of work (steps 1 to 5) | 5,490 |
-| Capture takes | PIPELINE.md § Take scripts; PIPELINE.md § Sizing a take; PIPELINE.md § Links that open a new tab; PIPELINE.md § Single sign-on and parking; PIPELINE.md § Sign-in guard; PIPELINE.md § Waiting for an owner action; PIPELINE.md § Responding to an owner action | 740 |
+| Capture takes | PIPELINE.md § Take scripts; PIPELINE.md § Sizing a take; PIPELINE.md § Links that open a new tab; PIPELINE.md § Single sign-on and parking; PIPELINE.md § Sign-in guard; only if the owner acts live, PIPELINE.md § Waiting for an owner action; PIPELINE.md § Responding to an owner action | 740 |
 | Talk track and copy check | PIPELINE.md § 2. Talk track | 160 |
-| Voice | PIPELINE.md § 3. Voice | 180 |
+| Voice | PIPELINE.md § 3. Voice; MODELS.md § Models | 480 |
 | Picture and edit | PIPELINE.md § Picture commands; PIPELINE.md § Loading at a cut; PIPELINE.md § Reruns and warnings; PIPELINE.md § Camera keys near a click | 790 |
 | Motion build, if any | MOTION.md § Order of work (step 6); STAGE_ENGINE.md § Which part you need; PIPELINE.md § Motion segments | 1,940 |
 | Call audio, if any | PIPELINE.md § Recorded call | 310 |
 | Sound and mix | PIPELINE.md § 5. Sound; STAGE_ENGINE.md § Sound (with motion) | 440, 550 with motion |
-| Critique and review | PIPELINE.md § Review helpers; MOTION.md § Order of work (step 7, with motion) | 110, 1,610 with motion |
+| Critique and review | PIPELINE.md § Review helpers; MOTION.md § Order of work (step 7, with motion) | 110, 1,660 with motion |
 | Render and deliver | PIPELINE.md § 6. Render | 90 |
 | Final | knowledge/README.md § Rules for every fact; knowledge/README.md § Upkeep | 360 |
 
@@ -152,10 +156,14 @@ with the sections a named MOTION.md step lists.
 4. Write `research/STORYBOARD.md`: shot by shot, each shot with the click or typing, the value point it proves,
    the draft talk-track line over it, and the source for that line. Mark which requests or takes depend on which;
    independent ones run in parallel, two or three at a time (L69). Looking good never outranks being true.
+   Do not rely on a saved assistant thread surviving to the take: plan to type the questions on camera after
+   rehearsing them, and reuse a saved thread only if it still opens intact (L100).
    Then add a "Motion decisions" list: every step the real screens cannot show clearly (an event off screen, work
    done in another system, a hand-off between systems, an AI's reasoning, a waiting period), including those
    INTERVIEW.md names. For each, decide yes or no on an illustrative motion segment, with one line on why. No is a
-   good answer when a real screen, a cut, or one spoken line carries the step. Each yes goes through MOTION.md § Order of work, step by step.
+   good answer when a real screen, a cut, or one spoken line carries the step. A step the owner listed for motion
+   in the interview gets motion: you may recommend "no" for it in the storyboard with your reason, but never drop
+   it silently. Each yes goes through MOTION.md § Order of work, step by step.
 5. **Storyboard checkpoint (required).** Write `STORYBOARD_READY.md` with: the story in three sentences, the
    shot list with timings, the full draft talk track, what the demo deliberately leaves out, every state change
    you plan to make, what the screen shows while each live event happens off screen (L61), the Motion decisions
@@ -172,7 +180,7 @@ with the sections a named MOTION.md step lists.
    If the job has motion
    segments or a style guide, add them as described in MOTION.md § Storyboard; for
    each segment its concept card and picture check, its signature moment's stills rendered with `--sketch` (with and
-   without words), the `blind-reader` agent's answer file, and one line per remaining shot; the full shot table comes after
+   without words), the `blind-reader` agent's answer file, and one line per remaining shot of that segment; the full shot table comes after
    approval (L104). Then print a message
    that starts with "STORYBOARD READY:" and **stop and wait**. Do not record final takes until `ORCHESTRATOR_NOTES.md` contains an entry that says
    "STORYBOARD APPROVED" (possibly with changes you must apply). Check the notes file every few minutes while
@@ -180,13 +188,6 @@ with the sections a named MOTION.md step lists.
    sign-in or the demo reservation has a deadline, record the look-only live screens as provisional takes while
    you wait, and keep each one as a final if the approved storyboard matches it; never make a state change
    before approval (L99).
-6. Rehearse the full click path once without recording (find coordinates with `capture/tab.js`), then record.
-   Rehearse any owner action once with the owner too (L39). Record beats in story order: opening an item can
-   auto-run an analysis, post notifications, or show up in another view, so a later take may not find the state
-   an earlier one saw (L19). Just before final takes, ask every AI agent the story uses once more. If one the
-   story depends on no longer answers, print "OWNER DECISION NEEDED:" instead of building a thinner story (L9).
-   Do not rely on a saved assistant thread surviving to the take: plan to type the questions on camera after
-   rehearsing them, and reuse a saved thread only if it still opens intact (L100).
 
 ## Suggested structure (adapt it if a better one emerges)
 
@@ -203,7 +204,9 @@ loading, and quiet reading beats. Runtime: about {{LENGTH_MINUTES}} minutes; {{R
 ## Claim rules
 
 - Every spoken or on-screen claim traces to a verbatim quote in the claim authority. Keep the claim table
-  (claim, quote, URL) in `research/CLAIMS.md` and summarize it in the README. For cisco.com pages use
+  (claim, quote, URL) in `research/CLAIMS.md` and summarize it in the README. It is your running list of claims
+  and their sources; the claim checker's `review/claim_table.md` gives a verdict per sentence, citing its entries.
+  For cisco.com pages use
   `scripts/fetch-cisco-source.sh <url>` from the studio root (it supports `--grep TERM` and `--links`). Never use
   WebFetch on cisco.com: it gets HTTP 403, and that has led to correct claims being deleted.
 - What the demo visibly does on screen is shown, not claimed. The SE may describe what is happening in the
@@ -235,7 +238,7 @@ references/CISCO_CLAIM_RULES.md.}}
 
 Never generate, redraw, or AI-imagine the product's UI. Generated art is only for the title, agenda, value recap,
 close, transitions, and labeled motion segments that show what the screen cannot (L92), and none of it may
-imitate a product screen.
+imitate a product screen. A proposed product filmed from a local prototype follows CISCO_CLAIM_RULES.md § Sources.
 
 - Capture with `capture/rec.js` (DevTools screencast, 1920x1080 CSS pixels at device scale 2, scrollbars hidden,
   theme pinned). Frames arrive only when the page changes; `lib/build_clips.py` resamples to 30 fps. The pinned
@@ -289,22 +292,6 @@ imitate a product screen.
   Probe once before planning exploration around separate tabs.
 - Time windows: {{SCHEDULE: when takes that depend on a live system can run, with the time zone, e.g. "any time"
   or "Mon to Fri 9 AM to 5 PM America/Chicago"}}. Check the clock in that time zone before each such take (L40).
-{{OPTIONAL, only when the owner performs live actions during takes:
-- Owner actions: {{LIVE ACTIONS BY THE OWNER during takes, each with exact steps}}. When a take reaches
-  one, print "OWNER ACTION NEEDED:" with the exact steps and when to do each ("wait until it says X, then press
-  Y"), mark the wait, and have the take script poll the page until the result appears or {{ACTION TIMEOUT, default
-  5 minutes}} passes. Keep the wait out of the edit (L50). When a live take is ready, print "OWNER DECISION
-  NEEDED: ready for <action>" and hold it, doing other work, until `ORCHESTRATOR_NOTES.md` says "OWNER READY FOR
-  <action>" (L62). If the event takes the wrong path, the take stops
-  and prints "OWNER DECISION NEEDED:" (L52). If the demo must respond to the action (answer, open, accept), learn the event's exact UI in the
-  rehearsal and arm ONE responder whose locator matched the real event; say "responder armed" in the marker line,
-  and print the marker only once it is. It responds within a few seconds, checks the response took, and if it
-  cannot, prints "OWNER ACTION NEEDED:" again at once with what the owner should do now (L48).}}
-{{OPTIONAL, only when an AI caller places the calls (references/AI_CALLER.md):
-- AI caller: ChatGPT voice mode places each call through `node capture/caller.js` and Claude in Chrome, with
-  persona file {{script/caller_persona_<name>.txt}} and number {{NUMBER}}. Follow the run order in
-  `.claude/skills/record-demo/references/AI_CALLER.md` exactly. Do not dial unless `caller.js loopback` printed
-  PASS right before that dial (L74); on a FAIL, follow that file's Run order step 5. Keep `audio/calls/<name>_{agent,caller}.wav` and the transcript for the edit.}}
 - Allowed: {{ALLOWED ACTIONS FROM THE INTERVIEW. Default "look and ask": navigating, filtering, searching, reading
   existing threads, asking the AI assistant questions, opening investigations. "Full control" adds creating and
   running investigations, assigning and resolving items, sharing within the demo, generating summaries, and
@@ -358,6 +345,74 @@ The owner's style reference: {{REFERENCE: its path in this job or the link they 
 in their words}}. Read MOTION.md § Style guide, and write `research/STYLE_GUIDE.md` from the reference
 before building any cards or segments, even if the job has no motion segments.}}
 
+## Budget
+
+Hard cap of ${{BUDGET}} of OpenRouter spend for this job, set as `budget_usd` in job.json. Every toolkit script
+logs the billed cost of each call to `logs/costs.jsonl` and refuses to run once the cap is reached; check with
+`python3 lib/spend.py` before each batch of paid calls. If you need more, print "OWNER DECISION NEEDED:" and ask.
+Never raise the cap yourself. The key lives in the studio `.env`; never print, echo, read, or log it.
+
+## Tools
+
+Use the toolkit and the models on OpenRouter. If you need to install anything else, stop and print a message that
+starts with "TOOL REQUEST:": name the tool, why, where it comes from, and roughly how large it is. Wait for the
+go-ahead.
+
+Shell: macOS has no `timeout` command; run long takes in the background and wait for the notification. Delete
+takes, clips, and render chunks with `python3 lib/clean.py`; anything else with absolute paths and no globs (the
+command safety check blocks `rm` after a `cd` or with a glob), and write re-runs to a fresh folder (L60).
+
+Subagents: use the studio's agents (`demo-explorer`, `demo-researcher`, `claim-checker`, and `blind-reader` for the
+words-off and Critique readings of motion segments; it opens images only, one reading per question set) or general
+subagents however helps. They run on Opus 5.5 at high effort, set in the studio settings; do not override the model.
+
+## Status markers
+
+Every time you print a line that starts with LOGIN NEEDED:, STORYBOARD READY:, OWNER DECISION NEEDED:, OWNER ACTION
+NEEDED:, TOOL REQUEST:, ROUGH CUT READY:, or FINAL READY:, print it with `python3 lib/status.py "MARKER: text"`,
+which also appends it with a timestamp to `STATUS.md` in this folder. The supervisor watches that file, not your
+terminal. `rec.js`, `park.js`, and `shot()` append their own LOGIN NEEDED lines; do not repeat those (L75). Write
+the text after the marker for the owner, in plain words: what happened, what they must do, and how long it takes.
+No tool, file, model, or variable names (L79).
+
+## Orchestrator notes channel
+
+The supervising session writes to `ORCHESTRATOR_NOTES.md` in this folder. Read it now, at the start of every
+phase, while waiting at the storyboard checkpoint, and before each render. Treat its entries as the owner's
+instructions.
+
+When `STORYBOARD APPROVED` appears in `ORCHESTRATOR_NOTES.md`, read `PROMPT_AFTER_STORYBOARD.md` in this folder in
+full before anything else.
+
+===== AFTER STORYBOARD =====
+
+## After the storyboard is approved
+
+This file continues `PROMPT.md` in this folder, and every rule there still holds.
+
+## Takes
+
+- Rehearse the full click path once without recording (find coordinates with `capture/tab.js`), then record.
+  Rehearse any owner action once with the owner too (L39). Record beats in story order: opening an item can
+  auto-run an analysis, post notifications, or show up in another view, so a later take may not find the state
+  an earlier one saw (L19). Just before final takes, ask every AI agent the story uses once more. If one the
+  story depends on no longer answers, print "OWNER DECISION NEEDED:" instead of building a thinner story (L9).
+{{OPTIONAL, only when the owner performs live actions during takes:
+- Owner actions: {{LIVE ACTIONS BY THE OWNER during takes, each with exact steps}}. When a take reaches
+  one, print "OWNER ACTION NEEDED:" with the exact steps and when to do each ("wait until it says X, then press
+  Y"), mark the wait, and have the take script poll the page until the result appears or {{ACTION TIMEOUT, default
+  5 minutes}} passes. Keep the wait out of the edit (L50). When a live take is ready, print "OWNER DECISION
+  NEEDED: ready for <action>" and hold it, doing other work, until `ORCHESTRATOR_NOTES.md` says "OWNER READY FOR
+  <action>" (L62). If the event takes the wrong path, the take stops
+  and prints "OWNER DECISION NEEDED:" (L52). If the demo must respond to the action (answer, open, accept), learn the event's exact UI in the
+  rehearsal and arm ONE responder whose locator matched the real event; say "responder armed" in the marker line,
+  and print the marker only once it is. It responds within a few seconds, checks the response took, and if it
+  cannot, prints "OWNER ACTION NEEDED:" again at once with what the owner should do now (L48).}}
+{{OPTIONAL, only when an AI caller places the calls (references/AI_CALLER.md):
+- AI caller: ChatGPT voice mode places each call through `node capture/caller.js` and Claude in Chrome, with
+  persona file {{script/caller_persona_<name>.txt}} and number {{NUMBER}}. Follow the run order in
+  `.claude/skills/record-demo/references/AI_CALLER.md` exactly. Do not dial unless `caller.js loopback` printed
+  PASS right before that dial (L74); on a FAIL, follow that file's Run order step 5. Keep `audio/calls/<name>_{agent,caller}.wav` and the transcript for the edit.}}
 
 ## Audio
 
@@ -427,42 +482,6 @@ Deliver in this folder:
   happened); open owner decisions; what you would fix with more time; the "Deliberately not said" list; and disk
   usage of raw captures and intermediates, with what can be deleted.
 Print "FINAL READY:" with the video and player paths when done.
-
-## Budget
-
-Hard cap of ${{BUDGET}} of OpenRouter spend for this job, set as `budget_usd` in job.json. Every toolkit script
-logs the billed cost of each call to `logs/costs.jsonl` and refuses to run once the cap is reached; check with
-`python3 lib/spend.py` before each batch of paid calls. If you need more, print "OWNER DECISION NEEDED:" and ask.
-Never raise the cap yourself. The key lives in the studio `.env`; never print, echo, read, or log it.
-
-## Tools
-
-Use the toolkit and the models on OpenRouter. If you need to install anything else, stop and print a message that
-starts with "TOOL REQUEST:": name the tool, why, where it comes from, and roughly how large it is. Wait for the
-go-ahead.
-
-Shell: macOS has no `timeout` command; run long takes in the background and wait for the notification. Delete
-takes, clips, and render chunks with `python3 lib/clean.py`; anything else with absolute paths and no globs (the
-command safety check blocks `rm` after a `cd` or with a glob), and write re-runs to a fresh folder (L60).
-
-Subagents: use the studio's agents (`demo-explorer`, `demo-researcher`, `claim-checker`, and `blind-reader` for the
-words-off and Critique readings of motion segments; it opens images only, one reading per question set) or general
-subagents however helps. They run on Opus 5.5 at high effort, set in the studio settings; do not override the model.
-
-## Status markers
-
-Every time you print a line that starts with LOGIN NEEDED:, STORYBOARD READY:, OWNER DECISION NEEDED:, OWNER ACTION
-NEEDED:, TOOL REQUEST:, ROUGH CUT READY:, or FINAL READY:, print it with `python3 lib/status.py "MARKER: text"`,
-which also appends it with a timestamp to `STATUS.md` in this folder. The supervisor watches that file, not your
-terminal. `rec.js`, `park.js`, and `shot()` append their own LOGIN NEEDED lines; do not repeat those (L75). Write
-the text after the marker for the owner, in plain words: what happened, what they must do, and how long it takes.
-No tool, file, model, or variable names (L79).
-
-## Orchestrator notes channel
-
-The supervising session writes to `ORCHESTRATOR_NOTES.md` in this folder. Read it now, at the start of every
-phase, while waiting at the storyboard checkpoint, and before each render. Treat its entries as the owner's
-instructions.
 
 After the storyboard is approved, work autonomously until done. Quality is paramount.
 

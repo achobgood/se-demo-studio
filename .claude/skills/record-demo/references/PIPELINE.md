@@ -14,7 +14,7 @@ to `logs/costs.jsonl`. This order was tested end to end on 2026-09-28.
 - Picture and edit: PIPELINE.md § Picture commands (about 570 words); PIPELINE.md § Loading at a cut (about 40 words); PIPELINE.md § Reruns and warnings (about 140 words); PIPELINE.md § Camera keys near a click (about 40 words).
 - Motion segments, if any: PIPELINE.md § Motion segments (about 50 words); PIPELINE.md § Picture commands (about 570 words).
 - Call audio, if any: PIPELINE.md § Recorded call (about 310 words).
-- Sound and mix: PIPELINE.md § 5. Sound (about 440 words).
+- Sound and mix: PIPELINE.md § 5. Sound (about 130 words, stopping at its Recorded call part, which is the Call audio line's).
 - Render and deliver: PIPELINE.md § 6. Render (about 90 words).
 - Review: PIPELINE.md § Review helpers (about 110 words).
 
@@ -144,9 +144,9 @@ mark('owner_done');
 
 | Step | Command |
 |---|---|
-| Copy rules a pattern can check | `python3 lib/lint_copy.py [files...]` (default `script/speech.txt` and `build/story.js`; checks only the mechanical copy rules: em and en dashes, back-to-back questions, and the other rules from references/CISCO_CLAIM_RULES.md or CLAUDE.md that a pattern can test without judgment; prints `file:line: rule: text` per hit; exit 1 on any hit; no paid calls) |
+| Copy rules a pattern can check | `python3 lib/lint_copy.py [files...]` (default `script/speech.txt` and `build/story.js`; checks only the mechanical copy rules: em and en dashes, back-to-back questions, the banned phrases from references/CISCO_CLAIM_RULES.md, and stage directions in the spoken script; not mirrored pairs, "not X but Y" lines, or slogans, which need a reader; prints `file:line: rule: text` per hit; exit 1 on any hit; no paid calls) |
 
-Run `lib/lint_copy.py` before each claim check and fix what it prints; when it exits 0, say "lib/lint_copy.py ran clean" in the claim checker's brief, and the checker does not re-check those rules.
+Run `lib/lint_copy.py` before each claim check and fix what it prints; when it exits 0, say "lib/lint_copy.py ran clean" in the claim checker's brief, and the checker does not re-check those four.
 
 ## 3. Voice
 
@@ -175,7 +175,7 @@ raw PCM; take.py converts it.
 | Blur redaction regions | `python3 lib/redact.py [clip ...]` (regions in `build/edit.py` REDACT; rerun after every `build_clips.py`, which rebuilds clips from the raw frames) |
 | Add cursor, clicks, keys | `python3 lib/cursor_tracks.py` -> `build/footage.js`, `build/cues.js` |
 | Words and camera | edit `build/story.js` (title, agenda, frame shots/urls/chapters/camera, value, close) |
-| Signature moment before any take | build it in `build/sketch.js` with literal times, then `node build/render.js stills review/sig 2 4.5 7 --sketch` and the same with `--words-off` (no voice take or footage needed; references/MOTION.md, Think 2) |
+| Signature moment before any take | build it in `build/sketch.js` with literal times, then `node build/render.js stills review/sig_s3 2 4.5 7 --sketch` and, words off, `node build/render.js stills review/blind/s3_sig 2 4.5 7 --sketch --words-off` (for segment 3) (no voice take or footage needed; references/MOTION.md, Think 2) |
 | Illustrative motion segments (stages) | define each segment as a `new Stage({...})` in `build/stages.js` with narration times: a camera on a world, a traveller that changes shape, line drawings, connectors, the push to and from the screen share; `build/stage.js` draws them; `node build/render.js stills review/demo 2 5 7 10 --sketch` shows every helper in a story-free demo; how to think is in references/MOTION.md, the helpers in references/STAGE_ENGINE.md |
 | Palette from the product | `python3 lib/sample_colors.py <frame.jpg> x,y,r [x,y,r,max ...] [--against '#<ground>']` (prints the image size first, `image 2560x1440` for clips: read points off that size, whole pixels; box average; `max` or `min` adds the brightest or darkest and the most saturated pixel; a point outside the image stops with the size and the 1.333 scale from a 1920 px preview; `--against`, repeatable, adds each colour's WCAG contrast and flags under 3:1 or 4.5:1, a warning only) -> set `STORY.stagePalette` in `build/story.js` |
 | How static the picture is | `python3 lib/frozen_time.py out/<video>.mp4 --range 56.5-86.0 ...` (still stretches of 3 s or more inside the ranges, and still seconds per 30 s in each: a list to look at, never a score; references/MOTION.md, Critique) |

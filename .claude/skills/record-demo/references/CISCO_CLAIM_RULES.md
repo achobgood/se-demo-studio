@@ -8,6 +8,7 @@ product.
 
 - The claim authority is official Cisco material: cisco.com product pages, data sheets, configuration and user
   guides, release notes, ordering guides, and blogs.cisco.com. Quote verbatim with the URL and the fetch date.
+  The one exception, a proposed product, is the last item below.
 - Fetch cisco.com with `scripts/fetch-cisco-source.sh <url>` (`--links` to find chapters in a book index,
   `--grep TERM` to find a line). WebFetch gets HTTP 403 on cisco.com, and agents told to verify against pages they
   cannot open have produced fluent quotes that did not exist. If several agents all say "the sources are
@@ -16,6 +17,10 @@ product.
   that the official sources do not support.
 - Keep internal or confidential material (for example Trust Portal documents marked Cisco Confidential) out of
   anything spoken or on screen.
+- A proposed product that is not shipping may be filmed from a local prototype only when all of these hold: the
+  owner says yes in the interview; every prototype screen shows the line "Proposed, not a shipping product"; the
+  proposal document is the source, quoted verbatim like official material and listed in `research/SOURCES.md`
+  with its file path or URL; and nothing spoken or on screen claims availability, pricing, or a roadmap.
 
 ## Wording
 
@@ -37,7 +42,7 @@ product.
 ## Branding
 
 Not official Cisco marketing unless the owner has approval: no Cisco logo, bridge mark, or Cisco brand typeface
-as a graphic element (the logo inside recorded product UI is fine). Say in the README that brand, legal, and SME
+as a graphic element (the logo inside recorded product UI is fine, and on a prototype screen only while its "Proposed, not a shipping product" line is visible). Say in the README that brand, legal, and SME
 review have not happened.
 
 ## Learner-facing copy

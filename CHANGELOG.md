@@ -3,7 +3,7 @@
 What changed in each studio version, newest first. Your version is in the `VERSION` file and on the first line
 that `scripts/setup.sh` prints.
 
-## Unreleased
+## 0.5.0 (2026-11-18)
 
 - Lessons from the Contact Center AI agent redo (guidance only):
   - MOTION.md: a fourth firm rule, read and relate: every drawn object can be named by a stranger with no label at
@@ -154,6 +154,22 @@ that `scripts/setup.sh` prints.
     Honesty reading (MOTION.md gives the crop); the claim checker skips the template's placeholder script at the
     storyboard, reads `research/CLAIMS.md` only if it exists, and has a `flags` column. MOTION.md says how segments
     are numbered; STAGE_ENGINE.md says where a stage's camera sits without keys.
+- Builder prompt in two parts: the supervisor fills the template as before, then `scripts/split-prompt.sh <slug>`
+  cuts it at the template's `===== AFTER STORYBOARD =====` line into `PROMPT.md` (launch to storyboard) and
+  `PROMPT_AFTER_STORYBOARD.md` (takes, audio, pacing, review, output), read when `STORYBOARD APPROVED` arrives. It
+  writes nothing if a slot is left. SKILL.md Step 4, SUPERVISING.md (the approval note, a relaunch or compacted builder
+  re-reads part 2), and check-repo (exactly one marker, slots balanced on each side). Jobs already under way keep one
+  PROMPT.md.
+- Decisions on open questions: for Cloud Control, `knowledge/cloud-control/` comes before the example's
+  PRODUCT_NOTES.md; a step the owner lists for motion gets motion unless the builder recommends "no" at the
+  storyboard with a reason; `research/CLAIMS.md` is the builder's claim list and `review/claim_table.md` the
+  checker's verdicts citing it; the Legibility reading gets each line's on-screen seconds; the Object reading's
+  answer file is required before the storyboard; CISCO_CLAIM_RULES.md allows filming a proposed product from a local
+  prototype under four conditions (owner's yes, a "Proposed, not a shipping product" line on every prototype screen,
+  the proposal as the source, no availability, pricing, or roadmap claim).
+- Smaller: one home for the "no voice take yet" text (STAGE_ENGINE.md § Files and sketches); sketch folder names
+  agree across MOTION.md, PIPELINE.md, sketch.js, and render.js; the claim checker is told exactly which rules
+  `lib/lint_copy.py` tests, so it still judges mirrored pairs and slogans.
 
 ## 0.4.1 (2026-11-17)
 
