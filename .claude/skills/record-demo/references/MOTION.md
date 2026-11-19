@@ -246,7 +246,7 @@ one idea at a time, framed so the viewer sees it. Defaults, to be judged against
   faint and never travelled, or an outline of the state it would have reached. Add at most one short line naming it,
   backed by a source. Never stamp a red cross on anything. A faint copy left where something stood (`ghosts`,
   `leave`, STAGE_ENGINE.md) is one way to show what was here; nothing asks a segment to leave one.
-- Write the shot table after the storyboard is approved: `time | cue word | camera | what moves | on-screen words |
+- Write the shot table after the storyboard is approved and the takes are recorded: `time | cue word | camera | what moves | on-screen words |
   source (or "no claim: camera only") | what survives the cut`. The source column covers pictures, not only text: a
   station that reacts, a field that fills, an outline of what would have happened each show product behaviour. Then
   ask: which beats are filler, and does the order match how the real product works?
@@ -335,7 +335,7 @@ Check a few frames on either side of every push and every join for a single blac
 Add `research/STYLE_GUIDE.md` to STORYBOARD_READY.md. For each motion segment, put first: the concept card and its
 picture check (Think 1); the signature moment's stills, with and without words, and the blind readers' answer files,
 both required before the storyboard (`review/blind/s<N>_sig.md` and the Object reading's `review/blind/s<N>_obj.md`,
-Think 2); and one line per remaining shot of that segment. Write the full shot table (Think 3) after the owner approves; if the owner
+Think 2); and one line per remaining shot of that segment. Write the full shot table (Think 3) after the owner approves and the takes are recorded; if the owner
 rejects the concept, go back to Think 1, not to the shot list.
 
 ## Critique

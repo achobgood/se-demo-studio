@@ -3,7 +3,7 @@
 What changed in each studio version, newest first. Your version is in the `VERSION` file and on the first line
 that `scripts/setup.sh` prints.
 
-## 0.5.0 (2026-11-18)
+## 0.5.0 (2026-11-19)
 
 - Lessons from the Contact Center AI agent redo (guidance only):
   - MOTION.md: a fourth firm rule, read and relate: every drawn object can be named by a stranger with no label at
@@ -170,6 +170,9 @@ that `scripts/setup.sh` prints.
 - Smaller: one home for the "no voice take yet" text (STAGE_ENGINE.md § Files and sketches); sketch folder names
   agree across MOTION.md, PIPELINE.md, sketch.js, and render.js; the claim checker is told exactly which rules
   `lib/lint_copy.py` tests, so it still judges mirrored pairs and slogans.
+- Three contradictions settled (builder prompt, MOTION.md): facts take the fourth label, hypothesis, as
+  `knowledge/README.md` already says; takes that depend on an earlier one are recorded in story order and
+  independent ones in parallel; the shot table is written after approval and the takes.
 
 ## 0.4.1 (2026-11-17)
 

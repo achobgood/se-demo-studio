@@ -134,7 +134,7 @@ with the sections a named MOTION.md step lists.
    example, confirm the target, approve a plan). Put the details that matter in each request, and plan the
    remaining answers in the storyboard (L68).
    When the story is "product A acts on product B's decision", first write the chain (decide, send, receive,
-   approve, act, verify, report) and mark each link verified, docs, or absent before touring screens; send the
+   approve, act, verify, report) and mark each link verified, docs, absent, or hypothesis before touring screens; send the
    docs links to background research subagents at once (L83, L87). Before building on any workflow or
    automation, open a few of its action steps and read their type and target, and check its run history; name
    tells you nothing (L84). Search the product's marketplace for verified items before calling a capability
@@ -155,7 +155,8 @@ with the sections a named MOTION.md step lists.
    how the SE says so.
 4. Write `research/STORYBOARD.md`: shot by shot, each shot with the click or typing, the value point it proves,
    the draft talk-track line over it, and the source for that line. Mark which requests or takes depend on which;
-   independent ones run in parallel, two or three at a time (L69). Looking good never outranks being true.
+   takes that depend on an earlier one are recorded in story order (L19); independent ones run in parallel, two or
+   three at a time (L69). Looking good never outranks being true.
    Do not rely on a saved assistant thread surviving to the take: plan to type the questions on camera after
    rehearsing them, and reuse a saved thread only if it still opens intact (L100).
    Then add a "Motion decisions" list: every step the real screens cannot show clearly (an event off screen, work
@@ -181,7 +182,7 @@ with the sections a named MOTION.md step lists.
    segments or a style guide, add them as described in MOTION.md § Storyboard; for
    each segment its concept card and picture check, its signature moment's stills rendered with `--sketch` (with and
    without words), the `blind-reader` agent's answer file, and one line per remaining shot of that segment; the full shot table comes after
-   approval (L104). Then print a message
+   approval and the takes (L104). Then print a message
    that starts with "STORYBOARD READY:" and **stop and wait**. Do not record final takes until `ORCHESTRATOR_NOTES.md` contains an entry that says
    "STORYBOARD APPROVED" (possibly with changes you must apply). Check the notes file every few minutes while
    you wait, and keep doing non-recording work (voice auditions, music beds, sources) in the meantime. When the
@@ -473,7 +474,7 @@ Deliver in this folder:
 - `research/PLATFORM_MAP.md` and `research/ASK_ROUTING.md`: start from the newer of the product's
   `knowledge/` files and the latest job's copies (or new files if there are none), merge in
   `research/DEMO_MAP.md` and `research/AGENT_PROBE.md`, and add this job's ask to ASK_ROUTING. Date every fact
-  and label it verified, docs, or absent, following `knowledge/README.md` (studio root). Never edit `knowledge/`
+  and label it verified, docs, absent, or hypothesis, following `knowledge/README.md` (studio root). Never edit `knowledge/`
   itself; the owner copies these two files there at release. They will be public: no real people's names, email
   addresses, or IDs (L101, L103);
 - a README with: how it was made; every model call with cost and a running total (from `logs/costs.jsonl`); the
