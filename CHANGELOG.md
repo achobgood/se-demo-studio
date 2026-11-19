@@ -3,6 +3,15 @@
 What changed in each studio version, newest first. Your version is in the `VERSION` file and on the first line
 that `scripts/setup.sh` prints.
 
+## 0.5.1 (2026-11-19)
+
+- MOTION.md Order of work: Think 3 (framing, word limits, reading times, one world, every action showing a result)
+  is read at step 4, the sketch, and What did not work at step 3, the palette, so the storyboard the owner approves
+  already meets them. Before, both came after approval. Blind test B5 on splunk-ccc-remediation found five
+  approved-storyboard changes this prevents.
+- RELEASING.md: a blind test only for a change to what a session does or reads at a step, not for a wording fix or
+  new `knowledge/` facts; a test run only when the release changes something the test run uses.
+
 ## 0.5.0 (2026-11-19)
 
 - Lessons from the Contact Center AI agent redo (guidance only):

@@ -12,9 +12,10 @@ Teammates only run `git pull` on `main`, so `main` must only ever hold tested, r
 ## Release steps
 
 1. On `dev`, put the new number in `VERSION` and add a few lines for it to `CHANGELOG.md` with today's date.
-   If the release changes guidance a session follows (a reference file, the builder prompt, the job template),
-   blind-test it first (L107): give a fresh session only the studio files and the script of a job the guidance was
-   not written from, and read where it struggled.
+   If the release changes what a session does or reads at a step (a new or removed rule, a rule moved to another
+   step, a new reading order, a split file), blind-test that change first (L107): give a fresh session only the
+   studio files and the script of a job the guidance was not written from, and read where it struggled. A wording
+   fix that settles a contradiction or corrects a label, and new facts in `knowledge/`, need no blind test.
    If the release adds or moves guidance, give the guidance word count before and after (`scripts/check-repo.sh`
    prints it). Where you can, merge a new rule into an old one or replace the old one, rather than add it beside it.
    Maps point into a file as MOTION.md § Think 1 (a file name, then the start of one of its headings);
@@ -27,9 +28,12 @@ Teammates only run `git pull` on `main`, so `main` must only ever hold tested, r
    `research/ASK_ROUTING.md` into `knowledge/<product>/` here, check them against `knowledge/README.md`, and add
    them. Never edit `knowledge/` in the jobs copy: its next `git pull` would abort.
 2. Run the repo checks: `scripts/check-repo.sh`. Fix anything it reports.
-3. Push `dev` (`git push origin dev`), then test it in the jobs copy, which has your key and the installed tools:
-   `git fetch && git checkout dev`, start `claude` there and say "do a test run", confirm it finishes and the
-   video plays, then `git checkout main`. Do this between jobs, not while a builder is running.
+3. Push `dev` (`git push origin dev`). If the release changes something the test run uses (setup, the test-run
+   files, SKILL.md's Step 0 or Test run, or the job template's capture, voice, mix, render, caption, or player
+   code), test it in the jobs copy, which has your key and the installed tools: `git fetch && git checkout dev`,
+   start `claude` there and say "do a test run", confirm it finishes and the video plays, then `git checkout main`.
+   Do this between jobs, not while a builder is running. The test run never reads the builder prompt, MOTION.md, or `knowledge/`, and never calls
+   `scripts/split-prompt.sh` or `lib/lint_copy.py`, so a release that changes only those skips it.
 4. Merge into main: `git checkout main && git merge dev`.
 5. Tag it: `git tag vX.Y.Z` (the same number as `VERSION`).
 6. Publish: `git push origin main dev --tags`, then `git checkout dev`.

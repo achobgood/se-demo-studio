@@ -31,15 +31,16 @@ an idea comes from.
    Read: MOTION.md § Think 1 (about 790 words).
 3. Sample the palette from an exploration capture (`capture/explore/`) into `build/sketch.js`, or mark it provisional
    (Style guide).
-   Read: MOTION.md § Style guide; STAGE_ENGINE.md § Palette (about 790 words).
+   Read: MOTION.md § Style guide; STAGE_ENGINE.md § Palette; MOTION.md § What did not work (about 920 words).
 4. Sketch each segment's signature moment, render it with words on and words off, and have the `blind-reader` agent
    say what happened (Think 2). This needs no footage, and no voice take (`--sketch`).
-   Read: MOTION.md § Think 2; MOTION.md § Engine choice; MOTION.md § Look; STAGE_ENGINE.md § Files and sketches;
-   STAGE_ENGINE.md § Times from the narration; STAGE_ENGINE.md § Setting up a stage;
+   Read: MOTION.md § Think 2; MOTION.md § Think 3; MOTION.md § Engine choice; MOTION.md § Look;
+   STAGE_ENGINE.md § Files and sketches; STAGE_ENGINE.md § Times from the narration; STAGE_ENGINE.md § Setting up a stage;
    STAGE_ENGINE.md § Drawings on the world; STAGE_ENGINE.md § The traveller; STAGE_ENGINE.md § Other things on the world;
-   STAGE_ENGINE.md § Text sizes and colours (about 2,890 words); when one object rides on another, also
-   STAGE_ENGINE.md § Moving with something else (about 440 words). Look is read here because the sketch's stills go
-   to the reader and the storyboard as the film will look.
+   STAGE_ENGINE.md § Text sizes and colours (about 3,500 words); when one object rides on another, also
+   STAGE_ENGINE.md § Moving with something else (about 440 words). Think 3 and Look are read here because the
+   sketch's stills go to the reader and the storyboard as the film will look: its framing, word limits, reading
+   times, and results must hold before approval, not be found after it.
 5. Storyboard: for each segment send the concept card, the signature stills, and a one-line outline per remaining shot
    of that segment (Storyboard, below). Wait for approval.
    Read: MOTION.md § Storyboard (about 80 words).
