@@ -43,7 +43,7 @@ product's own menus (L88).
 | ThousandEyes | Moves to `app.thousandeyes.com` and keeps the Cloud Control top bar (with a Canvas button). 8 to 18 s to the dashboard. A cookie banner can appear | 2026-09-24 |
 | Intersight | Opens the regional Intersight site in the same tab and keeps Cloud Control navigation | 2026-10-01 |
 | Meraki | Leaves the Cloud Control shell in the same tab, 20 to 30 s. Landed on the Buenos Aires network, not the incident site. Its network selector hung the shared Chrome once | 2026-09-24 |
-| Collaboration Control Hub | Shows `admin.webex.com/login` briefly, then reaches Overview through the existing session with no sign-in typed. Do not call the login URL a blocker until it settles | 2026-10-01 |
+| Collaboration Control Hub | Shows `admin.webex.com/login` briefly, then reaches Overview through the existing session with no sign-in typed. Do not call the login URL a blocker until it settles. In September it rendered under the Cloud Control top bar with a "Read-only Mode" notice [verified 2026-09]; check which of the two appears before planning a take | 2026-10-01 |
 | Security | Opens `security.cisco.com`; the Chrome extension needs that site allowed separately | 2026-11-16 |
 | Inventory asset drawer | "View in Meraki" opens a new browser tab | 2026-09-24 |
 
@@ -76,6 +76,9 @@ product's own menus (L88).
   toolbar with Auto layout, Add image, Add text annotation, Lock cards, Generate summary, View activity
   [verified 2026-09-24]. A saved board from 2026-09-30 kept the conversation plus a ThousandEyes packet-loss card
   and an SD-WAN BFD-session card, each marked "Added to canvas", with an activity timeline [verified 2026-10-02].
+  The canvas plus menu listed Prompts, Knowledge bases, Agents, and Add image or file, with no Workflows item, in
+  Default and Reasoning [verified 2026-09-24]. The Workflows entry in the Assistant composer menu (above) is a
+  different control; re-check both live before a story depends on starting a workflow from a canvas.
 
 ### Topology and Inventory
 
@@ -224,6 +227,10 @@ Probe each agent the story needs, in a new thread, before building on it (L9). T
 - The tell for a failed agent: its time chip shows `<1s` or `1s`. Some error replies say they are "relaying this
   feedback to our development team"; keep those off camera.
 - Reasoning mode reached ThousandEyes data once in rehearsal (1 min 52 s), then failed during recording (17 s).
+- A Reasoning run in a canvas showed no plan-review step, and the documented "Plan Review Required / Revise /
+  Approve Plan" panel was not seen anywhere [absent 2026-09-24]. That run's answer had no "Investigation
+  limitations" section; one other saved card ("Network & Datacenter Bottleneck Report") did have one [verified
+  2026-09-24]. Do not promise either on camera.
 
 **2026-10-02:** a broad Mexico City request across Meraki and ThousandEyes looped on a Meraki organization
 question and was stopped. A narrower prompt naming the PseudoCo organization completed in 57 s (Network Platform
@@ -261,6 +268,10 @@ saved earlier that day was gone by evening (L100).
 - Dates disagree across surfaces: an action from September 20 sat beside live answers dated September 24; a saved
   canvas narrative listed BFD event times four hours apart from the times on its own card [verified 2026-09-24,
   2026-10-02]. Do not join different dates into one cause.
+- Collaboration Control Hub free-text search was unreliable on camera, and in one call detail the Geolocation row
+  contradicted Location [verified 2026-09]. Do not build a beat on either without a rehearsal.
+- What an integration shares sets the story: Webex Control Hub gives Cloud Control inventory only, no alerts and no
+  topology [docs 2026-09, L10; source page not kept]. No Webex alert can start a Cloud Control story.
 - The canvas banner "There is an issue connecting to this canvas. Some features are temporarily disabled while
   the connection is down." is common; reload once. A visible control is not proof that it works while the banner
   shows [verified 2026-09-24, 2026-10-02].
@@ -294,6 +305,13 @@ plainly what the screen shows instead.
 - A catalog listing, a "Validated" badge, or an "Added" badge is not a configured integration or a working
   action.
 - A Studio-reported build result (for example "61 passing tests") is the product's claim, not a check we ran.
+- Keep the AI footer "Assistant can make mistakes. Verify responses." legible at least once [verified 2026-09-24].
+- Contested, keep out of narration: whether one connected product is enough to start. Say "start with the Cisco
+  products you already run" and "every product you connect adds context".
+- Leave out, or keep on screen with its label: the Workflows agent (beta), Agent Studio, Cloud Control Studio
+  third-party connections, Marketplace ("Demo only"), autonomous agents, non-US regions ("Generally Available in
+  the United States only"), and anything tagged Controlled Availability.
+- Do not say Cloud Control alerts on, or pulls in, Webex call quality (see Traps).
 
 ## Documented, not seen in this tenant
 

@@ -17,8 +17,8 @@ useful demo can end with evidence, a named coverage gap, and the right next owne
 fix or a solved root cause.
 
 For an ask that crosses products ("after product A decides, can product B act?"), first break it into links
-(decide, send, receive, approve, act, verify, report back) and mark each link verified, docs, or absent before
-touring screens (L83). The Splunk row below shows the result of that pass.
+(decide, send, receive, approve, act, verify, report back) and mark each link verified, docs, absent, or
+hypothesis before touring screens (L83). The Splunk row below shows the result of that pass.
 
 ## Candidate stories
 

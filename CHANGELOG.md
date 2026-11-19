@@ -173,6 +173,9 @@ that `scripts/setup.sh` prints.
 - Three contradictions settled (builder prompt, MOTION.md): facts take the fourth label, hypothesis, as
   `knowledge/README.md` already says; takes that depend on an earlier one are recorded in story order and
   independent ones in parallel; the shot table is written after approval and the takes.
+- `knowledge/cloud-control/PLATFORM_MAP.md`: September Cloud Control facts that lived only in the example's notes
+  (narration rules on beta and Controlled Availability features and Webex call quality, the Control Hub traps, the
+  canvas plus menu, Reasoning mode with no plan review).
 
 ## 0.4.1 (2026-11-17)
 
